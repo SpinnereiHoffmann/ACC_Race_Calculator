@@ -22,7 +22,7 @@ local function dlgEnterName(i)
   }
   local btnCancel = iup.button {
     size  = 50,
-    title = "Abbrechen"
+    title = "@CANCEL"
   }
   local box = iup.vbox {
     iup.hbox {
@@ -41,7 +41,7 @@ local function dlgEnterName(i)
     margin = "10x10",
   }
   local dlgInsertName = iup.dialog{
-    title = "Name eingeben",
+    title = "@ENTER_NAME",
     box,
     -- EXPAND = "NO",
     MINSIZE = 60, 50,
@@ -81,7 +81,7 @@ local function AddDriver()
   if #tDriver < 6 then
     tDriver[i] = dlgEnterName(i)
   else
-    iup.Message("@ERROR","Maximale Anzahl an Fahrern erreicht.")
+    iup.Message("@ERROR","@MAX_DRIVER") --Maximale Anzahl an Fahrern erreicht.
   end
 end
 

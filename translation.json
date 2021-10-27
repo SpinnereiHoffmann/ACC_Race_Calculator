@@ -1,0 +1,22 @@
+{
+  "languages": {
+    "Deutsch": {
+      "lib": {
+        "@ADD_DRIVER": "Fahrer hinzufügen",
+        "@CONSUMPTION": "Verbrauch",
+        "@DRIVER": "Fahrer",
+        "@ERROR": "Fehler",
+        "@TIME": "Zeit"
+      }
+    },
+    "English": {
+      "lib": {
+        "@ADD_DRIVER": "Add Driver",
+        "@CONSUMPTION": "Consumption",
+        "@DRIVER": "Driver",
+        "@ERROR": "Error",
+        "@TIME": "Time"
+      }
+    }
+  }
+}
