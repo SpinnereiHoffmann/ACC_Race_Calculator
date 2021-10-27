@@ -15,7 +15,6 @@ local tDriver = {}
 ---
 local function dlgEnterName(i)
   local tname = iup.text {value = "@DRIVER" .. tostring(i)}
-  print(tname)
   local btnOk = iup.button{
     size  = 50,
     title = "OK"
@@ -221,7 +220,6 @@ local function Start()
     AddDriver()
 
     for i = 1, 6 do
-      print(tDriver[i])
       if tDriver[i] ~= nil then
       lblDrivers["driver" .. i].title = GetDriverName(i)
       lblDrivers["driver" .. i].visible = "YES"
@@ -229,15 +227,14 @@ local function Start()
       txtConsumption["driver" .. i].visible = "YES"
       end
     end
-    -- for k, v in pairs(lblDrivers) do
-      -- print(k, v)
-      -- 
-    -- end
   end
 
   dlg:showxy(iup.CENTER,iup.CENTER)
 end
 
+-----------------------------------------------------------------------------------
+--- Main()
+-----------------------------------------------------------------------------------
 -- to be able to run this script inside another context
 if (iup.MainLoopLevel()==0) then
   Start()
