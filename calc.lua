@@ -141,7 +141,7 @@ local function Start()
   local dropLang = iup.list {
     "Deutsch", 
     "English",
-    value = 1,
+    value = 2,
     dropdown = "YES",
     visible_items = 4
   }
@@ -291,6 +291,58 @@ local function Start()
       btnRemoveDriver["driver" .. i].visible = "YES"
       end
     end
+  end
+
+  local function RemoveDriver()
+    lblDrivers["driver" .. #tDriver+1].visible = "NO"
+    txtDrivers["driver" .. #tDriver+1].visible = "NO"
+    txtConsumption["driver" .. #tDriver+1].visible = "NO"
+    btnRemoveDriver["driver" .. #tDriver+1].visible = "NO"
+  end
+
+  function btnRemoveDriver.driver1:action()
+    tDriver[1] = nil
+    tDriver[1] = tDriver[2]
+    tDriver[2] = tDriver[3]
+    tDriver[3] = tDriver[4]
+    tDriver[4] = tDriver[5]
+    tDriver[5] = tDriver[6]
+    RemoveDriver()
+  end
+
+  function btnRemoveDriver.driver2:action()
+    tDriver[2] = nil
+    tDriver[2] = tDriver[3]
+    tDriver[3] = tDriver[4]
+    tDriver[4] = tDriver[5]
+    tDriver[5] = tDriver[6]
+    RemoveDriver()
+  end
+
+  function btnRemoveDriver.driver3:action()
+    tDriver[3] = nil
+    tDriver[3] = tDriver[4]
+    tDriver[4] = tDriver[5]
+    tDriver[5] = tDriver[6]
+    RemoveDriver()
+  end
+
+  function btnRemoveDriver.driver4:action()
+    tDriver[4] = nil
+    tDriver[4] = tDriver[5]
+    tDriver[5] = tDriver[6]
+    RemoveDriver()
+  end
+
+  function btnRemoveDriver.driver5:action()
+    tDriver[5] = nil
+    tDriver[5] = tDriver[6]
+    RemoveDriver()
+  end
+
+  function btnRemoveDriver.driver6:action()
+    tDriver[6] = nil
+    RemoveDriver()
   end
 
   dlg:showxy(iup.CENTER,iup.CENTER)
