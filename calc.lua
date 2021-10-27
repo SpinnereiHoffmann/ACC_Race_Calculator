@@ -14,7 +14,8 @@ local tDriver = {}
 -----------------------------------------------------------------------------------
 ---
 local function dlgEnterName(i)
-  local tname = iup.text {value = "Fahrer" .. tostring(i)}
+  local tname = iup.text {value = "@DRIVER" .. tostring(i)}
+  print(tname)
   local btnOk = iup.button{
     size  = 50,
     title = "OK"
@@ -100,50 +101,69 @@ end
 local function Start()
   
   -- Labels
-  local lDrivers = {
+  local lblEmpty = iup.label {title = ""}
+  local lblTime = iup.label {title = "@TIME"}
+  local lblConsumption = iup.label {title = "@CONSUMPTION"}
+
+  local lblDrivers = {
     driver1 = iup.label {
       title = "tDriver[1]",
       visible = "NO",
+      size = 40
     },
     driver2 = iup.label {
       title = "tDriver[2]",
-      visible = "NO"
+      visible = "NO",
+      size = 40
     },
     driver3 = iup.label {
       title = "tDriver[3]",
-      visible = "NO"
+      visible = "NO",
+      size = 40
     },
     driver4 = iup.label {
       title = "tDriver[4]",
-      visible = "NO"
+      visible = "NO",
+      size = 40
     },
     driver5 = iup.label {
       title = "tDriver[5]",
-      visible = "NO"
+      visible = "NO",
+      size = 40
     },
     driver6 = iup.label {
       title = "tDriver[6]",
-      visible = "NO"
+      visible = "NO",
+      size = 40
     }
+  }
+
+  -- dropdown
+  local dropLang = iup.list {
+    "Deutsch", 
+    "English",
+    value = 1,
+    dropdown = "YES",
+    visible_items = 4
   }
 
   -- txtFields
   local txtDrivers = {
-    driver1 = iup.text {value = "Zeit", visible = "NO"},
-    driver2 = iup.text {value = "Zeit", visible = "NO"},
-    driver3 = iup.text {value = "Zeit", visible = "NO"},
-    driver4 = iup.text {value = "Zeit", visible = "NO"},
-    driver5 = iup.text {value = "Zeit", visible = "NO"},
-    driver6 = iup.text {value = "Zeit", visible = "NO"}
+    driver1 = iup.text {value = "0:00.000", visible = "NO"},
+    driver2 = iup.text {value = "0:00.000", visible = "NO"},
+    driver3 = iup.text {value = "0:00.000", visible = "NO"},
+    driver4 = iup.text {value = "0:00.000", visible = "NO"},
+    driver5 = iup.text {value = "0:00.000", visible = "NO"},
+    driver6 = iup.text {value = "0:00.000", visible = "NO"}
   }
 
   local txtConsumption = {
-    driver1 = iup.text {value = "Verbrauch", visible = "NO"},
-    driver2 = iup.text {value = "Verbrauch", visible = "NO"},
-    driver3 = iup.text {value = "Verbrauch", visible = "NO"},
-    driver4 = iup.text {value = "Verbrauch", visible = "NO"},
-    driver5 = iup.text {value = "Verbrauch", visible = "NO"},
-    driver6 = iup.text {value = "Verbrauch", visible = "NO"}
+    driver1 = iup.text {value = 0.00, visible = "NO"},
+    driver2 = iup.text {value = 0.00, visible = "NO"},
+    driver3 = iup.text {value = 0.00, visible = "NO"},
+    driver4 = iup.text {value = 0.00, visible = "NO"},
+    driver5 = iup.text {value = 0.00, visible = "NO"},
+    driver6 = iup.text {value = 0.00, visible = "NO"}
   }
 
   -- Buttons
@@ -172,13 +192,14 @@ local function Start()
 
   local box = iup.vbox {
     iup.hbox {
-      iup.vbox {lDrivers.driver1, txtDrivers.driver1, txtConsumption.driver1},
-      iup.vbox {lDrivers.driver2, txtDrivers.driver2, txtConsumption.driver2},
-      iup.vbox {lDrivers.driver3, txtDrivers.driver3, txtConsumption.driver3},
-      iup.vbox {lDrivers.driver4, txtDrivers.driver4, txtConsumption.driver4},
-      iup.vbox {lDrivers.driver5, txtDrivers.driver5, txtConsumption.driver5},
-      iup.vbox {lDrivers.driver6, txtDrivers.driver6, txtConsumption.driver6},
-      btnAddDriver,
+      iup.vbox {lblEmpty, lblTime, lblConsumption, gap = "15"},
+      iup.vbox {lblDrivers.driver1, txtDrivers.driver1, txtConsumption.driver1},
+      iup.vbox {lblDrivers.driver2, txtDrivers.driver2, txtConsumption.driver2},
+      iup.vbox {lblDrivers.driver3, txtDrivers.driver3, txtConsumption.driver3},
+      iup.vbox {lblDrivers.driver4, txtDrivers.driver4, txtConsumption.driver4},
+      iup.vbox {lblDrivers.driver5, txtDrivers.driver5, txtConsumption.driver5},
+      iup.vbox {lblDrivers.driver6, txtDrivers.driver6, txtConsumption.driver6},
+      iup.vbox {dropLang, btnAddDriver}
     },
     iup.hbox {
       btnRefresh,
@@ -202,13 +223,13 @@ local function Start()
     for i = 1, 6 do
       print(tDriver[i])
       if tDriver[i] ~= nil then
-      lDrivers["driver" .. i].title = GetDriverName(i)
-      lDrivers["driver" .. i].visible = "YES"
+      lblDrivers["driver" .. i].title = GetDriverName(i)
+      lblDrivers["driver" .. i].visible = "YES"
       txtDrivers["driver" .. i].visible = "YES"
       txtConsumption["driver" .. i].visible = "YES"
       end
     end
-    -- for k, v in pairs(lDrivers) do
+    -- for k, v in pairs(lblDrivers) do
       -- print(k, v)
       -- 
     -- end
