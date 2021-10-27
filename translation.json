@@ -9,6 +9,7 @@
         "@ENTER_NAME": "Name eingeben",
         "@ERROR": "Fehler",
         "@MAX_DRIVER": "Maximale Anzahl an Fahrern erreicht.",
+        "@REMOVE": "entfernen",
         "@TIME": "Zeit"
       }
     },
@@ -21,6 +22,7 @@
         "@ENTER_NAME": "Enter Name",
         "@ERROR": "Error",
         "@MAX_DRIVER": "Maximum number of riders reached.",
+        "@REMOVE": "remove",
         "@TIME": "Time"
       }
     }

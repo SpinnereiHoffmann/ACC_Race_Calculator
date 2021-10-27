@@ -182,6 +182,39 @@ local function Start()
     title = "refresh"
   }
 
+  local btnRemoveDriver = {
+    driver1 = iup.button {
+      size = 40,
+      title = "@REMOVE",
+      visible = "NO"
+    },
+    driver2 = iup.button {
+      size = 50,
+      title = "@REMOVE",
+      visible = "NO"
+    },
+    driver3 = iup.button {
+      size = 50,
+      title = "@REMOVE",
+      visible = "NO"
+    },
+    driver4 = iup.button {
+      size = 50,
+      title = "@REMOVE",
+      visible = "NO"
+    },
+    driver5 = iup.button {
+      size = 50,
+      title = "@REMOVE",
+      visible = "NO"
+    },
+    driver6 = iup.button {
+      size = 50,
+      title = "@REMOVE",
+      visible = "NO"
+    }
+  }
+
   function button:action()
     -- Exits the main loop
     -- hier kommt die json - Lib zum Einsatz!
@@ -192,12 +225,42 @@ local function Start()
   local box = iup.vbox {
     iup.hbox {
       iup.vbox {lblEmpty, lblTime, lblConsumption, gap = "15"},
-      iup.vbox {lblDrivers.driver1, txtDrivers.driver1, txtConsumption.driver1},
-      iup.vbox {lblDrivers.driver2, txtDrivers.driver2, txtConsumption.driver2},
-      iup.vbox {lblDrivers.driver3, txtDrivers.driver3, txtConsumption.driver3},
-      iup.vbox {lblDrivers.driver4, txtDrivers.driver4, txtConsumption.driver4},
-      iup.vbox {lblDrivers.driver5, txtDrivers.driver5, txtConsumption.driver5},
-      iup.vbox {lblDrivers.driver6, txtDrivers.driver6, txtConsumption.driver6},
+      iup.vbox {
+        lblDrivers.driver1,
+        txtDrivers.driver1,
+        txtConsumption.driver1,
+        btnRemoveDriver.driver1
+      },
+      iup.vbox {
+        lblDrivers.driver2,
+        txtDrivers.driver2,
+        txtConsumption.driver2,
+        btnRemoveDriver.driver2
+      },
+      iup.vbox {
+        lblDrivers.driver3,
+        txtDrivers.driver3,
+        txtConsumption.driver3,
+        btnRemoveDriver.driver3
+      },
+      iup.vbox {
+        lblDrivers.driver4,
+        txtDrivers.driver4,
+        txtConsumption.driver4,
+        btnRemoveDriver.driver4
+      },
+      iup.vbox {
+        lblDrivers.driver5,
+        txtDrivers.driver5,
+        txtConsumption.driver5,
+        btnRemoveDriver.driver5
+      },
+      iup.vbox {
+        lblDrivers.driver6,
+        txtDrivers.driver6,
+        txtConsumption.driver6,
+        btnRemoveDriver.driver6
+      },
       iup.vbox {dropLang, btnAddDriver}
     },
     iup.hbox {
@@ -225,6 +288,7 @@ local function Start()
       lblDrivers["driver" .. i].visible = "YES"
       txtDrivers["driver" .. i].visible = "YES"
       txtConsumption["driver" .. i].visible = "YES"
+      btnRemoveDriver["driver" .. i].visible = "YES"
       end
     end
   end
