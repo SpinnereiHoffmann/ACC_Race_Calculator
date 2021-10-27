@@ -189,27 +189,27 @@ local function Start()
       visible = "NO"
     },
     driver2 = iup.button {
-      size = 50,
+      size = 40,
       title = "@REMOVE",
       visible = "NO"
     },
     driver3 = iup.button {
-      size = 50,
+      size = 40,
       title = "@REMOVE",
       visible = "NO"
     },
     driver4 = iup.button {
-      size = 50,
+      size = 40,
       title = "@REMOVE",
       visible = "NO"
     },
     driver5 = iup.button {
-      size = 50,
+      size = 40,
       title = "@REMOVE",
       visible = "NO"
     },
     driver6 = iup.button {
-      size = 50,
+      size = 40,
       title = "@REMOVE",
       visible = "NO"
     }
