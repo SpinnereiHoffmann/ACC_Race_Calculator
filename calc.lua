@@ -165,7 +165,7 @@ local function Start()
 
   function button:action()
     -- Exits the main loop
-
+    -- hier kommt die json - Lib zum Einsatz!
     --todo vorher noch Daten in .json File schreiben!
     return iup.CLOSE
   end
