@@ -94,7 +94,7 @@ local function AddDriver()
   if #tDriver < 6 then
     tDriver[i] = dlgEnterName(i)
   else
-    iup.Message(valTranslation.ERROR,valTranslation.MAX_DRIVER) --Maximale Anzahl an Fahrern erreicht.
+    iup.Message(valTranslation.ERROR,valTranslation.MAX_DRIVER)
   end
 end
 
@@ -160,18 +160,6 @@ local function Start()
     visible_items = 4,
     size = 80
   }
-
-  function dropLang:valuechanged_cb()
-    print("value changed")
-    tOptions.language.value = dropLang.value
-    local uOptions = io.open("options.json", "w")
-    uOptions:write(json.encode(tOptions))
-    uOptions:close()
-    print(tOptions.language.value)
-    -- iup.Refresh(dlg)
-  end
-
-
 
   -- txtFields
   local txtDrivers = {
@@ -307,8 +295,24 @@ local function Start()
   }
 
   function btnRefresh:action()
-    iup.Map(box)
-    box:show()
+    -- iup.SetAttribute(dlg, "SIZE", 800)
+    -- iup.Map(dlg)
+    iup.Refresh(dlg)
+    -- iup.Redraw(dlg,0)
+  end
+
+  function dropLang:valuechanged_cb()
+    tOptions.language.value = dropLang.value
+    local uOptions = io.open("options.json", "w")
+    uOptions:write(json.encode(tOptions))
+    uOptions:close()
+    -- btnRemoveDriver.driver1.value = "something"
+    -- print(btnRemoveDriver.driver1.value)
+    -- iup.SetAttribute(dlg, "SIZE", 800)
+    -- iup.Message(valTranslation.INFORMATION ,valTranslation.REBOOT)
+    -- iup.Update(dlg)
+    -- iup.Refresh(dlg)
+    -- iup.Redraw(dlg, 1)
   end
 
   function btnAddDriver:action()

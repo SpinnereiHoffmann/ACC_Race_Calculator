@@ -7,7 +7,9 @@
       "DRIVER": "Fahrer",
       "ENTER_NAME": "Name eingeben",
       "ERROR": "Fehler",
+      "INFORMATION": "Hinweis",
       "MAX_DRIVER": "Maximale Anzahl an Fahrern erreicht.",
+      "REBOOT": "Aenderungen werden erst nach Neustart angewendet",
       "REMOVE": "entfernen",
       "TIME": "Zeit"
     },
@@ -18,7 +20,9 @@
       "DRIVER": "Driver",
       "ENTER_NAME": "Enter Name",
       "ERROR": "Error",
+      "INFORMATION": "INFORMATION",
       "MAX_DRIVER": "Maximum number of riders reached.",
+      "REBOOT": "Changes are applied after restart",
       "REMOVE": "remove",
       "TIME": "Time"
     }
