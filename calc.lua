@@ -181,6 +181,16 @@ local function Start()
   }
 
   -- Buttons
+  local btnLoadFile = iup.button {
+    title = valTranslation.LOAD_FILE,
+    size = 60
+  }
+
+  local btnSaveFile = iup.button {
+    title = valTranslation.SAVE_FILE,
+    size = 60
+  }  
+
   local btnAddDriver = iup.button{
     size      = 80,
     title     = valTranslation.ADD_DRIVER,
@@ -279,6 +289,9 @@ local function Start()
       iup.vbox {dropLang, btnAddDriver}
     },
     iup.hbox {
+      btnLoadFile,
+      btnSaveFile,
+      iup.fill {},
       btnRefresh,
       button
     },
@@ -296,8 +309,11 @@ local function Start()
 
   function btnRefresh:action()
     -- iup.SetAttribute(dlg, "SIZE", 800)
+    -- iup.Refresh(dlg)
+    
+    -- iup.SetAttribute(dlg, "SIZE", 800)
     -- iup.Map(dlg)
-    iup.Refresh(dlg)
+    -- iup.Refresh(dlg)
     -- iup.Redraw(dlg,0)
   end
 
