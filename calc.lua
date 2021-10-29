@@ -2,7 +2,7 @@
 --*                           ACC Race Calculator                                 *
 --* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 require("iuplua")
-require("Libs.libJson")
+local json = require("Libs.libJson")
 
 -----------------------------------------------------------------------------------
 --- Driver
@@ -10,18 +10,32 @@ require("Libs.libJson")
 local tDriver = {}
 
 -----------------------------------------------------------------------------------
+--- Translation
+-----------------------------------------------------------------------------------
+local uOptions = io.open("options.json", "r")
+local sOptions = uOptions:read("*a")
+local tOptions = json.decode(sOptions)
+local nLanguage = tOptions.language.value
+uOptions:close()
+
+local uTranslation = io.open("translation.json", "r")
+local sTranslation = uTranslation:read("*a")
+local tTranslation = json.decode(sTranslation)
+local valTranslation = tTranslation.languages[nLanguage]
+
+-----------------------------------------------------------------------------------
 --- dlgEnterName()
 -----------------------------------------------------------------------------------
 ---
 local function dlgEnterName(i)
-  local tname = iup.text {value = "@DRIVER" .. tostring(i)}
+  local tname = iup.text {value = valTranslation.DRIVER .. tostring(i)}
   local btnOk = iup.button{
     size  = 50,
     title = "OK"
   }
   local btnCancel = iup.button {
     size  = 50,
-    title = "@CANCEL"
+    title = valTranslation.CANCEL
   }
   local box = iup.vbox {
     iup.hbox {
@@ -40,7 +54,7 @@ local function dlgEnterName(i)
     margin = "10x10",
   }
   local dlgInsertName = iup.dialog{
-    title = "@ENTER_NAME",
+    title = valTranslation.ENTER_NAME,
     box,
     -- EXPAND = "NO",
     MINSIZE = 60, 50,
@@ -80,7 +94,7 @@ local function AddDriver()
   if #tDriver < 6 then
     tDriver[i] = dlgEnterName(i)
   else
-    iup.Message("@ERROR","@MAX_DRIVER") --Maximale Anzahl an Fahrern erreicht.
+    iup.Message(valTranslation.ERROR,valTranslation.MAX_DRIVER) --Maximale Anzahl an Fahrern erreicht.
   end
 end
 
@@ -101,8 +115,8 @@ local function Start()
   
   -- Labels
   local lblEmpty = iup.label {title = ""}
-  local lblTime = iup.label {title = "@TIME"}
-  local lblConsumption = iup.label {title = "@CONSUMPTION"}
+  local lblTime = iup.label {title = valTranslation.TIME}
+  local lblConsumption = iup.label {title = valTranslation.CONSUMPTION}
 
   local lblDrivers = {
     driver1 = iup.label {
@@ -141,10 +155,23 @@ local function Start()
   local dropLang = iup.list {
     "Deutsch", 
     "English",
-    value = 2,
+    value = nLanguage,
     dropdown = "YES",
-    visible_items = 4
+    visible_items = 4,
+    size = 80
   }
+
+  function dropLang:valuechanged_cb()
+    print("value changed")
+    tOptions.language.value = dropLang.value
+    local uOptions = io.open("options.json", "w")
+    uOptions:write(json.encode(tOptions))
+    uOptions:close()
+    print(tOptions.language.value)
+    -- iup.Refresh(dlg)
+  end
+
+
 
   -- txtFields
   local txtDrivers = {
@@ -167,8 +194,8 @@ local function Start()
 
   -- Buttons
   local btnAddDriver = iup.button{
-    size      = 70,
-    title     = "@ADD_DRIVER",
+    size      = 80,
+    title     = valTranslation.ADD_DRIVER,
     alignment = "ACENTER"
   }
   
@@ -185,32 +212,32 @@ local function Start()
   local btnRemoveDriver = {
     driver1 = iup.button {
       size = 40,
-      title = "@REMOVE",
+      title = valTranslation.REMOVE,
       visible = "NO"
     },
     driver2 = iup.button {
       size = 40,
-      title = "@REMOVE",
+      title = valTranslation.REMOVE,
       visible = "NO"
     },
     driver3 = iup.button {
       size = 40,
-      title = "@REMOVE",
+      title = valTranslation.REMOVE,
       visible = "NO"
     },
     driver4 = iup.button {
       size = 40,
-      title = "@REMOVE",
+      title = valTranslation.REMOVE,
       visible = "NO"
     },
     driver5 = iup.button {
       size = 40,
-      title = "@REMOVE",
+      title = valTranslation.REMOVE,
       visible = "NO"
     },
     driver6 = iup.button {
       size = 40,
-      title = "@REMOVE",
+      title = valTranslation.REMOVE,
       visible = "NO"
     }
   }
@@ -269,14 +296,19 @@ local function Start()
     },
     alignment = "acenter",
     gap = "10",
-    margin = "10x10"
+    margin = "10x10",
   }
-  local dlg = iup.dialog{
+
+  local dlg = iup.dialog {
     box,
-    title = "ACC Race Calculator"
+    title = "ACC Race Calculator",
+    DEFAULTENTER = btnAddDriver,
+    DEFAULTESC = button
   }
 
   function btnRefresh:action()
+    iup.Map(box)
+    box:show()
   end
 
   function btnAddDriver:action()
@@ -357,3 +389,5 @@ if (iup.MainLoopLevel()==0) then
   iup.MainLoop()
   iup.Close()
 end
+
+uTranslation:close()
