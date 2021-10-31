@@ -14,12 +14,13 @@ local tDriver = {}
 -----------------------------------------------------------------------------------
 local uOptions = io.open("options.json", "r")
 local sOptions = uOptions:read("*a")
+uOptions:close()
 local tOptions = json.decode(sOptions)
 local nLanguage = tOptions.language.value
-uOptions:close()
 
 local uTranslation = io.open("translation.json", "r")
 local sTranslation = uTranslation:read("*a")
+uTranslation:close()
 local tTranslation = json.decode(sTranslation)
 local valTranslation = tTranslation.languages[nLanguage]
 
@@ -244,6 +245,9 @@ local function Start()
     -- Exits the main loop
     -- hier kommt die json - Lib zum Einsatz!
     --todo vorher noch Daten in .json File schreiben!
+    for k, v in pairs(tDriver) do
+      print(k, v)
+    end
     return iup.CLOSE
   end
 
@@ -359,6 +363,7 @@ local function Start()
     tDriver[3] = tDriver[4]
     tDriver[4] = tDriver[5]
     tDriver[5] = tDriver[6]
+    tDriver[6] = tDriver[7]
     RemoveDriver()
   end
 
@@ -368,6 +373,7 @@ local function Start()
     tDriver[3] = tDriver[4]
     tDriver[4] = tDriver[5]
     tDriver[5] = tDriver[6]
+    tDriver[6] = tDriver[7]
     RemoveDriver()
   end
 
@@ -376,6 +382,7 @@ local function Start()
     tDriver[3] = tDriver[4]
     tDriver[4] = tDriver[5]
     tDriver[5] = tDriver[6]
+    tDriver[6] = tDriver[7]
     RemoveDriver()
   end
 
@@ -383,12 +390,14 @@ local function Start()
     tDriver[4] = nil
     tDriver[4] = tDriver[5]
     tDriver[5] = tDriver[6]
+    tDriver[6] = tDriver[7]
     RemoveDriver()
   end
 
   function btnRemoveDriver.driver5:action()
     tDriver[5] = nil
     tDriver[5] = tDriver[6]
+    tDriver[6] = tDriver[7]
     RemoveDriver()
   end
 
@@ -409,5 +418,3 @@ if (iup.MainLoopLevel()==0) then
   iup.MainLoop()
   iup.Close()
 end
-
-uTranslation:close()
