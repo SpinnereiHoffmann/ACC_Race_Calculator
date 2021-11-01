@@ -323,9 +323,9 @@ local function Common()
     dlg:popup (iup.ANYWHERE, iup.ANYWHERE)
     status = dlg.status
     if status == "1" then 
-      iup.Message("New file",filedlg.value)
-    elseif status == "0" then 
-      iup.Message("File already exists", filedlg.value)
+      iup.Message("New file", dlg.value)
+    elseif status == "0" then
+      iup.Message("File already exists", dlg.value)
     elseif status == "-1" then 
       iup.Message("IupFileDlg","Operation canceled")
     end
