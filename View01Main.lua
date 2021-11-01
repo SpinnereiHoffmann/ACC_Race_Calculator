@@ -3,28 +3,29 @@
 --* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 require("iuplua")
 local json = require("Libs.libJson")
+local Controller = require("Controller")
 
 local View = {}
 
 -------------------------------------------------------------------------------
 --- translation
 -------------------------------------------------------------------------------
-local uOptions = io.open("options.json", "r")
-local sOptions = uOptions:read("*a")
-uOptions:close()
-local tOptions = json.decode(sOptions)
+-- local uOptions = io.open("options.json", "r")
+-- local sOptions = uOptions:read("*a")
+-- uOptions:close()
+local tOptions = Controller.GetFileTable("options")
 local nLanguage = tOptions.language.value
 
-local uTranslation = io.open("translation.json", "r")
-local sTranslation = uTranslation:read("*a")
-uTranslation:close()
-local tTranslation = json.decode(sTranslation)
+-- local uTranslation = io.open("translation.json", "r")
+-- local sTranslation = uTranslation:read("*a")
+-- uTranslation:close()
+local tTranslation = json.decode("translation")
 local valTranslation = tTranslation.languages[nLanguage]
 
-local uDriver = io.open("driver.json", "r")
-local sDriver = uDriver:read("a*")
-uDriver:close()
-local tDriver = json.decode(sDriver)
+-- local uDriver = io.open("driver.json", "r")
+-- local sDriver = uDriver:read("a*")
+-- uDriver:close()
+local tDriver = json.decode("driver")
 
 -----------------------------------------------------------------------------------
 --- dlgEnterName()
@@ -342,9 +343,11 @@ local function Common()
 
   function dropLang:valuechanged_cb()
     tOptions.language.value = dropLang.value
-    local uOptions = io.open("options.json", "w")
-    uOptions:write(json.encode(tOptions))
-    uOptions:close()
+    Controller.SetFileTable(tOptions, "options")
+    -- local uOptions = io.open("options.json", "w")
+    -- uOptions:write(json.encode(tOptions))
+    -- uOptions:close()
+  
     -- btnRemoveDriver.driver1.value = "something"
     -- print(btnRemoveDriver.driver1.value)
     -- iup.SetAttribute(dlg, "SIZE", 800)
