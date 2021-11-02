@@ -10,7 +10,7 @@ local Controller = {}
 ------------------------------------------------------------------------------------
 ---
 function Controller.GetFileTable(filename)
-  local uData = io.open(filename .. ".json", "r") "options.json"
+  local uData = io.open(filename .. ".json", "r")
   local sData = uData:read("*a")
   uData:close()
   local tData = json.decode(sData)

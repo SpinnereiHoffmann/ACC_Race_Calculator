@@ -8,30 +8,21 @@ local Controller = require("Controller")
 local View = {}
 
 -------------------------------------------------------------------------------
---- translation
+--- file-tables
 -------------------------------------------------------------------------------
--- local uOptions = io.open("options.json", "r")
--- local sOptions = uOptions:read("*a")
--- uOptions:close()
 local tOptions = Controller.GetFileTable("options")
 local nLanguage = tOptions.language.value
 
--- local uTranslation = io.open("translation.json", "r")
--- local sTranslation = uTranslation:read("*a")
--- uTranslation:close()
-local tTranslation = json.decode("translation")
+local tTranslation = Controller.GetFileTable("translation")
 local valTranslation = tTranslation.languages[nLanguage]
 
--- local uDriver = io.open("driver.json", "r")
--- local sDriver = uDriver:read("a*")
--- uDriver:close()
-local tDriver = json.decode("driver")
+local tDriver = Controller.GetFileTable("driver")
 
 -----------------------------------------------------------------------------------
---- dlgEnterName()
+--- DlgEnterName()
 -----------------------------------------------------------------------------------
 ---
-local function dlgEnterName(i)
+local function DlgEnterName(i)
   local tname = iup.text {value = valTranslation.DRIVER .. tostring(i)}
   local btnOk = iup.button{
     size  = 50,
@@ -96,7 +87,7 @@ end
 local function AddDriver()
   local i = #tDriver + 1
   if #tDriver < 6 then
-    tDriver[i] = dlgEnterName(i)
+    tDriver[i] = DlgEnterName(i)
   else
     iup.Message(valTranslation.ERROR,valTranslation.MAX_DRIVER)
   end
@@ -312,16 +303,35 @@ local function Common()
     DEFAULTESC = button
   }
 
+  function btnSaveFile:action()
+    local dlg = iup.filedlg {
+      dialogtype = "SAVE",
+      title = valTranslation.SAVE_FILE,
+      filter = "*.json",
+      filterinfo = valTranslation.JSON_FILES,
+      directory = "c:\\users\\steff\\documents"
+    }
+    dlg:popup(iup.ANYWHERE, iup.ANYWHERE)
+    local status = dlg.status
+    if status == "1" then
+      iup.Message("overwrite existing file?", dlg.value)
+    elseif status == "0" then
+      iup.Message("create file?")
+    elseif status == "-1" then
+      iup.Message("IupFileDlg","Operation canceled")
+    end
+  end
+
   function btnLoadFile:action()
     local dlg = iup.filedlg {
       dialogtype = "LOAD",
-      title = "Load File",
+      title = valTranslation.LOAD_FILE,
       filter = "*.json",
-      filterinfo = "json files",
+      filterinfo = valTranslation.JSON_FILES,
       directory = "c:\\users\\steff\\documents"
     }
     dlg:popup (iup.ANYWHERE, iup.ANYWHERE)
-    status = dlg.status
+    local status = dlg.status
     if status == "1" then 
       iup.Message("New file", dlg.value)
     elseif status == "0" then
@@ -344,9 +354,6 @@ local function Common()
   function dropLang:valuechanged_cb()
     tOptions.language.value = dropLang.value
     Controller.SetFileTable(tOptions, "options")
-    -- local uOptions = io.open("options.json", "w")
-    -- uOptions:write(json.encode(tOptions))
-    -- uOptions:close()
   
     -- btnRemoveDriver.driver1.value = "something"
     -- print(btnRemoveDriver.driver1.value)
