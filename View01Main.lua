@@ -16,7 +16,7 @@ local nLanguage = tOptions.language.value
 local tTranslation = Controller.Read("translation")
 local valTranslation = tTranslation.languages[nLanguage]
 
-local tDriver = Controller.Read("driver")
+local tDriver = {}--Controller.Read("driver") or {}
 
 -----------------------------------------------------------------------------------
 --- DlgEnterName()
@@ -309,18 +309,25 @@ local function Common()
       title = valTranslation.SAVE_FILE,
       filter = "*.json",
       filterinfo = valTranslation.JSON_FILES,
-      directory = "c:\\users\\steff\\documents",
+      directory = "c:\\users\\steff\\documents\\Events",
+      value = ""
     }
     dlg:popup(iup.ANYWHERE, iup.ANYWHERE)
     local status = dlg.status
+    local name = dlg.value
     if status == "1" then
-      iup.Message("create file?", status)
-      Controller.Write(tDriver, status)
+      -- write table to file
+      if string.find(dlg.value, ".json") then
+        name = string.sub(dlg.value, 0, -6)
+      else
+        name = dlg.value
+      end
+      Controller.Write(tDriver, name)
     elseif status == "0" then
-      iup.Message("overwrite existing file?", dlg.value)
-      Controller.Write(tDriver, status)
+      name = string.sub(dlg.value, 0, -6)
+      Controller.Write(tDriver, name)
     elseif status == "-1" then
-      iup.Message("IupFileDlg","Operation canceled")
+      -- do nothing
     end
   end
 
