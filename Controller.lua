@@ -9,7 +9,8 @@ local Controller = {}
 --- GetFileTable()
 ------------------------------------------------------------------------------------
 ---
-function Controller.GetFileTable(filename)
+function Controller.Read(filename)
+  print("Controller.Read()")
   local uData = io.open(filename .. ".json", "r")
   local sData = uData:read("*a")
   uData:close()
@@ -20,10 +21,11 @@ end
 ------------------------------------------------------------------------------------
 --- SetFileTable()
 ------------------------------------------------------------------------------------
-function Controller.SetFileTable(tTable, name)
-    local uTable = io.open(name .. ".json", "w")
-    uTable:write(json.encode(tTable))
-    uTable:close()
+function Controller.Write(tTable, name)
+  print("Controller.Write()")
+  local uTable = io.open(name .. ".json", "w")
+  uTable:write(json.encode(tTable))
+  uTable:close()
 end
 
 ------------------------------------------------------------------------------------

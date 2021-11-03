@@ -10,13 +10,13 @@ local View = {}
 -------------------------------------------------------------------------------
 --- file-tables
 -------------------------------------------------------------------------------
-local tOptions = Controller.GetFileTable("options")
+local tOptions = Controller.Read("options")
 local nLanguage = tOptions.language.value
 
-local tTranslation = Controller.GetFileTable("translation")
+local tTranslation = Controller.Read("translation")
 local valTranslation = tTranslation.languages[nLanguage]
 
-local tDriver = Controller.GetFileTable("driver")
+local tDriver = Controller.Read("driver")
 
 -----------------------------------------------------------------------------------
 --- DlgEnterName()
@@ -309,14 +309,16 @@ local function Common()
       title = valTranslation.SAVE_FILE,
       filter = "*.json",
       filterinfo = valTranslation.JSON_FILES,
-      directory = "c:\\users\\steff\\documents"
+      directory = "c:\\users\\steff\\documents",
     }
     dlg:popup(iup.ANYWHERE, iup.ANYWHERE)
     local status = dlg.status
     if status == "1" then
-      iup.Message("overwrite existing file?", dlg.value)
+      iup.Message("create file?", status)
+      Controller.Write(tDriver, status)
     elseif status == "0" then
-      iup.Message("create file?")
+      iup.Message("overwrite existing file?", dlg.value)
+      Controller.Write(tDriver, status)
     elseif status == "-1" then
       iup.Message("IupFileDlg","Operation canceled")
     end
@@ -353,7 +355,7 @@ local function Common()
 
   function dropLang:valuechanged_cb()
     tOptions.language.value = dropLang.value
-    Controller.SetFileTable(tOptions, "options")
+    Controller.Write(tOptions, "options")
   
     -- btnRemoveDriver.driver1.value = "something"
     -- print(btnRemoveDriver.driver1.value)
