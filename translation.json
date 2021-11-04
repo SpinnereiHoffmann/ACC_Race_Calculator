@@ -3,6 +3,7 @@
     "1": {
       "ADD_DRIVER": "Fahrer hinzufuegen",
       "CANCEL": "Abbrechen",
+      "COMMON": "Allgemein",
       "CONSUMPTION": "Verbrauch",
       "DRIVER": "Fahrer",
       "ENTER_NAME": "Name eingeben",
@@ -13,11 +14,13 @@
       "REBOOT": "Aenderungen werden erst nach Neustart angewendet",
       "REMOVE": "entfernen",
       "SAVE_FILE": "Datei speichern",
+      "STRATEGY": "Strategie",
       "TIME": "Zeit"
     },
     "2": {
       "ADD_DRIVER": "Add Driver",
       "CANCEL": "Cancel",
+      "COMMON": "Common",
       "CONSUMPTION": "Consumption",
       "DRIVER": "Driver",
       "ENTER_NAME": "Enter Name",
@@ -28,6 +31,7 @@
       "REBOOT": "Changes are applied after restart",
       "REMOVE": "remove",
       "SAVE_FILE": "Save File",
+      "STRATEGY": "Strategy",
       "TIME": "Time"
     }
   }

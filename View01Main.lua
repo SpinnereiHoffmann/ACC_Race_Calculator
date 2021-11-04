@@ -302,13 +302,14 @@ local function Common()
     gap = "10",
     margin = "10x10",
   }
+  local tabStrategy = iup.vbox {}
 
-  box.tabtitle = "COMMON"
-  local tabCommon = iup.tabs {box}
+  tabStrategy.tabtitle = valTranslation.STRATEGY
+  box.tabtitle = valTranslation.COMMON
+  local tabs = iup.tabs {box, tabStrategy}
 
   local dlg = iup.dialog {
-    -- box,
-    tabCommon,
+    tabs,
     title = "ACC Race Calculator",
     DEFAULTENTER = btnAddDriver,
     DEFAULTESC = button
