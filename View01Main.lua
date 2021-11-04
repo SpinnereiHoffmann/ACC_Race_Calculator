@@ -302,8 +302,7 @@ local function Common()
     gap = "10",
     margin = "10x10",
   }
-  local tabStrategy = iup.vbox {}
-
+  local tabStrategy = StrategyView
   tabStrategy.tabtitle = valTranslation.STRATEGY
   box.tabtitle = valTranslation.COMMON
   local tabs = iup.tabs {box, tabStrategy}
