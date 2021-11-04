@@ -5,6 +5,8 @@ require("iuplua")
 local json = require("Libs.libJson")
 local Controller = require("Controller")
 
+local CommonView = require("View02Common")
+local StrategyView = require("View03Strategy")
 local View = {}
 
 -------------------------------------------------------------------------------
@@ -182,14 +184,14 @@ local function Common()
   local btnSaveFile = iup.button {
     title = valTranslation.SAVE_FILE,
     size = 60
-  }  
+  }
 
   local btnAddDriver = iup.button{
     size      = 80,
     title     = valTranslation.ADD_DRIVER,
     alignment = "ACENTER"
   }
-  
+
   local button = iup.button {
     size  = 50,
     title = "OK"
@@ -243,6 +245,11 @@ local function Common()
     return iup.CLOSE
   end
 
+  -- local box = iup.vbox {}
+  -- box.tabtitle = "COMMON"
+
+  -- local tabCommon = iup.flattabs {
+    -- TABTITLE = "COMMON",
   local box = iup.vbox {
     iup.hbox {
       iup.vbox {lblEmpty, lblTime, lblConsumption, gap = "15"},
@@ -296,8 +303,12 @@ local function Common()
     margin = "10x10",
   }
 
+  box.tabtitle = "COMMON"
+  local tabCommon = iup.tabs {box}
+
   local dlg = iup.dialog {
-    box,
+    -- box,
+    tabCommon,
     title = "ACC Race Calculator",
     DEFAULTENTER = btnAddDriver,
     DEFAULTESC = button
