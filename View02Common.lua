@@ -11,7 +11,94 @@ local nLanguage = tOptions.language.value
 local tTranslation = Controller.Read("translation")
 local valTranslation = tTranslation.languages[nLanguage]
 
-local tDriver = {}--Controller.Read("driver") or {}
+local tDriver = {} -- Controller.Read("driver") or {}
+local tPitstop = {}
+
+------------------------------------------------------------------------------------
+--- DlgEnterPitName()
+------------------------------------------------------------------------------------
+---
+local function DlgEnterPitName(i)
+  local tname = iup.text {
+    value = valTranslation.PITSTOP .. tostring(i),
+    size = 200
+  }
+  local btnOk = iup.button{
+    size  = 50,
+    title = "OK"
+  }
+  local btnCancel = iup.button {
+    size  = 50,
+    title = valTranslation.CANCEL
+  }
+  local box = iup.vbox {
+    iup.hbox {
+      iup.fill {},
+      tname,
+      iup.fill {}
+    },
+    iup.hbox {
+      iup.fill {},
+      btnOk,
+      iup.fill {},
+      btnCancel,
+      iup.fill {}
+    },
+    gap = 10,
+    margin = "10x10",
+  }
+  local dlgInsertName = iup.dialog{
+    title = valTranslation.ENTER_NAME,
+    box,
+    -- EXPAND = "NO",
+    MINSIZE = 60, 50,
+    MAXBOX = "NO",
+    MINBOX = "NO",
+    RESIZE = "NO",
+    DEFAULTENTER = btnOk,
+    DEFAULTESC = btnCancel
+  }
+
+  local name = "Fahrer" .. tostring(i)
+
+  function btnOk:action()
+    name = tname.value
+    dlgInsertName:destroy()
+    -- return name
+    -- iup.Close()
+  end
+
+  function btnCancel:action()
+    name = nil
+    dlgInsertName:destroy()
+    -- iup.Close()
+  end
+
+  -- dlgInsertName:show(iup.CENTER,iup.CENTER)--"Fahrer" .. tostring(i)
+  dlgInsertName:popup()--"Fahrer" .. tostring(i)
+  return name
+end
+
+------------------------------------------------------------------------------------
+--- AddPitstop()
+------------------------------------------------------------------------------------
+---
+local function AddPitstop()
+  local i = #tPitstop + 1
+  if #tPitstop < 4 then
+    tPitstop[i] = DlgEnterPitName(i)
+  else
+    iup.Message(valTranslation.ERROR, valTranslation.MAX_PITS)
+  end
+end
+
+-----------------------------------------------------------------------------------
+--- GetPitstopName()
+-----------------------------------------------------------------------------------
+---
+local function GetPitstopName(i)
+  return tPitstop[i]
+end
 
 -----------------------------------------------------------------------------------
 --- DlgEnterName()
@@ -84,7 +171,7 @@ local function AddDriver()
   if #tDriver < 6 then
     tDriver[i] = DlgEnterName(i)
   else
-    iup.Message(valTranslation.ERROR,valTranslation.MAX_DRIVER)
+    iup.Message(valTranslation.ERROR, valTranslation.MAX_DRIVER)
   end
 end
 
@@ -139,6 +226,38 @@ local lblDrivers = {
   }
 }
 
+local lblPitstops = {
+  pit1 = iup.label {
+    title = valTranslation.PITSTOP1,
+    visible = "NO",
+    size = 200
+  },
+  pit2 = iup.label {
+    title = valTranslation.PITSTOP2,
+    visible = "NO",
+    size = 200
+  },
+  pit3 = iup.label {
+    title = valTranslation.PITSTOP3,
+    visible = "NO",
+    size = 200
+  },
+  pit4 = iup.label {
+    title = valTranslation.PITSTOP4,
+    visible = "NO",
+    size = 200
+  }
+}
+
+local lblSec = {}
+for k, v in pairs(lblPitstops) do
+  lblSec[k] = iup.label {
+    title = valTranslation.SECONDS,
+    visible = "NO",
+    size = 90
+  }
+end
+
 -- txtFields
 local txtDrivers = {
   driver1 = iup.text {value = "0:00.000", visible = "NO"},
@@ -158,8 +277,16 @@ local txtConsumption = {
   driver6 = iup.text {value = 0.00, visible = "NO"}
 }
 
+local txtPitTime = {
+  pit1 = iup.text {value = 00, size = 20, visible = "NO"},
+  pit2 = iup.text {value = 00, size = 20, visible = "NO"},
+  pit3 = iup.text {value = 00, size = 20, visible = "NO"},
+  pit4 = iup.text {value = 00, size = 20, visible = "NO"}
+}
+
+-- buttons
 local btnAddDriver = iup.button{
-  size      = 80,
+  size      = 95,
   title     = valTranslation.ADD_DRIVER,
   alignment = "ACENTER"
 }
@@ -195,6 +322,18 @@ local btnRemoveDriver = {
     title = valTranslation.REMOVE,
     visible = "NO"
   }
+}
+
+local btnAddPitstop = iup.button {
+  size = 95,
+  title = valTranslation.ADD_PITSTOP
+}
+
+local boxPitstop = iup.vbox {
+  iup.hbox {lblPitstops.pit1, txtPitTime.pit1, lblSec.pit1},
+  iup.hbox {lblPitstops.pit2, txtPitTime.pit2, lblSec.pit2},
+  iup.hbox {lblPitstops.pit3, txtPitTime.pit3, lblSec.pit3},
+  iup.hbox {lblPitstops.pit4, txtPitTime.pit4, lblSec.pit4}
 }
 
 View = iup.vbox {
@@ -236,12 +375,26 @@ View = iup.vbox {
       txtConsumption.driver6,
       btnRemoveDriver.driver6
     },
-    iup.vbox {btnAddDriver}
+    iup.vbox {btnAddDriver},
   },
+  iup.hbox {boxPitstop, iup.fill {}, iup.vbox {btnAddPitstop}},
   alignment = "acenter",
   gap = "10",
   margin = "10x10",
 }
+
+function btnAddPitstop:action()
+  AddPitstop()
+
+  for i = 1, 5 do
+    if tPitstop[i] ~= nil then
+      lblPitstops["pit" .. i].title = GetPitstopName(i)
+      lblPitstops["pit" .. i].visible = "YES"
+      txtPitTime["pit" .. i].visible = "YES"
+      lblSec["pit" .. i].visible = "YES"
+    end
+  end
+end
 
 function btnAddDriver:action()
   AddDriver()
