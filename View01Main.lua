@@ -20,6 +20,12 @@ local valTranslation = tTranslation.languages[nLanguage]
 
 local tDriver = Controller.Read("driver")
 
+if tOptions.filename ~= nil and tOptions.filename ~= "" then
+  local tData = Controller.Read(tOptions.filename)
+else
+  local tData = {}
+end
+
 ------------------------------------------------------------------------------------
 --- Common()
 ------------------------------------------------------------------------------------
