@@ -33,9 +33,11 @@ local function Common()
 
   -- label
   local lblFilename = iup.label {
-    title = "Springfield Racetrack",
-    alignment = "acenter"
+    title = string.sub(tOptions.filename, #tOptions.directory+1),
+    alignment = "acenter",
+    size = 200
   }
+  print(lblFilename.title)
 
   -- dropdown
   local dropLang = iup.list {
@@ -134,12 +136,16 @@ local function Common()
       end
       Controller.Write(tDriver, name)
       tOptions.filename = name
+      tOptions.directory = dlg.directory
       Controller.Write(tOptions, "options")
+      lblFilename.title = string.sub(dlg.value, #dlg.directory+1, -6)
     elseif status == "0" then
       name = string.sub(dlg.value, 0, -6)
       Controller.Write(tDriver, name)
+      tOptions.directory = dlg.directory
       tOptions.filename = name
       Controller.Write(tOptions, "options")
+      lblFilename.title = string.sub(dlg.value, #dlg.directory+1, -6)
     elseif status == "-1" then
       -- do nothing
     end
