@@ -127,14 +127,16 @@ local function Common()
         name = dlg.value
       end
       Controller.Write(tDriver, name)
+      tOptions.filename = name
+      Controller.Write(tOptions, "options")
     elseif status == "0" then
       name = string.sub(dlg.value, 0, -6)
       Controller.Write(tDriver, name)
+      tOptions.filename = name
+      Controller.Write(tOptions, "options")
     elseif status == "-1" then
       -- do nothing
     end
-    tOptions.filename = name
-    Controller.Write(tOptions, "options")
   end
 
   function btnLoadFile:action()
