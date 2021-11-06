@@ -133,6 +133,8 @@ local function Common()
     elseif status == "-1" then
       -- do nothing
     end
+    tOptions.filename = name
+    Controller.Write(tOptions, "options")
   end
 
   function btnLoadFile:action()
