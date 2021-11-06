@@ -146,7 +146,7 @@ local function Common()
   function btnRefresh:action()
     -- iup.SetAttribute(dlg, "SIZE", 800)
     -- iup.Refresh(dlg)
-    
+
     -- iup.SetAttribute(dlg, "SIZE", 800)
     -- iup.Map(dlg)
     -- iup.Refresh(dlg)
@@ -156,7 +156,7 @@ local function Common()
   function dropLang:valuechanged_cb()
     tOptions.language.value = dropLang.value
     Controller.Write(tOptions, "options")
-  
+
     -- btnRemoveDriver.driver1.value = "something"
     -- print(btnRemoveDriver.driver1.value)
     -- iup.SetAttribute(dlg, "SIZE", 800)

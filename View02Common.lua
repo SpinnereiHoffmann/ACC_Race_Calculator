@@ -254,7 +254,7 @@ for k, v in pairs(lblPitstops) do
   lblSec[k] = iup.label {
     title = valTranslation.SECONDS,
     visible = "NO",
-    size = 90
+    size = 72
   }
 end
 
@@ -329,11 +329,20 @@ local btnAddPitstop = iup.button {
   title = valTranslation.ADD_PITSTOP
 }
 
+local btnRemovePitstop = {}
+for k, v in pairs(lblPitstops) do
+  btnRemovePitstop[k] = iup.button {
+    size = 40,
+    title = valTranslation.REMOVE,
+    visible = "NO"
+  }
+end
+
 local boxPitstop = iup.vbox {
-  iup.hbox {lblPitstops.pit1, txtPitTime.pit1, lblSec.pit1},
-  iup.hbox {lblPitstops.pit2, txtPitTime.pit2, lblSec.pit2},
-  iup.hbox {lblPitstops.pit3, txtPitTime.pit3, lblSec.pit3},
-  iup.hbox {lblPitstops.pit4, txtPitTime.pit4, lblSec.pit4}
+  iup.hbox {lblPitstops.pit1, txtPitTime.pit1, lblSec.pit1, btnRemovePitstop.pit1},
+  iup.hbox {lblPitstops.pit2, txtPitTime.pit2, lblSec.pit2, btnRemovePitstop.pit2},
+  iup.hbox {lblPitstops.pit3, txtPitTime.pit3, lblSec.pit3, btnRemovePitstop.pit3},
+  iup.hbox {lblPitstops.pit4, txtPitTime.pit4, lblSec.pit4, btnRemovePitstop.pit4}
 }
 
 View = iup.vbox {
@@ -392,9 +401,48 @@ function btnAddPitstop:action()
       lblPitstops["pit" .. i].visible = "YES"
       txtPitTime["pit" .. i].visible = "YES"
       lblSec["pit" .. i].visible = "YES"
+      btnRemovePitstop["pit" .. i].visible = "YES"
     end
   end
 end
+
+local function RemovePitstop()
+  lblPitstops["pit" .. #tPitstop+1].visible = "NO"
+  txtPitTime["pit" .. #tPitstop+1].visible = "NO"
+  lblSec["pit" .. #tPitstop+1].visible = "NO"
+  btnRemovePitstop["pit" .. #tPitstop+1].visible = "NO"
+end
+
+
+function btnRemovePitstop.pit1:action()
+  tPitstop[1] = nil
+  tPitstop[1] = tPitstop[2]
+  tPitstop[2] = tPitstop[3]
+  tPitstop[3] = tPitstop[4]
+  tPitstop[4] = tPitstop[5]
+  RemovePitstop()
+end
+
+function btnRemovePitstop.pit2:action()
+  tPitstop[2] = nil
+  tPitstop[2] = tPitstop[3]
+  tPitstop[3] = tPitstop[4]
+  tPitstop[4] = tPitstop[5]
+  RemovePitstop()
+end
+
+function btnRemovePitstop.pit3:action()
+  tPitstop[3] = nil
+  tPitstop[3] = tPitstop[4]
+  tPitstop[4] = tPitstop[5]
+  RemovePitstop()
+end
+
+function btnRemovePitstop.pit4:action()
+  tPitstop[4] = nil
+  RemovePitstop()
+end
+
 
 function btnAddDriver:action()
   AddDriver()
