@@ -25,9 +25,15 @@ local tDriver = Controller.Read("driver")
 ------------------------------------------------------------------------------------
 local function Common()
 
+  -- label
+  local lblFilename = iup.label {
+    title = "Springfield Racetrack",
+    alignment = "acenter"
+  }
+
   -- dropdown
   local dropLang = iup.list {
-    "Deutsch", 
+    "Deutsch",
     "English",
     value = nLanguage,
     dropdown = "YES",
@@ -58,19 +64,12 @@ local function Common()
 
   function button:action()
     -- Exits the main loop
-    -- hier kommt die json - Lib zum Einsatz!
-    --todo vorher noch Daten in .json File schreiben!
     for k, v in pairs(tDriver) do
       print(k, v)
     end
     return iup.CLOSE
   end
 
-  -- local box = iup.vbox {}
-  -- box.tabtitle = "COMMON"
-
-  -- local tabCommon = iup.flattabs {
-    -- TABTITLE = "COMMON",
   local box = iup.hbox {
     btnLoadFile,
     btnSaveFile,
@@ -87,7 +86,19 @@ local function Common()
   local tabStrategy = StrategyView
   tabStrategy.tabtitle = valTranslation.STRATEGY
 
-  local tabs = iup.vbox {iup.hbox {iup.fill {}, dropLang}, iup.tabs { tabCommon, tabStrategy}, box}
+  local tabs = iup.vbox {
+    iup.hbox {
+      iup.fill {},
+      lblFilename,
+      iup.fill {},
+      dropLang
+    },
+    iup.tabs {
+      tabCommon,
+      tabStrategy
+    },
+    box
+  }
 
   local dlg = iup.dialog {
     tabs,
