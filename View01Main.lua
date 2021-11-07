@@ -18,7 +18,7 @@ local nLanguage = tOptions.language.value
 local tTranslation = Controller.Read("translation")
 local valTranslation = tTranslation.languages[nLanguage]
 
-local tDriver = Controller.Read("driver")
+-- local tDriver = Controller.Read("driver")
 
 local tData = {}
 if tOptions.filename ~= nil and tOptions.filename ~= "" then
@@ -72,12 +72,6 @@ local function Common()
 
   function button:action()
     -- Exits the main loop
-    for k, v in pairs(tData) do
-      print(k, v)
-      for key, value in pairs(v) do
-        print(key, value)
-      end
-    end
     return iup.CLOSE
   end
 
@@ -119,6 +113,12 @@ local function Common()
   }
 
   function btnSaveFile:action()
+    for k1, v1 in pairs(tData) do
+      print(k1, v1)
+      for k2, v2 in pairs(v1) do
+        print(k2, v2)
+      end
+    end
     local dlg = iup.filedlg {
       dialogtype = "SAVE",
       title = valTranslation.SAVE_FILE,
@@ -137,14 +137,14 @@ local function Common()
       else
         name = dlg.value
       end
-      Controller.Write(tDriver, name)
+      Controller.Write(tData, name)
       tOptions.filename = name
       tOptions.directory = dlg.directory
       Controller.Write(tOptions, "options")
       lblFilename.title = string.sub(dlg.value, #dlg.directory+1, -6)
     elseif status == "0" then
       name = string.sub(dlg.value, 0, -6)
-      Controller.Write(tDriver, name)
+      Controller.Write(tData, name)
       tOptions.directory = dlg.directory
       tOptions.filename = name
       Controller.Write(tOptions, "options")
@@ -209,9 +209,9 @@ end
 --- StartDialog()
 ------------------------------------------------------------------------------------
 ---
-function View.Dialog(tDriver)
+function View.Dialog(tData)
   if (iup.MainLoopLevel()==0) then
-    Common(tDriver)
+    Common(tData)
     iup.MainLoop()
     iup.Close()
   end

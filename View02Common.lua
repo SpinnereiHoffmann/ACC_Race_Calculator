@@ -11,8 +11,9 @@ local nLanguage = tOptions.language.value
 local tTranslation = Controller.Read("translation")
 local valTranslation = tTranslation.languages[nLanguage]
 
-local tDriver = Controller.Read(tOptions.filename)
-local tPitstop = {}
+-- local tDriver = Controller.Read(tOptions.filename)
+-- local tPitstop = {}
+local tData = Controller.Read(tOptions.filename)
 
 ------------------------------------------------------------------------------------
 --- DlgEnterPitName()
@@ -20,7 +21,8 @@ local tPitstop = {}
 ---
 local function DlgEnterPitName(i)
   local tname = iup.text {
-    value = valTranslation.PITSTOP .. tostring(i),
+    -- value = valTranslation.PITSTOP .. tostring(i),
+    value = valTranslation.PITSTOP .. i,
     size = 200
   }
   local btnOk = iup.button{
@@ -59,7 +61,7 @@ local function DlgEnterPitName(i)
     DEFAULTESC = btnCancel
   }
 
-  local name = "Fahrer" .. tostring(i)
+  local name = ""
 
   function btnOk:action()
     name = tname.value
@@ -76,6 +78,7 @@ local function DlgEnterPitName(i)
 
   -- dlgInsertName:show(iup.CENTER,iup.CENTER)--"Fahrer" .. tostring(i)
   dlgInsertName:popup()--"Fahrer" .. tostring(i)
+  print(name)
   return name
 end
 
@@ -84,9 +87,14 @@ end
 ------------------------------------------------------------------------------------
 ---
 local function AddPitstop()
-  local i = #tPitstop + 1
-  if #tPitstop < 4 then
-    tPitstop[i] = DlgEnterPitName(i)
+  local i = 1
+  for k, v in pairs(tData.tPitstop) do
+    i = i + 1
+  end
+  if i < 5 then
+    local pitname = DlgEnterPitName(i)
+    tData.tPitstop["pit" .. i] = {sName = pitname, dValue = 0}
+    Controller.Write(tData, tOptions.filename)
   else
     iup.Message(valTranslation.ERROR, valTranslation.MAX_PITS)
   end
@@ -97,7 +105,7 @@ end
 -----------------------------------------------------------------------------------
 ---
 local function GetPitstopName(i)
-  return tPitstop[i]
+  return tData.tPitstop["pit" .. i].sName
 end
 
 -----------------------------------------------------------------------------------
@@ -105,7 +113,9 @@ end
 -----------------------------------------------------------------------------------
 ---
 local function DlgEnterName(i)
-  local tname = iup.text {value = valTranslation.DRIVER .. tostring(i)}
+  local tname = iup.text {
+    value = tData.tDriver["Driver" .. i].sName
+  }
   local btnOk = iup.button{
     size  = 50,
     title = "OK"
@@ -167,9 +177,9 @@ end
 -----------------------------------------------------------------------------------
 ---
 local function AddDriver()
-  local i = #tDriver + 1
-  if #tDriver < 6 then
-    tDriver[i] = DlgEnterName(i)
+  local i = #tData.tDriver + 1
+  if #tData.tDriver < 6 then
+    tData.tDriver["Driver" .. i].sName = DlgEnterName(i)
   else
     iup.Message(valTranslation.ERROR, valTranslation.MAX_DRIVER)
   end
@@ -180,7 +190,7 @@ end
 -----------------------------------------------------------------------------------
 ---
 local function GetDriverName(i)
-  return tDriver[i]
+  return tData.tDriver["Driver" .. i].sName
 end
 
 ------------------------------------------------------------------------------------
@@ -243,7 +253,7 @@ local lblPitstops = {
     size = 200
   },
   pit4 = iup.label {
-    title = valTranslation.PITSTOP4,
+    title = valTranslation.PITSTOP1,
     visible = "NO",
     size = 200
   }
@@ -278,10 +288,26 @@ local txtConsumption = {
 }
 
 local txtPitTime = {
-  pit1 = iup.text {value = 00, size = 20, visible = "NO"},
-  pit2 = iup.text {value = 00, size = 20, visible = "NO"},
-  pit3 = iup.text {value = 00, size = 20, visible = "NO"},
-  pit4 = iup.text {value = 00, size = 20, visible = "NO"}
+  pit1 = iup.text {
+    value = 0,
+    size = 20,
+    visible = "NO"
+  },
+  pit2 = iup.text {
+    value = 0,
+    size = 20,
+    visible = "NO"
+  },
+  pit3 = iup.text {
+    value = 0,
+    size = 20,
+    visible = "NO"
+  },
+  pit4 = iup.text {
+    value = 0,
+    size = 20,
+    visible = "NO"
+  }
 }
 
 -- buttons
@@ -396,7 +422,7 @@ function btnAddPitstop:action()
   AddPitstop()
 
   for i = 1, 5 do
-    if tPitstop[i] ~= nil then
+    if tData.tPitstop["pit" .. i] ~= nil then
       lblPitstops["pit" .. i].title = GetPitstopName(i)
       lblPitstops["pit" .. i].visible = "YES"
       txtPitTime["pit" .. i].visible = "YES"
@@ -407,39 +433,44 @@ function btnAddPitstop:action()
 end
 
 local function RemovePitstop()
-  lblPitstops["pit" .. #tPitstop+1].visible = "NO"
-  txtPitTime["pit" .. #tPitstop+1].visible = "NO"
-  lblSec["pit" .. #tPitstop+1].visible = "NO"
-  btnRemovePitstop["pit" .. #tPitstop+1].visible = "NO"
+  local i = 1
+  for k, v in pairs(tData.tPitstop) do
+     i = i + 1
+  end
+  lblPitstops["pit" .. i].visible = "NO"
+  txtPitTime["pit" .. i].visible = "NO"
+  lblSec["pit" .. i].visible = "NO"
+  btnRemovePitstop["pit" .. i].visible = "NO"
+  Controller.Write(tData, tOptions.filename)
 end
 
 
 function btnRemovePitstop.pit1:action()
-  tPitstop[1] = nil
-  tPitstop[1] = tPitstop[2]
-  tPitstop[2] = tPitstop[3]
-  tPitstop[3] = tPitstop[4]
-  tPitstop[4] = tPitstop[5]
+  tData.tPitstop["pit1"] = nil
+  tData.tPitstop["pit1"] = tData.tPitstop["pit2"]
+  tData.tPitstop["pit2"] = tData.tPitstop["pit3"]
+  tData.tPitstop["pit3"] = tData.tPitstop["pit4"]
+  tData.tPitstop["pit4"] = tData.tPitstop["pit5"]
   RemovePitstop()
 end
 
 function btnRemovePitstop.pit2:action()
-  tPitstop[2] = nil
-  tPitstop[2] = tPitstop[3]
-  tPitstop[3] = tPitstop[4]
-  tPitstop[4] = tPitstop[5]
+  tData.tPitstop["pit2"] = nil
+  tData.tPitstop["pit2"] = tData.tPitstop["pit3"]
+  tData.tPitstop["pit3"] = tData.tPitstop["pit4"]
+  tData.tPitstop["pit4"] = tData.tPitstop["pit5"]
   RemovePitstop()
 end
 
 function btnRemovePitstop.pit3:action()
-  tPitstop[3] = nil
-  tPitstop[3] = tPitstop[4]
-  tPitstop[4] = tPitstop[5]
+  tData.tPitstop["pit3"] = nil
+  tData.tPitstop["pit3"] = tData.tPitstop["pit4"]
+  tData.tPitstop["pit4"] = tData.tPitstop["pit5"]
   RemovePitstop()
 end
 
 function btnRemovePitstop.pit4:action()
-  tPitstop[4] = nil
+  tData.tPitstop["pit4"] = nil
   RemovePitstop()
 end
 
@@ -448,7 +479,7 @@ function btnAddDriver:action()
   AddDriver()
 
   for i = 1, 6 do
-    if tDriver[i] ~= nil then
+    if tData.tDriver[i] ~= nil then
     lblDrivers["driver" .. i].title = GetDriverName(i)
     lblDrivers["driver" .. i].visible = "YES"
     txtDrivers["driver" .. i].visible = "YES"
@@ -459,59 +490,63 @@ function btnAddDriver:action()
 end
 
 local function RemoveDriver()
-  lblDrivers["driver" .. #tDriver+1].visible = "NO"
-  txtDrivers["driver" .. #tDriver+1].visible = "NO"
-  txtConsumption["driver" .. #tDriver+1].visible = "NO"
-  btnRemoveDriver["driver" .. #tDriver+1].visible = "NO"
+  local i = 1
+  for k, v in pairs(tData.tDrivers) do
+    i = i + 1
+  end
+  lblDrivers["driver" .. i].visible = "NO"
+  txtDrivers["driver" .. i].visible = "NO"
+  txtConsumption["driver" .. i].visible = "NO"
+  btnRemoveDriver["driver" .. i].visible = "NO"
 end
 
 function btnRemoveDriver.driver1:action()
-  tDriver[1] = nil
-  tDriver[1] = tDriver[2]
-  tDriver[2] = tDriver[3]
-  tDriver[3] = tDriver[4]
-  tDriver[4] = tDriver[5]
-  tDriver[5] = tDriver[6]
-  tDriver[6] = tDriver[7]
+  tData.tDriver["Driver1"] = nil
+  tData.tDriver["Driver1"] = tData.tDriver["Driver2"]
+  tData.tDriver["Driver2"] = tData.tDriver["Driver3"]
+  tData.tDriver["Driver3"] = tData.tDriver["Driver4"]
+  tData.tDriver["Driver4"] = tData.tDriver["Driver5"]
+  tData.tDriver["Driver5"] = tData.tDriver["Driver6"]
+  tData.tDriver["Driver6"] = tData.tDriver["Driver7"]
   RemoveDriver()
 end
 
 function btnRemoveDriver.driver2:action()
-  tDriver[2] = nil
-  tDriver[2] = tDriver[3]
-  tDriver[3] = tDriver[4]
-  tDriver[4] = tDriver[5]
-  tDriver[5] = tDriver[6]
-  tDriver[6] = tDriver[7]
+  tData.tDriver["Driver2"] = nil
+  tData.tDriver["Driver2"] = tData.tDriver["Driver3"]
+  tData.tDriver["Driver3"] = tData.tDriver["Driver4"]
+  tData.tDriver["Driver4"] = tData.tDriver["Driver5"]
+  tData.tDriver["Driver5"] = tData.tDriver["Driver6"]
+  tData.tDriver["Driver6"] = tData.tDriver["Driver7"]
   RemoveDriver()
 end
 
 function btnRemoveDriver.driver3:action()
-  tDriver[3] = nil
-  tDriver[3] = tDriver[4]
-  tDriver[4] = tDriver[5]
-  tDriver[5] = tDriver[6]
-  tDriver[6] = tDriver[7]
+  tData.tDriver["Driver3"] = nil
+  tData.tDriver["Driver3"] = tData.tDriver["Driver4"]
+  tData.tDriver["Driver4"] = tData.tDriver["Driver5"]
+  tData.tDriver["Driver5"] = tData.tDriver["Driver6"]
+  tData.tDriver["Driver6"] = tData.tDriver["Driver7"]
   RemoveDriver()
 end
 
 function btnRemoveDriver.driver4:action()
-  tDriver[4] = nil
-  tDriver[4] = tDriver[5]
-  tDriver[5] = tDriver[6]
-  tDriver[6] = tDriver[7]
+  tData.tDriver["Driver4"] = nil
+  tData.tDriver["Driver4"] = tData.tDriver["Driver5"]
+  tData.tDriver["Driver5"] = tData.tDriver["Driver6"]
+  tData.tDriver["Driver6"] = tData.tDriver["Driver7"]
   RemoveDriver()
 end
 
 function btnRemoveDriver.driver5:action()
-  tDriver[5] = nil
-  tDriver[5] = tDriver[6]
-  tDriver[6] = tDriver[7]
+  tData.tDriver["Driver5"] = nil
+  tData.tDriver["Driver5"] = tData.tDriver["Driver6"]
+  tData.tDriver["Driver6"] = tData.tDriver["Driver7"]
   RemoveDriver()
 end
 
 function btnRemoveDriver.driver6:action()
-  tDriver[6] = nil
+  tData.tDriver["Driver6"] = nil
   RemoveDriver()
 end
 
