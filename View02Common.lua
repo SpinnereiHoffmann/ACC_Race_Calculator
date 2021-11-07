@@ -11,7 +11,7 @@ local nLanguage = tOptions.language.value
 local tTranslation = Controller.Read("translation")
 local valTranslation = tTranslation.languages[nLanguage]
 
-local tDriver = {} -- Controller.Read("driver") or {}
+local tDriver = Controller.Read(tOptions.filename)
 local tPitstop = {}
 
 ------------------------------------------------------------------------------------

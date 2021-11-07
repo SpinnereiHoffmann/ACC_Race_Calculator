@@ -20,10 +20,11 @@ local valTranslation = tTranslation.languages[nLanguage]
 
 local tDriver = Controller.Read("driver")
 
+local tData = {}
 if tOptions.filename ~= nil and tOptions.filename ~= "" then
-  local tData = Controller.Read(tOptions.filename)
+  tData = Controller.Read(tOptions.filename)
 else
-  local tData = {}
+  tData = {}
 end
 
 ------------------------------------------------------------------------------------
@@ -35,9 +36,8 @@ local function Common()
   local lblFilename = iup.label {
     title = string.sub(tOptions.filename, #tOptions.directory+1),
     alignment = "acenter",
-    size = 200
+    expand = "HORIZONTAL"
   }
-  print(lblFilename.title)
 
   -- dropdown
   local dropLang = iup.list {
@@ -72,8 +72,11 @@ local function Common()
 
   function button:action()
     -- Exits the main loop
-    for k, v in pairs(tDriver) do
+    for k, v in pairs(tData) do
       print(k, v)
+      for key, value in pairs(v) do
+        print(key, value)
+      end
     end
     return iup.CLOSE
   end
@@ -162,11 +165,17 @@ local function Common()
     dlg:popup (iup.ANYWHERE, iup.ANYWHERE)
     local status = dlg.status
     if status == "1" then 
-      iup.Message("New file", dlg.value)
+      iup.Message("New file", dlg.value) --? is this possible?
     elseif status == "0" then
-      iup.Message("File already exists", dlg.value)
+      -- iup.Message("File already exists", dlg.value)
+      local name = string.sub(dlg.value, 0, -6)
+      tData = Controller.Read(name)
+      lblFilename.title = string.sub(dlg.value, #dlg.directory+1, -6)
+      tOptions.filename = name
+      tOptions.directory = dlg.directory
+      Controller.Write(tOptions, "options")
     elseif status == "-1" then 
-      iup.Message("IupFileDlg","Operation canceled")
+      -- iup.Message("IupFileDlg","Operation canceled")
     end
   end
 

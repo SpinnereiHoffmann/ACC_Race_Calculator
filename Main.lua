@@ -3,7 +3,7 @@
 --* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 require("iuplua")
 local View = require("View01Main")
-local Json = require("Libs.libJson")
+-- local Json = require("Libs.libJson")
 
 ------------------------------------------------------------------------------------
 --- Main()
