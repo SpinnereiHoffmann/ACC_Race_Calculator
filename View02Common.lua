@@ -78,7 +78,6 @@ local function DlgEnterPitName(i)
 
   -- dlgInsertName:show(iup.CENTER,iup.CENTER)--"Fahrer" .. tostring(i)
   dlgInsertName:popup()--"Fahrer" .. tostring(i)
-  print(name)
   return name
 end
 
@@ -114,7 +113,7 @@ end
 ---
 local function DlgEnterName(i)
   local tname = iup.text {
-    value = tData.tDriver["Driver" .. i].sName
+    value = valTranslation.DRIVER .. i
   }
   local btnOk = iup.button{
     size  = 50,
@@ -152,7 +151,7 @@ local function DlgEnterName(i)
     DEFAULTESC = btnCancel
   }
 
-  local name = "Fahrer" .. tostring(i)
+  local name = ""
 
   function btnOk:action()
     name = tname.value
@@ -177,9 +176,14 @@ end
 -----------------------------------------------------------------------------------
 ---
 local function AddDriver()
-  local i = #tData.tDriver + 1
-  if #tData.tDriver < 6 then
-    tData.tDriver["Driver" .. i].sName = DlgEnterName(i)
+  local i = 1
+  for k, v in pairs(tData.tDriver) do
+    i = i + 1
+  end
+  if i < 7 then
+    local drivername = DlgEnterName(i)
+    tData.tDriver["Driver" .. i] = {sName = drivername}
+    Controller.Write(tData, tOptions.filename)
   else
     iup.Message(valTranslation.ERROR, valTranslation.MAX_DRIVER)
   end
@@ -474,30 +478,30 @@ function btnRemovePitstop.pit4:action()
   RemovePitstop()
 end
 
-
 function btnAddDriver:action()
   AddDriver()
 
   for i = 1, 6 do
-    if tData.tDriver[i] ~= nil then
-    lblDrivers["driver" .. i].title = GetDriverName(i)
-    lblDrivers["driver" .. i].visible = "YES"
-    txtDrivers["driver" .. i].visible = "YES"
-    txtConsumption["driver" .. i].visible = "YES"
-    btnRemoveDriver["driver" .. i].visible = "YES"
+    if tData.tDriver["Driver" .. i] ~= nil then
+      lblDrivers["driver" .. i].title = GetDriverName(i)
+      lblDrivers["driver" .. i].visible = "YES"
+      txtDrivers["driver" .. i].visible = "YES"
+      txtConsumption["driver" .. i].visible = "YES"
+      btnRemoveDriver["driver" .. i].visible = "YES"
     end
   end
 end
 
 local function RemoveDriver()
   local i = 1
-  for k, v in pairs(tData.tDrivers) do
+  for k, v in pairs(tData.tDriver) do
     i = i + 1
   end
   lblDrivers["driver" .. i].visible = "NO"
   txtDrivers["driver" .. i].visible = "NO"
   txtConsumption["driver" .. i].visible = "NO"
   btnRemoveDriver["driver" .. i].visible = "NO"
+  Controller.Write(tData, tOptions.filename)
 end
 
 function btnRemoveDriver.driver1:action()
