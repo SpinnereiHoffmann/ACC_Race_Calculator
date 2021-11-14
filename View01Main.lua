@@ -21,10 +21,8 @@ local valTranslation = tTranslation.languages[nLanguage]
 -- local tDriver = Controller.Read("driver")
 
 local tData = {}
-if tOptions.filename ~= nil and tOptions.filename ~= "" then
-  tData = Controller.Read(tOptions.filename)
-else
-  tData = {}
+if tOptions.sFilename ~= nil and tOptions.sFilename ~= "" then
+  tData = Controller.Read(tOptions.sFilename)
 end
 
 ------------------------------------------------------------------------------------
@@ -34,7 +32,7 @@ local function Common()
 
   -- label
   local lblFilename = iup.label {
-    title = string.sub(tOptions.filename, #tOptions.directory+1),
+    title = string.sub(tOptions.sFilename, #tOptions.directory+1),
     alignment = "acenter",
     expand = "HORIZONTAL"
   }
@@ -102,7 +100,9 @@ local function Common()
       tabCommon,
       tabStrategy
     },
-    box
+    box,
+    -- gap = "10",
+    margin = "10x10",
   }
 
   local dlg = iup.dialog {
@@ -138,7 +138,7 @@ local function Common()
         name = dlg.value
       end
       Controller.Write(tData, name)
-      tOptions.filename = name
+      tOptions.sFilename = name
       tOptions.directory = dlg.directory
       Controller.Write(tOptions, "options")
       lblFilename.title = string.sub(dlg.value, #dlg.directory+1, -6)
@@ -146,7 +146,7 @@ local function Common()
       name = string.sub(dlg.value, 0, -6)
       Controller.Write(tData, name)
       tOptions.directory = dlg.directory
-      tOptions.filename = name
+      tOptions.sFilename = name
       Controller.Write(tOptions, "options")
       lblFilename.title = string.sub(dlg.value, #dlg.directory+1, -6)
     elseif status == "-1" then
@@ -171,7 +171,7 @@ local function Common()
       local name = string.sub(dlg.value, 0, -6)
       tData = Controller.Read(name)
       lblFilename.title = string.sub(dlg.value, #dlg.directory+1, -6)
-      tOptions.filename = name
+      tOptions.sFilename = name
       tOptions.directory = dlg.directory
       Controller.Write(tOptions, "options")
     elseif status == "-1" then 

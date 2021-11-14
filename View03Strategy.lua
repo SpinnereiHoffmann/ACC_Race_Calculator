@@ -5,21 +5,81 @@ local View = {}
 local Controller = require("Controller")
 
 ------------------------------------------------------------------------------------
---- Main()
+--- tables
 ------------------------------------------------------------------------------------
----
 local tOptions = Controller.Read("options")
 local nLanguage = tOptions.language.value
 
 local tTranslation = Controller.Read("translation")
 local valTranslation = tTranslation.languages[nLanguage]
 
+local tData = {}
 if tOptions.sFilename ~= nil then
-  local tData = Controller.Read(tOptions.sFilename)
-else
-  local tData = {}
+  tData = Controller.Read(tOptions.sFilename)
 end
 
+------------------------------------------------------------------------------------
+--- GetLimitationDialog()
+------------------------------------------------------------------------------------
+---
+local function GetLimitationDialog(limValue)
+
+  -- labels
+  local lblStintLength = iup.label {title = valTranslation.STINT}
+  local lblStintHours = iup.label {title = valTranslation.HOURS}
+  local lblStintMinutes = iup.label {title = valTranslation.MINUTES}
+
+  local lblFuelAmount = iup.label {title = valTranslation.FUEL}
+
+  -- txtFields
+  local txtStintH = iup.text {
+    value = 00,
+    size = 15,
+    alignment = "acenter"
+  }
+  local txtStintM = iup.text {
+    value = 00,
+    size = 15,
+    alignment = "acenter"
+  }
+
+  local txtFuel = iup.text {
+    value = 60,
+    size = 20,
+    alignment = "acenter"
+  }
+
+  local limitation
+  if limValue == "1" then
+    limitation = iup.vbox {
+      lblStintLength,
+      iup.hbox {
+        iup.vbox {
+          lblStintHours,
+          txtStintH
+        },
+        iup.vbox {
+          lblStintMinutes,
+          txtStintM
+        }
+      },
+      iup.fill {}
+    }
+  elseif limValue == "2" then
+    limitation = iup.vbox {
+      lblFuelAmount,
+      iup.space {size = "0x18"},
+      txtFuel,
+      iup.fill {}
+    }
+  end
+
+  return limitation
+end
+------------------------------------------------------------------------------------
+--- Main()
+------------------------------------------------------------------------------------
+---
 -- labels
 local lblRacestart = iup.label {title = valTranslation.RACE_START}
 local lblHours = iup.label {title = valTranslation.HOUR}
@@ -29,9 +89,17 @@ local lblRaceDuration = iup.label {title = valTranslation.DURATION}
 local lblDurationHours = iup.label {title = valTranslation.HOURS}
 local lblDurationMinutes = iup.label {title = valTranslation.MINUTES}
 
-local lblStintLength = iup.label {title = valTranslation.STINT}
-local lblStintHours = iup.label {title = valTranslation.HOURS}
-local lblStintMinutes = iup.label {title = valTranslation.MINUTES}
+local lblLimitation = iup.label {title = valTranslation.LIMITATION}
+
+-- dropdown
+local dropStintLimit = iup.list {
+  valTranslation.STINT_TIME,
+  valTranslation.FUEL,
+  value = tData.dLimitation,
+  dropdown = "YES",
+  visible_items = 4,
+  size = 80
+}
 
 -- textboxes
 local txtRacestartH = iup.text {
@@ -54,16 +122,6 @@ local txtDurationM = iup.text {
   size = 15,
   alignment = "acenter"
 }
-local txtStintH = iup.text {
-  value = 00,
-  size = 15,
-  alignment = "acenter"
-}
-local txtStintM = iup.text {
-  value = 00,
-  size = 15,
-  alignment = "acenter"
-}
 
 View = iup.hbox {
   iup.vbox {
@@ -78,7 +136,9 @@ View = iup.hbox {
         txtRacestartM
       },
     },
+    iup.fill {}
   },
+  iup.space {size = 25},
   iup.vbox {
     lblRaceDuration,
     iup.hbox {
@@ -91,23 +151,25 @@ View = iup.hbox {
         txtDurationM
       },
     },
+    iup.fill {}
   },
+  iup.fill {},
   iup.vbox {
-    lblStintLength,
-    iup.hbox {
-      iup.vbox {
-        lblStintHours,
-        txtStintH
-      },
-      iup.vbox {
-        lblStintMinutes,
-        txtStintM
-      }
-    }
+    lblLimitation,
+    iup.space {size = "0x18"},
+    dropStintLimit,
+    iup.fill {},
   },
+  iup.space {size = 25},
+  GetLimitationDialog(tData.dLimitation),
   alignment = "acenter",
-  gap = "10",
-  margin = "10x10",
+  gap = "0",
+  margin = "5x10",
 }
+
+function dropStintLimit:valuechanged_cb()
+  tData.dLimitation = dropStintLimit.value
+  Controller.Write(tData, tOptions.sFilename)
+end
 
 return View

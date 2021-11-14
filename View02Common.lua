@@ -11,9 +11,9 @@ local nLanguage = tOptions.language.value
 local tTranslation = Controller.Read("translation")
 local valTranslation = tTranslation.languages[nLanguage]
 
--- local tDriver = Controller.Read(tOptions.filename)
+-- local tDriver = Controller.Read(tOptions.sFilename)
 -- local tPitstop = {}
-local tData = Controller.Read(tOptions.filename)
+local tData = Controller.Read(tOptions.sFilename)
 
 ------------------------------------------------------------------------------------
 --- DlgEnterPitName()
@@ -93,7 +93,7 @@ local function AddPitstop()
   if i < 5 then
     local pitname = DlgEnterPitName(i)
     tData.tPitstop["pit" .. i] = {sName = pitname, dValue = 0}
-    Controller.Write(tData, tOptions.filename)
+    Controller.Write(tData, tOptions.sFilename)
   else
     iup.Message(valTranslation.ERROR, valTranslation.MAX_PITS)
   end
@@ -183,7 +183,7 @@ local function AddDriver()
   if i < 7 then
     local drivername = DlgEnterName(i)
     tData.tDriver["Driver" .. i] = {sName = drivername}
-    Controller.Write(tData, tOptions.filename)
+    Controller.Write(tData, tOptions.sFilename)
   else
     iup.Message(valTranslation.ERROR, valTranslation.MAX_DRIVER)
   end
@@ -445,7 +445,7 @@ local function RemovePitstop()
   txtPitTime["pit" .. i].visible = "NO"
   lblSec["pit" .. i].visible = "NO"
   btnRemovePitstop["pit" .. i].visible = "NO"
-  Controller.Write(tData, tOptions.filename)
+  Controller.Write(tData, tOptions.sFilename)
 end
 
 
@@ -501,7 +501,7 @@ local function RemoveDriver()
   txtDrivers["driver" .. i].visible = "NO"
   txtConsumption["driver" .. i].visible = "NO"
   btnRemoveDriver["driver" .. i].visible = "NO"
-  Controller.Write(tData, tOptions.filename)
+  Controller.Write(tData, tOptions.sFilename)
 end
 
 function btnRemoveDriver.driver1:action()
