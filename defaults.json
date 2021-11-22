@@ -1,5 +1,9 @@
 {
-"dLimitation":"2",
-"tDriver":[],
-"tPitstop":[]
+"tPitstop":[],
+"tDriver":{
+"Driver1":{
+"sName":"Fahrer1"
+}
+},
+"dLimitation":"1"
 }
