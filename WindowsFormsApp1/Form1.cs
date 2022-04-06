@@ -61,10 +61,11 @@ namespace WindowsFormsApp1
       //for (int i = 1; i < driverCount; i++)
       foreach(string driver in drivers)
       {
-        if (drivers[driverCount] != "")
+        if (driver != "")
         {
+          MessageBox.Show(driver);
           // einen Namen mit Wert schreiben
-          xmlWrite.WriteElementString("Fahrer", drivers[driverCount]);
+          xmlWrite.WriteElementString("Fahrer", driver);
         }
       }
 
