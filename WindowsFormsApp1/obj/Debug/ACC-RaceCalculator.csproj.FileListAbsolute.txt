@@ -1,0 +1,11 @@
+C:\Users\steff\Documents\GitHub\ACC_Race_Calculator\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+C:\Users\steff\Documents\GitHub\ACC_Race_Calculator\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+C:\Users\steff\Documents\GitHub\ACC_Race_Calculator\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+C:\Users\steff\Documents\GitHub\ACC_Race_Calculator\WindowsFormsApp1\obj\Debug\ACC-RaceCalculator.csproj.AssemblyReference.cache
+C:\Users\steff\Documents\GitHub\ACC_Race_Calculator\WindowsFormsApp1\obj\Debug\ACC-RaceCalculator.csproj.SuggestedBindingRedirects.cache
+C:\Users\steff\Documents\GitHub\ACC_Race_Calculator\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form1.resources
+C:\Users\steff\Documents\GitHub\ACC_Race_Calculator\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+C:\Users\steff\Documents\GitHub\ACC_Race_Calculator\WindowsFormsApp1\obj\Debug\ACC-RaceCalculator.csproj.GenerateResource.cache
+C:\Users\steff\Documents\GitHub\ACC_Race_Calculator\WindowsFormsApp1\obj\Debug\ACC-RaceCalculator.csproj.CoreCompileInputs.cache
+C:\Users\steff\Documents\GitHub\ACC_Race_Calculator\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+C:\Users\steff\Documents\GitHub\ACC_Race_Calculator\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb

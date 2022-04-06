@@ -40,7 +40,7 @@
       this.textBoxDurationMins = new System.Windows.Forms.TextBox();
       this.labelLiters = new System.Windows.Forms.Label();
       this.labelStint = new System.Windows.Forms.Label();
-      this.textBox3 = new System.Windows.Forms.TextBox();
+      this.textBoxStintTime = new System.Windows.Forms.TextBox();
       this.comboBox1 = new System.Windows.Forms.ComboBox();
       this.textBoxFuelQuantity = new System.Windows.Forms.TextBox();
       this.labelFuelQuantity = new System.Windows.Forms.Label();
@@ -77,7 +77,7 @@
       this.tabControl1.Location = new System.Drawing.Point(140, 12);
       this.tabControl1.Name = "tabControl1";
       this.tabControl1.SelectedIndex = 0;
-      this.tabControl1.Size = new System.Drawing.Size(491, 409);
+      this.tabControl1.Size = new System.Drawing.Size(501, 409);
       this.tabControl1.TabIndex = 0;
       // 
       // tabPage1
@@ -88,7 +88,7 @@
       this.tabPage1.Location = new System.Drawing.Point(4, 22);
       this.tabPage1.Name = "tabPage1";
       this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage1.Size = new System.Drawing.Size(483, 383);
+      this.tabPage1.Size = new System.Drawing.Size(493, 383);
       this.tabPage1.TabIndex = 0;
       this.tabPage1.Text = "Daten";
       this.tabPage1.UseVisualStyleBackColor = true;
@@ -102,7 +102,7 @@
       this.groupBox3.Controls.Add(this.buttonRemoveDriver);
       this.groupBox3.Location = new System.Drawing.Point(6, 7);
       this.groupBox3.Name = "groupBox3";
-      this.groupBox3.Size = new System.Drawing.Size(470, 124);
+      this.groupBox3.Size = new System.Drawing.Size(480, 124);
       this.groupBox3.TabIndex = 32;
       this.groupBox3.TabStop = false;
       // 
@@ -137,14 +137,14 @@
       this.groupBox2.Controls.Add(this.textBoxDurationMins);
       this.groupBox2.Controls.Add(this.labelLiters);
       this.groupBox2.Controls.Add(this.labelStint);
-      this.groupBox2.Controls.Add(this.textBox3);
+      this.groupBox2.Controls.Add(this.textBoxStintTime);
       this.groupBox2.Controls.Add(this.comboBox1);
       this.groupBox2.Controls.Add(this.textBoxFuelQuantity);
       this.groupBox2.Controls.Add(this.labelFuelQuantity);
       this.groupBox2.Controls.Add(this.labelStintTime);
       this.groupBox2.Location = new System.Drawing.Point(6, 137);
       this.groupBox2.Name = "groupBox2";
-      this.groupBox2.Size = new System.Drawing.Size(470, 96);
+      this.groupBox2.Size = new System.Drawing.Size(480, 96);
       this.groupBox2.TabIndex = 31;
       this.groupBox2.TabStop = false;
       // 
@@ -202,14 +202,14 @@
       this.labelStint.TabIndex = 20;
       this.labelStint.Text = "Stintbegrenzung";
       // 
-      // textBox3
+      // textBoxStintTime
       // 
-      this.textBox3.Enabled = false;
-      this.textBox3.Location = new System.Drawing.Point(338, 32);
-      this.textBox3.Name = "textBox3";
-      this.textBox3.Size = new System.Drawing.Size(30, 20);
-      this.textBox3.TabIndex = 25;
-      this.textBox3.Text = "65";
+      this.textBoxStintTime.Enabled = false;
+      this.textBoxStintTime.Location = new System.Drawing.Point(338, 32);
+      this.textBoxStintTime.Name = "textBoxStintTime";
+      this.textBoxStintTime.Size = new System.Drawing.Size(30, 20);
+      this.textBoxStintTime.TabIndex = 25;
+      this.textBoxStintTime.Text = "65";
       // 
       // comboBox1
       // 
@@ -221,10 +221,10 @@
       this.comboBox1.Name = "comboBox1";
       this.comboBox1.Size = new System.Drawing.Size(100, 21);
       this.comboBox1.TabIndex = 21;
+      this.comboBox1.SelectedValueChanged += new System.EventHandler(this.comboBox1_SelectedValueChanged);
       // 
       // textBoxFuelQuantity
       // 
-      this.textBoxFuelQuantity.Enabled = false;
       this.textBoxFuelQuantity.Location = new System.Drawing.Point(338, 13);
       this.textBoxFuelQuantity.Name = "textBoxFuelQuantity";
       this.textBoxFuelQuantity.Size = new System.Drawing.Size(30, 20);
@@ -234,7 +234,7 @@
       // labelFuelQuantity
       // 
       this.labelFuelQuantity.AutoSize = true;
-      this.labelFuelQuantity.Location = new System.Drawing.Point(272, 16);
+      this.labelFuelQuantity.Location = new System.Drawing.Point(268, 16);
       this.labelFuelQuantity.Name = "labelFuelQuantity";
       this.labelFuelQuantity.Size = new System.Drawing.Size(60, 13);
       this.labelFuelQuantity.TabIndex = 22;
@@ -243,7 +243,7 @@
       // labelStintTime
       // 
       this.labelStintTime.AutoSize = true;
-      this.labelStintTime.Location = new System.Drawing.Point(272, 35);
+      this.labelStintTime.Location = new System.Drawing.Point(268, 35);
       this.labelStintTime.Name = "labelStintTime";
       this.labelStintTime.Size = new System.Drawing.Size(44, 13);
       this.labelStintTime.TabIndex = 23;
@@ -258,7 +258,7 @@
       this.groupBox1.Controls.Add(this.buttonRemovePitstop);
       this.groupBox1.Location = new System.Drawing.Point(6, 239);
       this.groupBox1.Name = "groupBox1";
-      this.groupBox1.Size = new System.Drawing.Size(470, 138);
+      this.groupBox1.Size = new System.Drawing.Size(480, 138);
       this.groupBox1.TabIndex = 30;
       this.groupBox1.TabStop = false;
       // 
@@ -412,7 +412,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(643, 433);
+      this.ClientSize = new System.Drawing.Size(653, 433);
       this.Controls.Add(this.buttonOpenLocal);
       this.Controls.Add(this.labelGlobalPath);
       this.Controls.Add(this.textBoxGlobalPath);
@@ -463,7 +463,7 @@
     private System.Windows.Forms.Label labelStint;
     private System.Windows.Forms.Label labelMinutes;
     private System.Windows.Forms.Label labelLiters;
-    private System.Windows.Forms.TextBox textBox3;
+    private System.Windows.Forms.TextBox textBoxStintTime;
     private System.Windows.Forms.TextBox textBoxFuelQuantity;
     private System.Windows.Forms.Label labelStintTime;
     private System.Windows.Forms.Label labelFuelQuantity;

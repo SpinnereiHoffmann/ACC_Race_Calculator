@@ -19,6 +19,9 @@ namespace WindowsFormsApp1
       InitializeComponent();
     }
 
+    // Felder
+    string[] drivers = new string[10];
+
     // helpers
     private string GetFilename()
     {
@@ -35,70 +38,10 @@ namespace WindowsFormsApp1
       return filename;
     }
 
-    private void Form1_Load(object sender, EventArgs e)
+    private void WriteToXML()
     {
-      using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software\\ACC-RC"))
-      {
-
-        if (regKey == null)
-        {
-          comboBoxTracks.Text = "";
-        }
-        else
-        {
-          // get position of the window
-          this.Top = Convert.ToInt32(regKey.GetValue("Top"));
-          this.Left = Convert.ToInt32(regKey.GetValue("Left"));
-          this.Height = Convert.ToInt32(regKey.GetValue("Height"));
-          this.Width = Convert.ToInt32(regKey.GetValue("Width"));
-
-          // get latest values
-          comboBoxTracks.Text = Convert.ToString(regKey.GetValue("Track"));
-          textBoxLocalPath.Text = Convert.ToString(regKey.GetValue("LocalPath"));
-          textBoxGlobalPath.Text = Convert.ToString(regKey.GetValue("GlobalPath"));
-
-          //prüfen, ob es die Datei bereits gibt
-          bool xmlVorhanden = System.IO.File.Exists(GetFilename());
-
-          // open .xml file
-          if (xmlVorhanden)
-          {
-            MessageBox.Show("\"" + GetFilename() + "\"" + " wird geöffnet");
-            XmlReader xmlRead = XmlReader.Create(GetFilename());
-            xmlRead.Close();
-          }
-          else
-            MessageBox.Show("\"" + GetFilename() + "\"" + " ist nicht vorhanden");
-        }
-      }
-    }
-
-    private void comboBoxTracks_SelectedValueChanged(object sender, EventArgs e)
-    {
-      // set Label
-      labelTrack.Text = comboBoxTracks.Text;
-
-      // set registry keys
-      using (RegistryKey regKey = Registry.CurrentUser.CreateSubKey("Software\\ACC-RC"))
-      {
-        regKey.SetValue("Track", comboBoxTracks.Text);
-      }
-    }
-
-    private void buttonWrite_Click(object sender, EventArgs e)
-    {
-      string duration = "";
-      if (textBoxDurationHours.Text != "hh" && Convert.ToInt32(textBoxDurationHours.Text) != 0)
-        duration = textBoxDurationHours.Text.ToString() + "h";
-      if (textBoxDurationMins.Text != "mm" && Convert.ToInt32(textBoxDurationMins.Text) != 0)
-        duration += textBoxDurationMins.Text.ToString() + "min";
-      
-      // write Duration to registry
-      using (RegistryKey regKey = Registry.CurrentUser.CreateSubKey("Software\\ACC-RC"))
-      {
-        regKey.SetValue("Duration", duration.ToString());
-      }
-
+      string track = comboBoxTracks.Text;
+      track = track.Replace(" ", "_");
       // die Einstellungen für XmlWriter setzen
       XmlWriterSettings settings = new XmlWriterSettings();
       settings.Indent = true;
@@ -110,13 +53,20 @@ namespace WindowsFormsApp1
       xmlWrite.WriteStartDocument();
 
       // den Wurzelknoten erstellen
-      xmlWrite.WriteStartElement("eintraege");
+      xmlWrite.WriteStartElement(track);
 
       // einen Eintrag erstellen
-      xmlWrite.WriteStartElement("eintrag");
+      xmlWrite.WriteStartElement("Fahrer");
 
-      // einen Namen mit Wert schreiben
-      xmlWrite.WriteElementString("name", "Müller");
+      //for (int i = 1; i < driverCount; i++)
+      foreach(string driver in drivers)
+      {
+        if (drivers[driverCount] != "")
+        {
+          // einen Namen mit Wert schreiben
+          xmlWrite.WriteElementString("Fahrer", drivers[driverCount]);
+        }
+      }
 
       // Punkte mit Wert schreiben
       xmlWrite.WriteElementString("punkte", "100");
@@ -147,6 +97,74 @@ namespace WindowsFormsApp1
       xmlWrite.Close();
     }
 
+    private void Form1_Load(object sender, EventArgs e)
+    {
+      using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software\\ACC-RC"))
+      {
+
+        if (regKey == null)
+        {
+          comboBoxTracks.Text = "";
+        }
+        else
+        {
+          // get position of the window
+          this.Top = Convert.ToInt32(regKey.GetValue("Top"));
+          this.Left = Convert.ToInt32(regKey.GetValue("Left"));
+          this.Height = Convert.ToInt32(regKey.GetValue("Height"));
+          this.Width = Convert.ToInt32(regKey.GetValue("Width"));
+
+          // get latest values
+          comboBoxTracks.Text = Convert.ToString(regKey.GetValue("Track"));
+          textBoxLocalPath.Text = Convert.ToString(regKey.GetValue("LocalPath"));
+          textBoxGlobalPath.Text = Convert.ToString(regKey.GetValue("GlobalPath"));
+
+          //prüfen, ob es die Datei bereits gibt
+          bool xmlVorhanden = System.IO.File.Exists(GetFilename());
+
+          // open .xml file
+          if (xmlVorhanden)
+          {
+            //MessageBox.Show("\"" + GetFilename() + "\"" + " wird geöffnet");
+            XmlReader xmlRead = XmlReader.Create(GetFilename());
+            xmlRead.Close();
+          }
+          //else
+            //MessageBox.Show("\"" + GetFilename() + "\"" + " ist nicht vorhanden");
+        }
+      }
+    }
+
+    private void comboBoxTracks_SelectedValueChanged(object sender, EventArgs e)
+    {
+      // set Label
+      labelTrack.Text = comboBoxTracks.Text;
+
+      // set registry keys
+      using (RegistryKey regKey = Registry.CurrentUser.CreateSubKey("Software\\ACC-RC"))
+      {
+        regKey.SetValue("Track", comboBoxTracks.Text);
+      }
+    }
+
+    private void buttonWrite_Click(object sender, EventArgs e)
+    {
+      string duration = "";
+      if (textBoxDurationHours.Text != "hh" && Convert.ToInt32(textBoxDurationHours.Text) != 0)
+        duration = textBoxDurationHours.Text.ToString() + "h";
+      if (textBoxDurationMins.Text != "mm" && Convert.ToInt32(textBoxDurationMins.Text) != 0)
+        duration += textBoxDurationMins.Text.ToString() + "min";
+      
+      // write Duration to registry
+      using (RegistryKey regKey = Registry.CurrentUser.CreateSubKey("Software\\ACC-RC"))
+      {
+        regKey.SetValue("Duration", duration.ToString());
+      }
+
+      //WriteToXML("");
+      WriteToXML();
+    }
+
     private void textBoxLocalPath_TextChanged(object sender, EventArgs e)
     {
       using (RegistryKey regKey = Registry.CurrentUser.CreateSubKey("Software\\ACC-RC"))
@@ -175,8 +193,14 @@ namespace WindowsFormsApp1
       }
     }
 
-    int driverIndex = 0;
+    private void DynText_TextChanged(object sender, EventArgs e)
+    {
+      string driver = sender.ToString();
+      drivers[driverCount] = driver.Substring(36);
+    }
+
     int driverCount = 1;
+    int driverIndex = 0;
     int driverPosX  = 0;
     //int dPosY = 0;
     private void buttonAddDriver_Click(object sender, EventArgs e)
@@ -186,8 +210,9 @@ namespace WindowsFormsApp1
         Text = "Name",
         Name = "Fahrer" + driverCount.ToString(),
         Size = new Size(90, 20),
-        Location = new Point(95 * (driverPosX + 1), 15)
+        Location = new Point(95 * (driverPosX + 1), 15),
       };
+      name.TextChanged += DynText_TextChanged;
 
       TextBox timeMin = new TextBox
       {
@@ -221,9 +246,9 @@ namespace WindowsFormsApp1
         Location = new Point(60 + 95 * (driverPosX + 1), 40)
       };
 
-      driverPosX++;
-      driverCount++;
       driverIndex+=5;
+      driverCount++;
+      driverPosX++;
 
       groupBox3.Controls.Add(name);
       groupBox3.Controls.Add(timeMin);
@@ -242,6 +267,7 @@ namespace WindowsFormsApp1
       if (driverIndex >= 5)
       {
         driverIndex -= 5;
+        driverCount--;
         driverPosX--;
       }
     }
@@ -271,9 +297,6 @@ namespace WindowsFormsApp1
       pitPosY++;
       pitIndex += 2;
 
-      //tabPage1.Controls.Add(description);
-      //tabPage1.Controls.Add(duration);
-
       groupBox1.Controls.Add(description);
       groupBox1.Controls.Add(duration);
     }
@@ -288,6 +311,20 @@ namespace WindowsFormsApp1
       {
         pitIndex -= 2;
         pitPosY--;
+      }
+    }
+
+    private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
+    {
+      if (comboBox1.SelectedIndex == 1)
+      {
+        labelFuelQuantity.Text = "Tankvolumen";
+        textBoxStintTime.Enabled = true;
+      }
+      else
+      {
+        labelFuelQuantity.Text = "Spritmenge";
+        textBoxStintTime.Enabled = false;
       }
     }
   }
