@@ -20,7 +20,8 @@ namespace WindowsFormsApp1
     }
 
     // Felder
-    string[] drivers = new string[10];
+    //string[] drivers = new string[10];
+    List<string> drivers = new List<string>();
 
     // helpers
     private string GetFilename()
@@ -61,12 +62,12 @@ namespace WindowsFormsApp1
       //for (int i = 1; i < driverCount; i++)
       foreach(string driver in drivers)
       {
-        if (driver != "")
-        {
-          MessageBox.Show(driver);
-          // einen Namen mit Wert schreiben
-          xmlWrite.WriteElementString("Fahrer", driver);
-        }
+        //if (driver != "")
+        //{
+        MessageBox.Show(driver);
+        // einen Namen mit Wert schreiben
+        xmlWrite.WriteElementString("Fahrer", driver);
+        //}
       }
 
       // Punkte mit Wert schreiben
@@ -126,12 +127,9 @@ namespace WindowsFormsApp1
           // open .xml file
           if (xmlVorhanden)
           {
-            //MessageBox.Show("\"" + GetFilename() + "\"" + " wird geöffnet");
             XmlReader xmlRead = XmlReader.Create(GetFilename());
             xmlRead.Close();
           }
-          //else
-            //MessageBox.Show("\"" + GetFilename() + "\"" + " ist nicht vorhanden");
         }
       }
     }
@@ -194,10 +192,12 @@ namespace WindowsFormsApp1
       }
     }
 
-    private void DynText_TextChanged(object sender, EventArgs e)
+    private void DynText_Leave(object sender, EventArgs e)
     {
       string driver = sender.ToString();
-      drivers[driverCount] = driver.Substring(36);
+      driver = driver.Substring(36);
+      if (driver != "Name" && driver != "")
+        drivers.Add (driver);
     }
 
     int driverCount = 1;
@@ -213,7 +213,7 @@ namespace WindowsFormsApp1
         Size = new Size(90, 20),
         Location = new Point(95 * (driverPosX + 1), 15),
       };
-      name.TextChanged += DynText_TextChanged;
+      name.Leave += DynText_Leave;
 
       TextBox timeMin = new TextBox
       {
@@ -260,6 +260,9 @@ namespace WindowsFormsApp1
 
     private void buttonRemoveDriver_Click(object sender, EventArgs e)
     {
+      if (drivers.Count > 0)
+        drivers.RemoveAt(drivers.Count-1);
+      
       for (int i = 0; i < 5; i++)
       {
         if (driverIndex >= 5)
