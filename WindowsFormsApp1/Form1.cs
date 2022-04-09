@@ -61,6 +61,19 @@ namespace WindowsFormsApp1
       return filename;
     }
 
+    private string GetText(string driver, TextBox box, string key)
+    {
+      //MessageBox.Show(box.Name);
+      XmlReader xmlRead = XmlReader.Create(GetFilename());
+      xmlRead.ReadToDescendant(key, driver);
+      
+      box.Text = xmlRead.ReadElementString();
+      
+      xmlRead.Close();
+      
+      return box.Text;
+    }
+
     private void WriteToXML()
     {
       string track = comboBoxTracks.Text;
@@ -174,19 +187,22 @@ namespace WindowsFormsApp1
             foreach(var fahrer in doc.GetElementsByTagName("Fahrer").OfType<XmlElement>())
             {
               buttonAddDriver_Click(sender, e);
+              //MessageBox.Show(sender.ToString());
+              //MessageBox.Show(e.ToString());
 
               //MessageBox.Show(xmlRead.Read().ToString());
             }
             //xmlRead.    
 
-            XmlReader xmlReadnew = XmlReader.Create(GetFilename());
-            for (int i = 0; i < 2; i++)
-            {
-              xmlReadnew.ReadToFollowing("name");
-              MessageBox.Show(xmlReadnew.ReadElementString());
+            //XmlReader xmlReadnew = XmlReader.Create(GetFilename());
+            //for (int i = 0; i < 2; i++)
+            //{
+              //xmlReadnew.ReadToFollowing("name");
+
+              //MessageBox.Show(xmlReadnew.ReadElementString());
               //xmlReadnew.ReadToFollowing("name");
               //MessageBox.Show(xmlReadnew.ReadElementString());
-            }
+            //}
 
 
             // foreach pitstop
@@ -275,6 +291,7 @@ namespace WindowsFormsApp1
         Size = new Size(90, 20),
         Location = new Point(5, 10),
       };
+      name.Text = GetText(name.Name, name, "name");
       name.TextChanged += DynName_TextChanged;
 
       TextBox timeMin = new TextBox
@@ -284,6 +301,7 @@ namespace WindowsFormsApp1
         Size = new Size(15, 20),
         Location = new Point(5, 35)
       };
+      timeMin.Text = GetText(name.Name, timeMin, "minutes");
       timeMin.TextChanged += DynTimeMin_TextChanged;
 
       TextBox timeSec = new TextBox
@@ -293,6 +311,7 @@ namespace WindowsFormsApp1
         Size = new Size(20, 20),
         Location = new Point(20, 35)
       };
+      timeSec.Text = GetText(name.Name, timeSec, "seconds");
       timeSec.TextChanged += DynTimeSec_TextChanged;
 
       TextBox timeTho = new TextBox
@@ -302,6 +321,7 @@ namespace WindowsFormsApp1
         Size = new Size(25, 20),
         Location = new Point(40, 35)
       };
+      timeTho.Text = GetText(name.Name, timeTho, "thousands");
       timeTho.TextChanged += DynTimeTho_TextChanged;
 
       TextBox consumption = new TextBox
@@ -311,6 +331,7 @@ namespace WindowsFormsApp1
         Size = new Size(30, 20),
         Location = new Point(65, 35)
       };
+      consumption.Text = GetText(name.Name, consumption, "consumption");
       consumption.TextChanged += DynConsumption_TextChanged;
 
       // erstelle einen neuen Fahrer
