@@ -20,8 +20,26 @@ namespace WindowsFormsApp1
     }
 
     // Felder
-    //string[] drivers = new string[10];
-    List<string> drivers = new List<string>();
+    //List<string> drivers;
+    List<Driver> drivers = new List<Driver>();
+    List<User> listOfUsers = new List<User>();
+
+    class Driver
+    {
+      public string Counter { get; set; }
+      public string Name { get; set; }
+      public string Mins { get; set; }
+      public string Secs { get; set; }
+      public string Thos { get; set; }
+      public string Cons { get; set; }
+    }
+
+    class User
+    {
+      public string Name { get; set; }
+
+      public int Age { get; set; }
+    }
 
     // helpers
     private string GetFilename()
@@ -56,37 +74,46 @@ namespace WindowsFormsApp1
       // den Wurzelknoten erstellen
       xmlWrite.WriteStartElement(track);
 
-      // einen Eintrag erstellen
-      xmlWrite.WriteStartElement("Fahrer");
 
-      //for (int i = 1; i < driverCount; i++)
-      foreach(string driver in drivers)
+      //for (int index = 2; index < driverCount; index++)
+       //MessageBox.Show(drivers[0].Name);
+
+      int i = 0;
+      foreach(Driver Counter in drivers)
       {
-        //if (driver != "")
-        //{
-        MessageBox.Show(driver);
+        // einen Eintrag erstellen
+        xmlWrite.WriteStartElement("Fahrer", drivers[i].Counter);
+
         // einen Namen mit Wert schreiben
-        xmlWrite.WriteElementString("Fahrer", driver);
-        //}
+        //xmlWrite.WriteElementString("Counter", drivers[i].Counter);
+        xmlWrite.WriteElementString("name", drivers[i].Name);
+        xmlWrite.WriteElementString("minutes", drivers[i].Mins);
+        xmlWrite.WriteElementString("seconds", drivers[i].Secs);
+        xmlWrite.WriteElementString("thousands", drivers[i].Thos);
+        xmlWrite.WriteElementString("consumption", drivers[i].Cons);
+
+        // den Eintrag abschließen
+        xmlWrite.WriteEndElement();
+        
+        i++;
       }
 
-      // Punkte mit Wert schreiben
-      xmlWrite.WriteElementString("punkte", "100");
 
-      // den Eintrag abschließen
-      xmlWrite.WriteEndElement();
+      // Punkte mit Wert schreiben
+      //xmlWrite.WriteElementString("punkte", "100");
+
 
       // und noch einen Eintrag erstellen
-      xmlWrite.WriteStartElement("eintrag");
+      //xmlWrite.WriteStartElement("eintrag");
 
       // einen Namen mit Wert schreiben
-      xmlWrite.WriteElementString("name", "Maier");
+      //xmlWrite.WriteElementString("name", "Maier");
 
       // Punkte mit Wert schreiben
-      xmlWrite.WriteElementString("punkte", "1000");
+      //xmlWrite.WriteElementString("punkte", "1000");
 
       // den Eintrag abschließen
-      xmlWrite.WriteEndElement();
+      //xmlWrite.WriteEndElement();
 
       // den Wurzelknoten abschließen
       xmlWrite.WriteEndElement();
@@ -160,6 +187,12 @@ namespace WindowsFormsApp1
         regKey.SetValue("Duration", duration.ToString());
       }
 
+      //foreach (string element in drivers)
+      //{
+        // Leave für jede TextBox
+        // name, min, sec, tho, consumption für jedes element
+      //}
+
       //WriteToXML("");
       WriteToXML();
     }
@@ -192,35 +225,46 @@ namespace WindowsFormsApp1
       }
     }
 
-    private void DynText_Leave(object sender, EventArgs e)
-    {
-      string driver = sender.ToString();
-      driver = driver.Substring(36);
-      if (driver != "Name" && driver != "")
-        drivers.Add (driver);
-    }
+    //private void DynText_Leave(object sender, EventArgs e)
+    //{
+    //  MessageBox.Show(sender.ToString().Substring(36));
+    //  if (this.Contains(groupBox3))
+    //    MessageBox.Show(this.buttonAddDriver.Name);
+    //  //string driver = sender.ToString();
+    //  //driver = driver.Substring(36);
+    //  //if (driver != "Name" && driver != "")
+    //  //{
+    //  //drivers.Add (driver);
+    //  //}
+    //}
 
     int driverCount = 1;
-    int driverIndex = 0;
     int driverPosX  = 0;
-    //int dPosY = 0;
     private void buttonAddDriver_Click(object sender, EventArgs e)
     {
+      GroupBox groupDriver = new GroupBox()
+      {
+        Name = driverCount.ToString(),
+        Size = new Size(100, 100),
+        Location = new Point(100 * (driverPosX + 1), 10),
+      };
+
       TextBox name = new TextBox
       {
         Text = "Name",
         Name = "Fahrer" + driverCount.ToString(),
         Size = new Size(90, 20),
-        Location = new Point(95 * (driverPosX + 1), 15),
+        Location = new Point(5, 10),
       };
-      name.Leave += DynText_Leave;
+      name.TextChanged += DynName_TextChanged;
+      //name.Leave += DynText_Leave;
 
       TextBox timeMin = new TextBox
       {
         Name = "timeMin" + driverCount.ToString(),
         Text = "m",
         Size = new Size(15, 20),
-        Location = new Point(95 * (driverPosX + 1), 40)
+        Location = new Point(5, 35)
       };
 
       TextBox timeSec = new TextBox
@@ -228,7 +272,7 @@ namespace WindowsFormsApp1
         Name = "timeSec" + driverCount.ToString(),
         Text = "ss",
         Size = new Size(20, 20),
-        Location = new Point(15 + 95 * (driverPosX + 1), 40)
+        Location = new Point(20, 35)
       };
 
       TextBox timeTho = new TextBox
@@ -236,7 +280,7 @@ namespace WindowsFormsApp1
         Name = "timeTho" + driverCount.ToString(),
         Text = "ttt",
         Size = new Size(25, 20),
-        Location = new Point(35 + 95 * (driverPosX + 1), 40)
+        Location = new Point(40, 35)
       };
 
       TextBox consumption = new TextBox
@@ -244,33 +288,47 @@ namespace WindowsFormsApp1
         Name = "consumption" + driverCount.ToString(),
         Text = "l/lap",
         Size = new Size(30, 20),
-        Location = new Point(60 + 95 * (driverPosX + 1), 40)
+        Location = new Point(65, 35)
       };
 
-      driverIndex+=5;
+      // erstelle einen neuen Fahrer
+      drivers.Add(new Driver() { 
+        Counter = name.Name,
+        Name = name.Text,
+        Mins = timeMin.Text,
+        Secs = timeSec.Text,
+        Thos = timeTho.Text,
+        Cons = consumption.Text
+      });
+
+      void DynName_TextChanged(object dynSender, EventArgs dynE)
+      {
+        int groupBox = Convert.ToInt32(name.Name.Substring(6));
+        drivers[groupBox-1].Name = name.Text;
+        //drivers.Add(name.Name);
+      }
+
       driverCount++;
       driverPosX++;
 
-      groupBox3.Controls.Add(name);
-      groupBox3.Controls.Add(timeMin);
-      groupBox3.Controls.Add(timeSec);
-      groupBox3.Controls.Add(timeTho);
-      groupBox3.Controls.Add(consumption);
+      groupBox3.Controls.Add(groupDriver);
+      groupDriver.Controls.Add(name);
+      groupDriver.Controls.Add(timeMin);
+      groupDriver.Controls.Add(timeSec);
+      groupDriver.Controls.Add(timeTho);
+      groupDriver.Controls.Add(consumption);
     }
 
     private void buttonRemoveDriver_Click(object sender, EventArgs e)
     {
       if (drivers.Count > 0)
-        drivers.RemoveAt(drivers.Count-1);
-      
-      for (int i = 0; i < 5; i++)
       {
-        if (driverIndex >= 5)
-          groupBox3.Controls.RemoveAt(driverIndex - 3);
+        drivers.RemoveAt(drivers.Count - 1);
       }
-      if (driverIndex >= 5)
+
+      if (driverCount > 1)
       {
-        driverIndex -= 5;
+        groupBox3.Controls.RemoveAt(groupBox3.Controls.Count - 1);
         driverCount--;
         driverPosX--;
       }

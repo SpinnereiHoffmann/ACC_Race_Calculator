@@ -100,6 +100,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
       this.groupBox3.Controls.Add(this.buttonAddDriver);
       this.groupBox3.Controls.Add(this.buttonRemoveDriver);
+      this.groupBox3.ForeColor = System.Drawing.SystemColors.ControlText;
       this.groupBox3.Location = new System.Drawing.Point(6, 7);
       this.groupBox3.Name = "groupBox3";
       this.groupBox3.Size = new System.Drawing.Size(480, 124);
@@ -287,7 +288,7 @@
       this.tabPage2.Location = new System.Drawing.Point(4, 22);
       this.tabPage2.Name = "tabPage2";
       this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage2.Size = new System.Drawing.Size(483, 383);
+      this.tabPage2.Size = new System.Drawing.Size(493, 383);
       this.tabPage2.TabIndex = 1;
       this.tabPage2.Text = "Strategie";
       this.tabPage2.UseVisualStyleBackColor = true;
@@ -296,7 +297,7 @@
       // 
       this.tabPage3.Location = new System.Drawing.Point(4, 22);
       this.tabPage3.Name = "tabPage3";
-      this.tabPage3.Size = new System.Drawing.Size(483, 383);
+      this.tabPage3.Size = new System.Drawing.Size(493, 383);
       this.tabPage3.TabIndex = 2;
       this.tabPage3.Text = "Bestzeiten";
       this.tabPage3.UseVisualStyleBackColor = true;
