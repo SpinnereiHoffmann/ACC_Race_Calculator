@@ -20,11 +20,11 @@ namespace WindowsFormsApp1
     }
 
     // Felder
-    string durationHours;
-    string durationMins;
-    string stintLimitation;
-    string fuelQuantity;
-    string stintTime;
+    //string durationHours;
+    //string durationMins;
+    //string stintLimitation;
+    //string fuelQuantity;
+    //string stintTime;
     List<Driver>  drivers   = new List<Driver>();
     List<Pitstop> pitstops  = new List<Pitstop>();
 
@@ -79,13 +79,12 @@ namespace WindowsFormsApp1
       xmlWrite.WriteStartElement(track);
 
       int i = 0;
-      foreach(Driver Counter in drivers)
+      foreach(Driver driver in drivers)
       {
         // einen Eintrag erstellen
         xmlWrite.WriteStartElement("Fahrer", drivers[i].Counter);
 
         // einen Namen mit Wert schreiben
-        //xmlWrite.WriteElementString("Counter", drivers[i].Counter);
         xmlWrite.WriteElementString("name", drivers[i].Name);
         xmlWrite.WriteElementString("minutes", drivers[i].Mins);
         xmlWrite.WriteElementString("seconds", drivers[i].Secs);
@@ -110,6 +109,7 @@ namespace WindowsFormsApp1
       foreach(Pitstop pitstop in pitstops)
       {
         xmlWrite.WriteStartElement("pitstops", pitstops[pitIndex].counter);
+
         xmlWrite.WriteElementString("description", pitstops[pitIndex].name);
         xmlWrite.WriteElementString("seconds", pitstops[pitIndex].seconds);
 
@@ -154,9 +154,45 @@ namespace WindowsFormsApp1
           bool xmlVorhanden = System.IO.File.Exists(GetFilename());
 
           // open .xml file
-          if (xmlVorhanden)
+          if (xmlVorhanden == false)
+          {
+            // wenn nicht, verlassen wir die Methode direkt wieder
+            //MessageBox.Show("Datei nicht vorhanden");
+            return;
+          }
+          else
           {
             XmlReader xmlRead = XmlReader.Create(GetFilename());
+
+            //xmlRead.ReadToFollowing("name");
+            //MessageBox.Show(xmlRead.ReadElementString());
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(xmlRead);
+
+            // foreach driver
+            foreach(var fahrer in doc.GetElementsByTagName("Fahrer").OfType<XmlElement>())
+            {
+              buttonAddDriver_Click(sender, e);
+
+              //MessageBox.Show(xmlRead.Read().ToString());
+            }
+            //xmlRead.    
+
+            XmlReader xmlReadnew = XmlReader.Create(GetFilename());
+            for (int i = 0; i < 2; i++)
+            {
+              xmlReadnew.ReadToFollowing("name");
+              MessageBox.Show(xmlReadnew.ReadElementString());
+              //xmlReadnew.ReadToFollowing("name");
+              //MessageBox.Show(xmlReadnew.ReadElementString());
+            }
+
+
+            // foreach pitstop
+            foreach (var pitstop in doc.GetElementsByTagName("pitstops").OfType<XmlElement>())
+              buttonAddPitstop_Click(sender, e);
+
             xmlRead.Close();
           }
         }

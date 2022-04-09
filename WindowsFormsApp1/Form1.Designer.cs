@@ -77,7 +77,7 @@
       this.tabControl1.Location = new System.Drawing.Point(140, 12);
       this.tabControl1.Name = "tabControl1";
       this.tabControl1.SelectedIndex = 0;
-      this.tabControl1.Size = new System.Drawing.Size(501, 409);
+      this.tabControl1.Size = new System.Drawing.Size(542, 417);
       this.tabControl1.TabIndex = 0;
       // 
       // tabPage1
@@ -88,7 +88,7 @@
       this.tabPage1.Location = new System.Drawing.Point(4, 22);
       this.tabPage1.Name = "tabPage1";
       this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage1.Size = new System.Drawing.Size(493, 383);
+      this.tabPage1.Size = new System.Drawing.Size(534, 391);
       this.tabPage1.TabIndex = 0;
       this.tabPage1.Text = "Daten";
       this.tabPage1.UseVisualStyleBackColor = true;
@@ -102,7 +102,7 @@
       this.groupBox3.ForeColor = System.Drawing.SystemColors.ControlText;
       this.groupBox3.Location = new System.Drawing.Point(6, 7);
       this.groupBox3.Name = "groupBox3";
-      this.groupBox3.Size = new System.Drawing.Size(480, 124);
+      this.groupBox3.Size = new System.Drawing.Size(521, 124);
       this.groupBox3.TabIndex = 32;
       this.groupBox3.TabStop = false;
       // 
@@ -143,7 +143,7 @@
       this.groupBox2.Controls.Add(this.labelStintTime);
       this.groupBox2.Location = new System.Drawing.Point(6, 137);
       this.groupBox2.Name = "groupBox2";
-      this.groupBox2.Size = new System.Drawing.Size(480, 96);
+      this.groupBox2.Size = new System.Drawing.Size(521, 96);
       this.groupBox2.TabIndex = 31;
       this.groupBox2.TabStop = false;
       // 
@@ -256,7 +256,7 @@
       this.groupBox1.Controls.Add(this.buttonRemovePitstop);
       this.groupBox1.Location = new System.Drawing.Point(6, 239);
       this.groupBox1.Name = "groupBox1";
-      this.groupBox1.Size = new System.Drawing.Size(480, 138);
+      this.groupBox1.Size = new System.Drawing.Size(521, 138);
       this.groupBox1.TabIndex = 30;
       this.groupBox1.TabStop = false;
       // 
@@ -332,7 +332,7 @@
       // buttonWrite
       // 
       this.buttonWrite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.buttonWrite.Location = new System.Drawing.Point(12, 393);
+      this.buttonWrite.Location = new System.Drawing.Point(12, 401);
       this.buttonWrite.Name = "buttonWrite";
       this.buttonWrite.Size = new System.Drawing.Size(122, 23);
       this.buttonWrite.TabIndex = 2;
@@ -351,7 +351,7 @@
       // buttonOpenGlobal
       // 
       this.buttonOpenGlobal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.buttonOpenGlobal.Location = new System.Drawing.Point(12, 364);
+      this.buttonOpenGlobal.Location = new System.Drawing.Point(12, 372);
       this.buttonOpenGlobal.Name = "buttonOpenGlobal";
       this.buttonOpenGlobal.Size = new System.Drawing.Size(122, 23);
       this.buttonOpenGlobal.TabIndex = 4;
@@ -361,7 +361,7 @@
       // textBoxLocalPath
       // 
       this.textBoxLocalPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.textBoxLocalPath.Location = new System.Drawing.Point(11, 270);
+      this.textBoxLocalPath.Location = new System.Drawing.Point(11, 278);
       this.textBoxLocalPath.Name = "textBoxLocalPath";
       this.textBoxLocalPath.Size = new System.Drawing.Size(121, 20);
       this.textBoxLocalPath.TabIndex = 5;
@@ -371,7 +371,7 @@
       // 
       this.labelLocalPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.labelLocalPath.AutoSize = true;
-      this.labelLocalPath.Location = new System.Drawing.Point(12, 254);
+      this.labelLocalPath.Location = new System.Drawing.Point(12, 262);
       this.labelLocalPath.Name = "labelLocalPath";
       this.labelLocalPath.Size = new System.Drawing.Size(54, 13);
       this.labelLocalPath.TabIndex = 6;
@@ -380,7 +380,7 @@
       // textBoxGlobalPath
       // 
       this.textBoxGlobalPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.textBoxGlobalPath.Location = new System.Drawing.Point(12, 338);
+      this.textBoxGlobalPath.Location = new System.Drawing.Point(12, 346);
       this.textBoxGlobalPath.Name = "textBoxGlobalPath";
       this.textBoxGlobalPath.Size = new System.Drawing.Size(121, 20);
       this.textBoxGlobalPath.TabIndex = 7;
@@ -390,7 +390,7 @@
       // 
       this.labelGlobalPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.labelGlobalPath.AutoSize = true;
-      this.labelGlobalPath.Location = new System.Drawing.Point(9, 322);
+      this.labelGlobalPath.Location = new System.Drawing.Point(9, 330);
       this.labelGlobalPath.Name = "labelGlobalPath";
       this.labelGlobalPath.Size = new System.Drawing.Size(60, 13);
       this.labelGlobalPath.TabIndex = 8;
@@ -399,7 +399,7 @@
       // buttonOpenLocal
       // 
       this.buttonOpenLocal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.buttonOpenLocal.Location = new System.Drawing.Point(11, 296);
+      this.buttonOpenLocal.Location = new System.Drawing.Point(11, 304);
       this.buttonOpenLocal.Name = "buttonOpenLocal";
       this.buttonOpenLocal.Size = new System.Drawing.Size(122, 23);
       this.buttonOpenLocal.TabIndex = 9;
@@ -410,7 +410,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(653, 433);
+      this.ClientSize = new System.Drawing.Size(694, 441);
       this.Controls.Add(this.buttonOpenLocal);
       this.Controls.Add(this.labelGlobalPath);
       this.Controls.Add(this.textBoxGlobalPath);
