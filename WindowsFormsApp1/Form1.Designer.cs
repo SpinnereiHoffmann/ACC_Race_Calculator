@@ -49,6 +49,15 @@
       this.buttonAddPitstop = new System.Windows.Forms.Button();
       this.buttonRemovePitstop = new System.Windows.Forms.Button();
       this.tabPage2 = new System.Windows.Forms.TabPage();
+      this.groupBoxStints = new System.Windows.Forms.GroupBox();
+      this.groupBoxTotalStintTime = new System.Windows.Forms.GroupBox();
+      this.panelStints = new System.Windows.Forms.Panel();
+      this.labelSeperator = new System.Windows.Forms.Label();
+      this.labelStartTime = new System.Windows.Forms.Label();
+      this.textBoxStartMin = new System.Windows.Forms.TextBox();
+      this.textBoxStartHour = new System.Windows.Forms.TextBox();
+      this.buttonCalculate = new System.Windows.Forms.Button();
+      this.labelRennstart = new System.Windows.Forms.Label();
       this.tabPage3 = new System.Windows.Forms.TabPage();
       this.comboBoxTracks = new System.Windows.Forms.ComboBox();
       this.buttonWrite = new System.Windows.Forms.Button();
@@ -65,6 +74,7 @@
       this.groupBox3.SuspendLayout();
       this.groupBox2.SuspendLayout();
       this.groupBox1.SuspendLayout();
+      this.tabPage2.SuspendLayout();
       this.SuspendLayout();
       // 
       // tabControl1
@@ -283,6 +293,15 @@
       // 
       // tabPage2
       // 
+      this.tabPage2.Controls.Add(this.groupBoxStints);
+      this.tabPage2.Controls.Add(this.groupBoxTotalStintTime);
+      this.tabPage2.Controls.Add(this.panelStints);
+      this.tabPage2.Controls.Add(this.labelSeperator);
+      this.tabPage2.Controls.Add(this.labelStartTime);
+      this.tabPage2.Controls.Add(this.textBoxStartMin);
+      this.tabPage2.Controls.Add(this.textBoxStartHour);
+      this.tabPage2.Controls.Add(this.buttonCalculate);
+      this.tabPage2.Controls.Add(this.labelRennstart);
       this.tabPage2.Location = new System.Drawing.Point(4, 22);
       this.tabPage2.Name = "tabPage2";
       this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -290,6 +309,93 @@
       this.tabPage2.TabIndex = 1;
       this.tabPage2.Text = "Strategie";
       this.tabPage2.UseVisualStyleBackColor = true;
+      // 
+      // groupBoxStints
+      // 
+      this.groupBoxStints.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.groupBoxStints.Location = new System.Drawing.Point(416, 169);
+      this.groupBoxStints.Name = "groupBoxStints";
+      this.groupBoxStints.Size = new System.Drawing.Size(112, 215);
+      this.groupBoxStints.TabIndex = 10;
+      this.groupBoxStints.TabStop = false;
+      this.groupBoxStints.Text = "Stints";
+      // 
+      // groupBoxTotalStintTime
+      // 
+      this.groupBoxTotalStintTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+      this.groupBoxTotalStintTime.Location = new System.Drawing.Point(416, 43);
+      this.groupBoxTotalStintTime.Name = "groupBoxTotalStintTime";
+      this.groupBoxTotalStintTime.Size = new System.Drawing.Size(112, 120);
+      this.groupBoxTotalStintTime.TabIndex = 9;
+      this.groupBoxTotalStintTime.TabStop = false;
+      this.groupBoxTotalStintTime.Text = "Gesamt";
+      // 
+      // panelStints
+      // 
+      this.panelStints.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.panelStints.AutoScroll = true;
+      this.panelStints.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.panelStints.Location = new System.Drawing.Point(3, 50);
+      this.panelStints.Name = "panelStints";
+      this.panelStints.Size = new System.Drawing.Size(407, 338);
+      this.panelStints.TabIndex = 8;
+      // 
+      // labelSeperator
+      // 
+      this.labelSeperator.AutoSize = true;
+      this.labelSeperator.Location = new System.Drawing.Point(35, 27);
+      this.labelSeperator.Name = "labelSeperator";
+      this.labelSeperator.Size = new System.Drawing.Size(10, 13);
+      this.labelSeperator.TabIndex = 5;
+      this.labelSeperator.Text = ":";
+      // 
+      // labelStartTime
+      // 
+      this.labelStartTime.AutoSize = true;
+      this.labelStartTime.Location = new System.Drawing.Point(70, 27);
+      this.labelStartTime.Name = "labelStartTime";
+      this.labelStartTime.Size = new System.Drawing.Size(24, 13);
+      this.labelStartTime.TabIndex = 4;
+      this.labelStartTime.Text = "Uhr";
+      // 
+      // textBoxStartMin
+      // 
+      this.textBoxStartMin.Location = new System.Drawing.Point(45, 24);
+      this.textBoxStartMin.Name = "textBoxStartMin";
+      this.textBoxStartMin.Size = new System.Drawing.Size(25, 20);
+      this.textBoxStartMin.TabIndex = 3;
+      this.textBoxStartMin.Text = "30";
+      // 
+      // textBoxStartHour
+      // 
+      this.textBoxStartHour.Location = new System.Drawing.Point(10, 24);
+      this.textBoxStartHour.Name = "textBoxStartHour";
+      this.textBoxStartHour.Size = new System.Drawing.Size(25, 20);
+      this.textBoxStartHour.TabIndex = 2;
+      this.textBoxStartHour.Text = "12";
+      // 
+      // buttonCalculate
+      // 
+      this.buttonCalculate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+      this.buttonCalculate.Location = new System.Drawing.Point(453, 7);
+      this.buttonCalculate.Name = "buttonCalculate";
+      this.buttonCalculate.Size = new System.Drawing.Size(75, 23);
+      this.buttonCalculate.TabIndex = 1;
+      this.buttonCalculate.Text = "Berechnen";
+      this.buttonCalculate.UseVisualStyleBackColor = true;
+      this.buttonCalculate.Click += new System.EventHandler(this.buttonCalculate_Click);
+      // 
+      // labelRennstart
+      // 
+      this.labelRennstart.AutoSize = true;
+      this.labelRennstart.Location = new System.Drawing.Point(7, 7);
+      this.labelRennstart.Name = "labelRennstart";
+      this.labelRennstart.Size = new System.Drawing.Size(53, 13);
+      this.labelRennstart.TabIndex = 0;
+      this.labelRennstart.Text = "Rennstart";
       // 
       // tabPage3
       // 
@@ -446,6 +552,8 @@
       this.groupBox2.ResumeLayout(false);
       this.groupBox2.PerformLayout();
       this.groupBox1.ResumeLayout(false);
+      this.tabPage2.ResumeLayout(false);
+      this.tabPage2.PerformLayout();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -485,6 +593,15 @@
     private System.Windows.Forms.GroupBox groupBox2;
     private System.Windows.Forms.GroupBox groupBox3;
     private System.Windows.Forms.Label labelVersion;
+    private System.Windows.Forms.Button buttonCalculate;
+    private System.Windows.Forms.Label labelRennstart;
+    private System.Windows.Forms.TextBox textBoxStartHour;
+    private System.Windows.Forms.Label labelSeperator;
+    private System.Windows.Forms.Label labelStartTime;
+    private System.Windows.Forms.TextBox textBoxStartMin;
+    private System.Windows.Forms.GroupBox groupBoxTotalStintTime;
+    private System.Windows.Forms.Panel panelStints;
+    private System.Windows.Forms.GroupBox groupBoxStints;
   }
 }
 

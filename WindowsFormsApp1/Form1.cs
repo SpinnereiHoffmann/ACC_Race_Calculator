@@ -34,6 +34,7 @@ namespace WindowsFormsApp1
       public string Secs { get; set; }
       public string Thos { get; set; }
       public string Cons { get; set; }
+      public double laps { get; set; }
     }
 
     class Pitstop
@@ -46,7 +47,6 @@ namespace WindowsFormsApp1
     // helpers
     private void ReloadForm(object sender, EventArgs e)
     {
-
       labelVersion.Text = "Version: ";
       
       // foreach driver
@@ -541,6 +541,83 @@ namespace WindowsFormsApp1
     {
       local = false;
       ReloadForm(sender, e);
+    }
+
+    private void buttonCalculate_Click(object sender, EventArgs e)
+    {
+      groupBoxTotalStintTime.Controls.Clear();
+
+      // while noch Runden oder Zeit übrig
+      // Create Stint()
+
+      // foreach driver
+      int posY = 1;
+      foreach (Driver driver in drivers)
+      {
+        // add laps to class Driver
+        driver.laps = Convert.ToDouble(textBoxFuelQuantity.Text) / Convert.ToDouble(driver.Cons);
+        MessageBox.Show(driver.laps.ToString());
+
+        // create Label for every Driver
+        Label totalStintTime = new Label
+        {
+          Name = driver.Counter,
+          Text = driver.Name,
+          Size = new Size(70, 15),
+          Anchor = AnchorStyles.Right | AnchorStyles.Top,
+          Location = new Point(5, 20 * (posY))
+        };
+
+        posY++;
+        groupBoxTotalStintTime.Controls.Add(totalStintTime);
+      }
+
+      // calculate stints
+      // get duration in minutes
+      int duration = Convert.ToInt32(textBoxDurationHours.Text) * 60 + Convert.ToInt32(textBoxDurationMins.Text);
+      int stints;
+      decimal left;
+      
+      if (comboBox1.SelectedIndex == 0) // Tankvolumen
+      {
+        // Tankvolumen / Verbrauch
+        foreach (Driver driver in drivers)
+        {
+          
+        }
+        stints = 0; // Funktion zum ermitteln der Stints aufrufen
+      }
+      // Stintzeit
+      else
+      {
+        // if Tankvolumen ausreichend für Stintzeit
+        {
+          stints = duration / Convert.ToInt32(textBoxStintTime.Text);
+          left = Convert.ToDecimal(duration) / Convert.ToDecimal(textBoxStintTime.Text) - Convert.ToDecimal(stints);
+          if (left != 0)
+            stints++;
+            
+          //MessageBox.Show(Convert.ToString(left));
+        }
+        // else
+        // Funktion zum ermitteln der Stints aufrufen
+      }
+
+      posY = 0;
+      for (int i = 0; i < stints; i++)
+      {
+        GroupBox stint = new GroupBox
+        {
+          Name = "stint" + Convert.ToString(i+1),
+          Text = "Stint" + Convert.ToString(i + 1),
+          Size = new Size(375, 90),
+          Anchor = AnchorStyles.Left | AnchorStyles.Top,
+          Location = new Point(5, 5 + 90 * (posY))
+        };
+
+        posY++;
+        panelStints.Controls.Add(stint);
+      }
     }
   }
 }
