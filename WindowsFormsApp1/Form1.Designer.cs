@@ -59,6 +59,7 @@
       this.textBoxGlobalPath = new System.Windows.Forms.TextBox();
       this.labelGlobalPath = new System.Windows.Forms.Label();
       this.buttonOpenLocal = new System.Windows.Forms.Button();
+      this.labelVersion = new System.Windows.Forms.Label();
       this.tabControl1.SuspendLayout();
       this.tabPage1.SuspendLayout();
       this.groupBox3.SuspendLayout();
@@ -285,7 +286,7 @@
       this.tabPage2.Location = new System.Drawing.Point(4, 22);
       this.tabPage2.Name = "tabPage2";
       this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage2.Size = new System.Drawing.Size(493, 383);
+      this.tabPage2.Size = new System.Drawing.Size(534, 391);
       this.tabPage2.TabIndex = 1;
       this.tabPage2.Text = "Strategie";
       this.tabPage2.UseVisualStyleBackColor = true;
@@ -294,7 +295,7 @@
       // 
       this.tabPage3.Location = new System.Drawing.Point(4, 22);
       this.tabPage3.Name = "tabPage3";
-      this.tabPage3.Size = new System.Drawing.Size(493, 383);
+      this.tabPage3.Size = new System.Drawing.Size(534, 391);
       this.tabPage3.TabIndex = 2;
       this.tabPage3.Text = "Bestzeiten";
       this.tabPage3.UseVisualStyleBackColor = true;
@@ -343,7 +344,7 @@
       // labelTrack
       // 
       this.labelTrack.AutoSize = true;
-      this.labelTrack.Location = new System.Drawing.Point(13, 12);
+      this.labelTrack.Location = new System.Drawing.Point(13, 10);
       this.labelTrack.Name = "labelTrack";
       this.labelTrack.Size = new System.Drawing.Size(0, 13);
       this.labelTrack.TabIndex = 3;
@@ -406,11 +407,22 @@
       this.buttonOpenLocal.Text = "Öffne Local";
       this.buttonOpenLocal.UseVisualStyleBackColor = true;
       // 
+      // labelVersion
+      // 
+      this.labelVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+      this.labelVersion.AutoSize = true;
+      this.labelVersion.Location = new System.Drawing.Point(600, 10);
+      this.labelVersion.Name = "labelVersion";
+      this.labelVersion.Size = new System.Drawing.Size(48, 13);
+      this.labelVersion.TabIndex = 10;
+      this.labelVersion.Text = "Version: ";
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(694, 441);
+      this.Controls.Add(this.labelVersion);
       this.Controls.Add(this.buttonOpenLocal);
       this.Controls.Add(this.labelGlobalPath);
       this.Controls.Add(this.textBoxGlobalPath);
@@ -470,6 +482,7 @@
     private System.Windows.Forms.GroupBox groupBox1;
     private System.Windows.Forms.GroupBox groupBox2;
     private System.Windows.Forms.GroupBox groupBox3;
+    private System.Windows.Forms.Label labelVersion;
   }
 }
 

@@ -20,11 +20,7 @@ namespace WindowsFormsApp1
     }
 
     // Felder
-    //string durationHours;
-    //string durationMins;
-    //string stintLimitation;
-    //string fuelQuantity;
-    //string stintTime;
+    string version = "0.0.3";
     List<Driver>  drivers   = new List<Driver>();
     List<Pitstop> pitstops  = new List<Pitstop>();
 
@@ -65,9 +61,9 @@ namespace WindowsFormsApp1
     {
       //MessageBox.Show(box.Name);
       XmlReader xmlRead = XmlReader.Create(GetFilename());
-      xmlRead.ReadToDescendant(key, driver);
       
-      box.Text = xmlRead.ReadElementString();
+      if (xmlRead.ReadToDescendant(key, driver))
+        box.Text = xmlRead.ReadElementString();
       
       xmlRead.Close();
       
@@ -146,6 +142,8 @@ namespace WindowsFormsApp1
       using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software\\ACC-RC"))
       {
 
+        labelVersion.Text += version;
+
         if (regKey == null)
         {
           comboBoxTracks.Text = "";
@@ -177,9 +175,6 @@ namespace WindowsFormsApp1
           {
             XmlReader xmlRead = XmlReader.Create(GetFilename());
 
-            //xmlRead.ReadToFollowing("name");
-            //MessageBox.Show(xmlRead.ReadElementString());
-
             XmlDocument doc = new XmlDocument();
             doc.Load(xmlRead);
 
@@ -187,23 +182,28 @@ namespace WindowsFormsApp1
             foreach(var fahrer in doc.GetElementsByTagName("Fahrer").OfType<XmlElement>())
             {
               buttonAddDriver_Click(sender, e);
-              //MessageBox.Show(sender.ToString());
-              //MessageBox.Show(e.ToString());
-
-              //MessageBox.Show(xmlRead.Read().ToString());
             }
+
+            // for racedata
+            XmlReader raceData = XmlReader.Create(GetFilename());
+            
+            raceData.ReadToFollowing("hours");
+            textBoxDurationHours.Text = raceData.ReadElementString();
+
+            raceData.ReadToFollowing("mins");
+            textBoxDurationMins.Text = raceData.ReadElementString();
+
+            raceData.ReadToFollowing("limitation");
+            comboBox1.Text = raceData.ReadElementString();
+
+            raceData.ReadToFollowing("fuelQuantity");
+            textBoxFuelQuantity.Text = raceData.ReadElementString();
+
+            raceData.ReadToFollowing("stintTime");
+            textBoxStintTime.Text = raceData.ReadElementString();
+
+            raceData.Close();
             //xmlRead.    
-
-            //XmlReader xmlReadnew = XmlReader.Create(GetFilename());
-            //for (int i = 0; i < 2; i++)
-            //{
-              //xmlReadnew.ReadToFollowing("name");
-
-              //MessageBox.Show(xmlReadnew.ReadElementString());
-              //xmlReadnew.ReadToFollowing("name");
-              //MessageBox.Show(xmlReadnew.ReadElementString());
-            //}
-
 
             // foreach pitstop
             foreach (var pitstop in doc.GetElementsByTagName("pitstops").OfType<XmlElement>())
@@ -412,6 +412,8 @@ namespace WindowsFormsApp1
         Size = new Size(120, 20),
         Location = new Point(100, 25 * (pitPosY + 1))
       };
+      description.Text = GetText(description.Name, description, "description");
+      description.TextChanged += DynDescription_TextChanged;
 
       TextBox duration = new TextBox
       {
@@ -420,6 +422,8 @@ namespace WindowsFormsApp1
         Size = new Size(30, 20),
         Location = new Point(220, 25 * (pitPosY + 1))
       };
+      duration.Text = GetText(description.Name, duration, "seconds");
+      duration.TextChanged += DynDuration_TextChanged;
 
       // erstelle einen neuen Pitstopp
       pitstops.Add(new Pitstop()
@@ -428,6 +432,18 @@ namespace WindowsFormsApp1
         name = description.Text,
         seconds = duration.Text,
       });
+
+      void DynDescription_TextChanged(object dynSender, EventArgs dynE)
+      {
+        int groupBox = Convert.ToInt32(description.Name.Substring(3));
+        pitstops[groupBox - 1].name = description.Text;
+      }
+
+      void DynDuration_TextChanged(object dynSender, EventArgs dynE)
+      {
+        int groupBox = Convert.ToInt32(description.Name.Substring(3));
+        pitstops[groupBox - 1].seconds = duration.Text;
+      }
 
       pitCount++;
       pitPosY++;
