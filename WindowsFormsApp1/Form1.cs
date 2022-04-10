@@ -20,7 +20,9 @@ namespace WindowsFormsApp1
     }
 
     // Felder
-    string version = "0.0.3";
+    string version  = "0.0.3";
+    bool local      = false;
+    
     List<Driver>  drivers   = new List<Driver>();
     List<Pitstop> pitstops  = new List<Pitstop>();
 
@@ -42,16 +44,59 @@ namespace WindowsFormsApp1
     }
 
     // helpers
-    private string GetFilename()
+    private void ReloadForm(object sender, EventArgs e)
+    {
+      // foreach driver
+      int nDrivers = 0;
+      foreach (Driver element in drivers)
+        nDrivers++;
+
+      while (nDrivers > 0)
+      {
+        buttonRemoveDriver_Click(sender, e);
+        nDrivers--;
+      }
+
+      // foreach pitstop
+      int nPitstops = 0;
+      foreach (Pitstop element in pitstops)
+        nPitstops++;
+      while (nPitstops > 0)
+      {
+        buttonRemovePitstop_Click(sender, e);
+        nPitstops--;
+      }
+
+      SetWindowSizeAndPosition();
+      Form1_Load(sender, e);
+    }
+
+    private void SetWindowSizeAndPosition()
+    {
+      using (RegistryKey regKey = Registry.CurrentUser.CreateSubKey("Software\\ACC-RC"))
+      {
+        // set window size and position
+        regKey.SetValue("Top", Convert.ToString(this.Top));
+        regKey.SetValue("Left", Convert.ToString(this.Left));
+        regKey.SetValue("Height", Convert.ToString(this.Height));
+        regKey.SetValue("Width", Convert.ToString(this.Width));
+      }
+    }
+
+  private string GetFilename()
     {
       string filename;
 
       using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software\\ACC-RC"))
       {
         string gPath = Convert.ToString(regKey.GetValue("GlobalPath"));
+        string lPath = Convert.ToString(regKey.GetValue("LocalPath"));
         string track = Convert.ToString(regKey.GetValue("Track"));
         string duration = Convert.ToString(regKey.GetValue("Duration"));
         filename = gPath + track + duration + ".xml";
+        
+        if (local)
+          filename = lPath + track + duration + ".xml";
       }
       
       return filename;
@@ -242,6 +287,10 @@ namespace WindowsFormsApp1
         regKey.SetValue("Duration", duration.ToString());
       }
 
+      local = true;
+      WriteToXML();
+      
+      local = false;
       WriteToXML();
     }
 
@@ -263,14 +312,7 @@ namespace WindowsFormsApp1
 
     private void Form1_FormClosed(object sender, FormClosedEventArgs e)
     {
-      using (RegistryKey regKey = Registry.CurrentUser.CreateSubKey("Software\\ACC-RC"))
-      {
-        // set window size and position
-        regKey.SetValue("Top", Convert.ToString(this.Top));
-        regKey.SetValue("Left", Convert.ToString(this.Left));
-        regKey.SetValue("Height", Convert.ToString(this.Height));
-        regKey.SetValue("Width", Convert.ToString(this.Width));
-      }
+      SetWindowSizeAndPosition();
     }
 
     int driverCount = 1;
@@ -484,6 +526,18 @@ namespace WindowsFormsApp1
         labelFuelQuantity.Text = "Spritmenge";
         textBoxStintTime.Enabled = false;
       }
+    }
+
+    private void buttonOpenLocal_Click(object sender, EventArgs e)
+    {
+      local = true;
+      ReloadForm(sender, e);
+    }
+
+    private void buttonOpenGlobal_Click(object sender, EventArgs e)
+    {
+      local = false;
+      ReloadForm(sender, e);
     }
   }
 }

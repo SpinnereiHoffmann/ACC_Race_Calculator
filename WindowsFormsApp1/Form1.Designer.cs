@@ -358,6 +358,7 @@
       this.buttonOpenGlobal.TabIndex = 4;
       this.buttonOpenGlobal.Text = "Öffne Global";
       this.buttonOpenGlobal.UseVisualStyleBackColor = true;
+      this.buttonOpenGlobal.Click += new System.EventHandler(this.buttonOpenGlobal_Click);
       // 
       // textBoxLocalPath
       // 
@@ -406,6 +407,7 @@
       this.buttonOpenLocal.TabIndex = 9;
       this.buttonOpenLocal.Text = "Öffne Local";
       this.buttonOpenLocal.UseVisualStyleBackColor = true;
+      this.buttonOpenLocal.Click += new System.EventHandler(this.buttonOpenLocal_Click);
       // 
       // labelVersion
       // 
