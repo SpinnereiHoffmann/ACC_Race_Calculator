@@ -46,6 +46,9 @@ namespace WindowsFormsApp1
     // helpers
     private void ReloadForm(object sender, EventArgs e)
     {
+
+      labelVersion.Text = "Version: ";
+      
       // foreach driver
       int nDrivers = 0;
       foreach (Driver element in drivers)
