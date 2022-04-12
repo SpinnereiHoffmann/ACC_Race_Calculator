@@ -29,12 +29,20 @@ namespace WindowsFormsApp1
     class Driver
     {
       public string Counter { get; set; }
-      public string Name { get; set; }
-      public string Mins { get; set; }
-      public string Secs { get; set; }
-      public string Thos { get; set; }
-      public string Cons { get; set; }
-      public double laps { get; set; }
+      public string Name    { get; set; }
+      public string Mins    { get; set; }
+      public string Secs    { get; set; }
+      public string Thos    { get; set; }
+      public string Cons    { get; set; }
+      public double firstStintLaps    { get; set; }
+      public double firstStintMins    { get; set; }
+      public double firstStintFuel    { get; set; }
+      public double regularStintLaps  { get; set; }
+      public double regularStintMins  { get; set; }
+      public double regularStintFuel  { get; set; }
+      public double lastStintLaps     { get; set; }
+      public double lastStintMins     { get; set; }
+      public double lastStintFuel     { get; set; }
     }
 
     class Pitstop
@@ -42,6 +50,11 @@ namespace WindowsFormsApp1
       public string counter { get; set; }
       public string name    { get; set; }
       public string seconds { get; set; }
+    }
+
+    class Stint
+    {
+      //public string limitation { get; set; }
     }
 
     // helpers
@@ -547,17 +560,77 @@ namespace WindowsFormsApp1
     {
       groupBoxTotalStintTime.Controls.Clear();
 
-      // while noch Runden oder Zeit übrig
-      // Create Stint()
+      // get duration in minutes
+      int duration = Convert.ToInt32(textBoxDurationHours.Text) * 60 + Convert.ToInt32(textBoxDurationMins.Text);
+      int lapCount    = 0;
+
+      // which stint limitation
+      if (comboBox1.SelectedIndex == 0) // Tankvolumen (no stint limitation)
+      {
+        foreach (Driver driver in drivers)
+        {
+          // calculate first stint
+          // fuelQuantity - consumption ("outlap")
+          double fuelQuantity = Convert.ToDouble(textBoxFuelQuantity.Text) - Convert.ToDouble(driver.Cons);
+          
+          // use Math.Truncate() to get 3 from 3.98
+          driver.firstStintLaps = Math.Truncate(fuelQuantity / Convert.ToDouble(driver.Cons));
+
+          double lapSeconds = Convert.ToDouble(driver.Mins) * 60 + Convert.ToDouble(driver.Secs + "," + driver.Thos);
+          driver.firstStintMins = driver.firstStintLaps * lapSeconds / 60;
+
+          driver.firstStintFuel = Math.Truncate((driver.firstStintLaps + 1) * Convert.ToDouble(driver.Cons)) + 1;
+
+          // calculate regular stint
+          driver.regularStintLaps = Math.Truncate(Convert.ToDouble(textBoxFuelQuantity.Text) / Convert.ToDouble(driver.Cons));
+
+          lapSeconds = Convert.ToDouble(driver.Mins) * 60 + Convert.ToDouble(driver.Secs + "," + driver.Thos);
+          driver.regularStintMins = driver.regularStintLaps * lapSeconds / 60;
+
+          driver.regularStintFuel = Math.Truncate((driver.regularStintLaps) * Convert.ToDouble(driver.Cons)) + 1;
+        }
+      }
+      // else: stinttime
+      else
+      {
+        foreach (Driver driver in drivers)
+        {
+          // calculate first stint
+          double fuelQuantity = Convert.ToDouble(textBoxFuelQuantity.Text) - Convert.ToDouble(driver.Cons);
+
+          double lapSeconds = Convert.ToDouble(driver.Mins) * 60 + Convert.ToDouble(driver.Secs + "," + driver.Thos);
+          double stintSeconds = Convert.ToDouble(textBoxStintTime.Text) * 60;
+          driver.firstStintLaps = Math.Truncate(stintSeconds / lapSeconds);
+
+          driver.firstStintMins = driver.firstStintLaps * lapSeconds / 60;
+
+          driver.firstStintFuel = Math.Truncate((driver.firstStintLaps + 1) * Convert.ToDouble(driver.Cons)) + 1;
+
+          bool lessFuel = false;
+
+          while (fuelQuantity < driver.firstStintLaps * Convert.ToDouble(driver.Cons))
+          {
+            if (lessFuel == false)
+            {
+              MessageBox.Show("Das Tankvolumen reicht nicht aus\n Es werden Runden abgezogen");
+              lessFuel = true;
+            }
+            driver.firstStintLaps--;
+            driver.firstStintMins -= lapSeconds / 60;
+            driver.firstStintFuel = Math.Truncate((driver.firstStintLaps + 1) * Convert.ToDouble(driver.Cons)) + 1;
+          }
+
+          // calculate regular stint
+          driver.regularStintLaps = driver.firstStintLaps;
+          driver.regularStintMins = driver.firstStintMins;
+          driver.regularStintFuel = Math.Truncate((driver.regularStintLaps) * Convert.ToDouble(driver.Cons)) + 1;
+        }
+      }
 
       // foreach driver
       int posY = 1;
       foreach (Driver driver in drivers)
       {
-        // add laps to class Driver
-        driver.laps = Convert.ToDouble(textBoxFuelQuantity.Text) / Convert.ToDouble(driver.Cons);
-        MessageBox.Show(driver.laps.ToString());
-
         // create Label for every Driver
         Label totalStintTime = new Label
         {
@@ -572,39 +645,39 @@ namespace WindowsFormsApp1
         groupBoxTotalStintTime.Controls.Add(totalStintTime);
       }
 
+      // while noch Runden oder Zeit übrig
+      // Create Stint()
+
       // calculate stints
-      // get duration in minutes
-      int duration = Convert.ToInt32(textBoxDurationHours.Text) * 60 + Convert.ToInt32(textBoxDurationMins.Text);
-      int stints;
-      decimal left;
-      
-      if (comboBox1.SelectedIndex == 0) // Tankvolumen
+
+
+      //if (comboBox1.SelectedIndex == 0) // Tankvolumen
       {
         // Tankvolumen / Verbrauch
-        foreach (Driver driver in drivers)
-        {
-          
-        }
-        stints = 0; // Funktion zum ermitteln der Stints aufrufen
-      }
-      // Stintzeit
-      else
-      {
+        //foreach (Driver driver in drivers)
+        //{
+
+        //}
+        //stints = 0; // Funktion zum ermitteln der Stints aufrufen
+        //}
+        // Stintzeit
+        //else
+        //{
         // if Tankvolumen ausreichend für Stintzeit
-        {
-          stints = duration / Convert.ToInt32(textBoxStintTime.Text);
-          left = Convert.ToDecimal(duration) / Convert.ToDecimal(textBoxStintTime.Text) - Convert.ToDecimal(stints);
-          if (left != 0)
-            stints++;
-            
-          //MessageBox.Show(Convert.ToString(left));
-        }
+        //{
+        //stints = duration / Convert.ToInt32(textBoxStintTime.Text);
+        //left = Convert.ToDecimal(duration) / Convert.ToDecimal(textBoxStintTime.Text) - Convert.ToDecimal(stints);
+        //if (left != 0)
+        //stints++;
+
+        //MessageBox.Show(Convert.ToString(left));
+        //}
         // else
         // Funktion zum ermitteln der Stints aufrufen
       }
 
       posY = 0;
-      for (int i = 0; i < stints; i++)
+      for (int i = 0; i < 1; i++)
       {
         GroupBox stint = new GroupBox
         {
