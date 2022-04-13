@@ -58,6 +58,215 @@ namespace WindowsFormsApp1
     }
 
     // helpers
+    private void CreateStintbox(int stint, int posY)
+    {
+      GroupBox stintbox = new GroupBox
+      {
+        Name = "stint" + Convert.ToString(stint),
+        Text = "Stint" + Convert.ToString(stint),
+        Size = new Size(455, 100),
+        Anchor = AnchorStyles.Left | AnchorStyles.Top,
+        Location = new Point(5, 5 + 90 * (posY))
+      };
+
+      TextBox clockH = new TextBox
+      {
+        Name = "clockH" + stint.ToString(),
+        Text = textBoxStartHour.Text,
+        Size = new Size(25, 20),
+        Location = new Point(5,30)
+      };
+
+      Label seperator = new Label
+      {
+        Name = "seperator" + stint.ToString(),
+        Text = ":",
+        Size = new Size(10, 20),
+        Location = new Point(30, 33)
+      };
+
+      TextBox clockM = new TextBox
+      {
+        Name = "clockM" + stint.ToString(),
+        Text = textBoxStartMin.Text,
+        Size = new Size(25, 20),
+        Location = new Point(40, 30)
+      };
+
+      Label time = new Label
+      {
+        Name = "time" + stint.ToString(),
+        Text = "Uhr",
+        Size = new Size(30, 20),
+        Location = new Point(65, 34)
+      };
+
+      TextBox inlap = new TextBox
+      {
+        Name = "inlap" + stint.ToString(),
+        Text = "",
+        Size = new Size(30, 20),
+        Location = new Point(5, 55)
+      };
+
+      Label labelInlap = new Label
+      {
+        Name = "labelInlap" + stint.ToString(),
+        Text = "Inlap",
+        Size = new Size(40, 20),
+        Location = new Point(35, 59)
+      };
+
+      Label labelTemp = new Label
+      {
+        Name = "labelTemp" + stint.ToString(),
+        Text = "Temp",
+        Size = new Size(35, 20),
+        Location = new Point(100, 14)
+      };
+
+      TextBox temp = new TextBox
+      {
+        Name = "temp" + stint.ToString(),
+        Text = "20/20",
+        Size = new Size(45, 20),
+        Location = new Point(135, 10)
+      };
+
+      TextBox psiFL = new TextBox
+      {
+        Name = "psiFL" + stint.ToString(),
+        Text = "VL",
+        Size = new Size(30, 20),
+        Location = new Point(100, 35)
+      };
+
+      TextBox psiFR = new TextBox
+      {
+        Name = "psiFR" + stint.ToString(),
+        Text = "VR",
+        Size = new Size(30, 20),
+        Location = new Point(150, 35)
+      };
+
+      Label labelPsi = new Label
+      {
+        Name = "labelPsi" + stint.ToString(),
+        Text = "psi",
+        Size = new Size(30, 20),
+        Location = new Point(130, 55)
+      };
+
+      TextBox psiRL = new TextBox
+      {
+        Name = "psiRL" + stint.ToString(),
+        Text = "HL",
+        Size = new Size(30, 20),
+        Location = new Point(100, 70)
+      };
+
+      TextBox psiRR = new TextBox
+      {
+        Name = "psiRR" + stint.ToString(),
+        Text = "HR",
+        Size = new Size(30, 20),
+        Location = new Point(150, 70)
+      };
+
+      Label labelDuration = new Label
+      {
+        Name = "labelDuration" + stint.ToString(),
+        Text = "Stintlänge:   43:34 min",
+        Size = new Size(120, 20),
+        Location = new Point(200, 20)
+      };
+
+      Label labelLaps = new Label
+      {
+        Name = "labelLaps" + stint.ToString(),
+        Text = "Runden:       21 ",
+        Size = new Size(120, 20),
+        Location = new Point(200, 70)
+      };
+
+      Label labelFuel = new Label
+      {
+        Name = "labelFuel" + stint.ToString(),
+        Text = "Spritmenge: 78 l",
+        Size = new Size(120, 20),
+        Location = new Point(200, 45)
+      };
+
+      Label labelDriver = new Label
+      {
+        Name = "labelDriver" + stint.ToString(),
+        Text = "Fahrer",
+        Size = new Size(45, 20),
+        Location = new Point(325, 20)
+      };
+
+      ComboBox driver = new ComboBox
+      {
+        Name = "comboBoxDriver" + stint.ToString(),
+        Size = new Size(80, 20),
+        Location = new Point(370, 16)
+      };
+
+      Label labelSpotter = new Label
+      {
+        Name = "labelSpotter" + stint.ToString(),
+        Text = "Spotter",
+        Size = new Size(45, 20),
+        Location = new Point(325, 45)
+      };
+
+      ComboBox spotter = new ComboBox
+      {
+        Name = "comboBoxSpotter" + stint.ToString(),
+        Size = new Size(80, 20),
+        Location = new Point(370, 41)
+      };
+
+      Label labelPitstop = new Label
+      {
+        Name = "labelPitstop" + stint.ToString(),
+        Text = "Pitstopp",
+        Size = new Size(45, 20),
+        Location = new Point(325, 70)
+      };
+
+      ComboBox pitstop = new ComboBox
+      {
+        Name = "comboBoxPitstop" + stint.ToString(),
+        Size = new Size(80, 20),
+        Location = new Point(370, 66)
+      };
+
+      panelStints.Controls.Add(stintbox);
+      stintbox.Controls.Add(clockH);
+      stintbox.Controls.Add(seperator);
+      stintbox.Controls.Add(clockM);
+      stintbox.Controls.Add(time);
+      stintbox.Controls.Add(inlap);
+      stintbox.Controls.Add(labelInlap);
+      stintbox.Controls.Add(labelTemp);
+      stintbox.Controls.Add(temp);
+      stintbox.Controls.Add(psiFL);
+      stintbox.Controls.Add(psiFR);
+      stintbox.Controls.Add(labelPsi);
+      stintbox.Controls.Add(psiRL);
+      stintbox.Controls.Add(psiRR);
+      stintbox.Controls.Add(labelDuration);
+      stintbox.Controls.Add(labelLaps);
+      stintbox.Controls.Add(labelFuel);
+      stintbox.Controls.Add(labelDriver);
+      stintbox.Controls.Add(driver);
+      stintbox.Controls.Add(labelSpotter);
+      stintbox.Controls.Add(spotter);
+      stintbox.Controls.Add(labelPitstop);
+      stintbox.Controls.Add(pitstop);
+    }
+
     private void ReloadForm(object sender, EventArgs e)
     {
       labelVersion.Text = "Version: ";
@@ -645,52 +854,9 @@ namespace WindowsFormsApp1
         groupBoxTotalStintTime.Controls.Add(totalStintTime);
       }
 
-      // while noch Runden oder Zeit übrig
-      // Create Stint()
-
-      // calculate stints
-
-
-      //if (comboBox1.SelectedIndex == 0) // Tankvolumen
-      {
-        // Tankvolumen / Verbrauch
-        //foreach (Driver driver in drivers)
-        //{
-
-        //}
-        //stints = 0; // Funktion zum ermitteln der Stints aufrufen
-        //}
-        // Stintzeit
-        //else
-        //{
-        // if Tankvolumen ausreichend für Stintzeit
-        //{
-        //stints = duration / Convert.ToInt32(textBoxStintTime.Text);
-        //left = Convert.ToDecimal(duration) / Convert.ToDecimal(textBoxStintTime.Text) - Convert.ToDecimal(stints);
-        //if (left != 0)
-        //stints++;
-
-        //MessageBox.Show(Convert.ToString(left));
-        //}
-        // else
-        // Funktion zum ermitteln der Stints aufrufen
-      }
-
-      posY = 0;
-      for (int i = 0; i < 1; i++)
-      {
-        GroupBox stint = new GroupBox
-        {
-          Name = "stint" + Convert.ToString(i+1),
-          Text = "Stint" + Convert.ToString(i + 1),
-          Size = new Size(375, 90),
-          Anchor = AnchorStyles.Left | AnchorStyles.Top,
-          Location = new Point(5, 5 + 90 * (posY))
-        };
-
-        posY++;
-        panelStints.Controls.Add(stint);
-      }
+      int stint = 1;
+      int stintboxPosY = 0;
+      CreateStintbox(stint, stintboxPosY);
     }
   }
 }

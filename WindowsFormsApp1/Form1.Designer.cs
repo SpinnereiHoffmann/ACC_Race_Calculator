@@ -88,7 +88,7 @@
       this.tabControl1.Location = new System.Drawing.Point(140, 12);
       this.tabControl1.Name = "tabControl1";
       this.tabControl1.SelectedIndex = 0;
-      this.tabControl1.Size = new System.Drawing.Size(542, 417);
+      this.tabControl1.Size = new System.Drawing.Size(632, 417);
       this.tabControl1.TabIndex = 0;
       // 
       // tabPage1
@@ -305,7 +305,7 @@
       this.tabPage2.Location = new System.Drawing.Point(4, 22);
       this.tabPage2.Name = "tabPage2";
       this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage2.Size = new System.Drawing.Size(534, 391);
+      this.tabPage2.Size = new System.Drawing.Size(624, 391);
       this.tabPage2.TabIndex = 1;
       this.tabPage2.Text = "Strategie";
       this.tabPage2.UseVisualStyleBackColor = true;
@@ -314,9 +314,9 @@
       // 
       this.groupBoxStints.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.groupBoxStints.Location = new System.Drawing.Point(416, 169);
+      this.groupBoxStints.Location = new System.Drawing.Point(479, 169);
       this.groupBoxStints.Name = "groupBoxStints";
-      this.groupBoxStints.Size = new System.Drawing.Size(112, 215);
+      this.groupBoxStints.Size = new System.Drawing.Size(142, 219);
       this.groupBoxStints.TabIndex = 10;
       this.groupBoxStints.TabStop = false;
       this.groupBoxStints.Text = "Stints";
@@ -324,9 +324,9 @@
       // groupBoxTotalStintTime
       // 
       this.groupBoxTotalStintTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.groupBoxTotalStintTime.Location = new System.Drawing.Point(416, 43);
+      this.groupBoxTotalStintTime.Location = new System.Drawing.Point(479, 43);
       this.groupBoxTotalStintTime.Name = "groupBoxTotalStintTime";
-      this.groupBoxTotalStintTime.Size = new System.Drawing.Size(112, 120);
+      this.groupBoxTotalStintTime.Size = new System.Drawing.Size(142, 120);
       this.groupBoxTotalStintTime.TabIndex = 9;
       this.groupBoxTotalStintTime.TabStop = false;
       this.groupBoxTotalStintTime.Text = "Gesamt";
@@ -340,7 +340,7 @@
       this.panelStints.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
       this.panelStints.Location = new System.Drawing.Point(3, 50);
       this.panelStints.Name = "panelStints";
-      this.panelStints.Size = new System.Drawing.Size(407, 338);
+      this.panelStints.Size = new System.Drawing.Size(470, 338);
       this.panelStints.TabIndex = 8;
       // 
       // labelSeperator
@@ -380,7 +380,7 @@
       // buttonCalculate
       // 
       this.buttonCalculate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.buttonCalculate.Location = new System.Drawing.Point(453, 7);
+      this.buttonCalculate.Location = new System.Drawing.Point(543, 7);
       this.buttonCalculate.Name = "buttonCalculate";
       this.buttonCalculate.Size = new System.Drawing.Size(75, 23);
       this.buttonCalculate.TabIndex = 1;
@@ -393,9 +393,9 @@
       this.labelRennstart.AutoSize = true;
       this.labelRennstart.Location = new System.Drawing.Point(7, 7);
       this.labelRennstart.Name = "labelRennstart";
-      this.labelRennstart.Size = new System.Drawing.Size(53, 13);
+      this.labelRennstart.Size = new System.Drawing.Size(100, 13);
       this.labelRennstart.TabIndex = 0;
-      this.labelRennstart.Text = "Rennstart";
+      this.labelRennstart.Text = "geplanter Rennstart";
       // 
       // tabPage3
       // 
@@ -519,7 +519,7 @@
       // 
       this.labelVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.labelVersion.AutoSize = true;
-      this.labelVersion.Location = new System.Drawing.Point(600, 10);
+      this.labelVersion.Location = new System.Drawing.Point(690, 10);
       this.labelVersion.Name = "labelVersion";
       this.labelVersion.Size = new System.Drawing.Size(48, 13);
       this.labelVersion.TabIndex = 10;
@@ -529,7 +529,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(694, 441);
+      this.ClientSize = new System.Drawing.Size(784, 441);
       this.Controls.Add(this.labelVersion);
       this.Controls.Add(this.buttonOpenLocal);
       this.Controls.Add(this.labelGlobalPath);
