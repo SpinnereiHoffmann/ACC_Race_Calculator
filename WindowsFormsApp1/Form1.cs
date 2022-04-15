@@ -20,8 +20,9 @@ namespace WindowsFormsApp1
     }
 
     // Felder
-    string version  = "0.0.3";
-    bool local      = false;
+    string  version = "0.0.3";
+    bool    local   = false;
+    double  pitstop;
 
     //List<string>  pits      = new List<string>();
     //List<string>  names     = new List<string>();
@@ -45,6 +46,7 @@ namespace WindowsFormsApp1
       public double lastStintLaps     { get; set; }
       public double lastStintMins     { get; set; }
       public double lastStintFuel     { get; set; }
+      public double totalMins         { get; set; }
     }
 
     class Pitstop
@@ -102,15 +104,17 @@ namespace WindowsFormsApp1
       return box.Text;
     }
 
-    private void CreateStintbox(int stint, int posY, string timeH, string timeM)
+    private int CreateStintbox(int stint, int posY, string timeH, string timeM)
     {
+      int nDriver = 0;
+
       GroupBox stintbox = new GroupBox
       {
         Name = "stint" + Convert.ToString(stint),
         Text = "Stint" + Convert.ToString(stint),
         Size = new Size(455, 100),
         Anchor = AnchorStyles.Left | AnchorStyles.Top,
-        Location = new Point(5, 5 + 90 * (posY))
+        Location = new Point(5, 100 * (posY))
       };
 
       TextBox clockH = new TextBox
@@ -263,7 +267,10 @@ namespace WindowsFormsApp1
       foreach (Driver elements in drivers)
         driver.Items.Add(elements.Name);
       if (driver.Items.Count > 0)
+      {
         driver.SelectedIndex = 0;
+        drivers[0].totalMins += drivers[0].firstStintMins;
+      }
       driver.SelectedValueChanged += DynDriver_SelectedValueChanged;
 
 
@@ -278,7 +285,6 @@ namespace WindowsFormsApp1
       ComboBox spotter = new ComboBox
       {
         Name = "comboBoxSpotter" + stint.ToString(),
-        //DataSource = names,
         Size = new Size(80, 20),
         Location = new Point(370, 41),
       };
@@ -299,7 +305,6 @@ namespace WindowsFormsApp1
       ComboBox pitstop = new ComboBox
       {
         Name = "comboBoxPitstop" + stint.ToString(),
-        //DataSource = pits,
         Size = new Size(80, 20),
         Location = new Point(370, 66)
       };
@@ -307,6 +312,7 @@ namespace WindowsFormsApp1
         pitstop.Items.Add(elements.name);
       if (pitstop.Items.Count > 0)
         pitstop.SelectedIndex = 0;
+      //pitstop.SelectedValueChanged += Pitstop_SelectedValueChanged;
 
       void DynDriver_SelectedValueChanged(object dynSender, EventArgs dynE)
       {
@@ -354,6 +360,13 @@ namespace WindowsFormsApp1
       stintbox.Controls.Add(spotter);
       stintbox.Controls.Add(labelPitstop);
       stintbox.Controls.Add(pitstop);
+
+      return nDriver;
+    }
+
+    private void Pitstop_SelectedValueChanged(object sender, EventArgs e)
+    {
+      //pitstop = Pitstop[nDriver]
     }
 
     private void ReloadForm(object sender, EventArgs e)
@@ -854,13 +867,20 @@ namespace WindowsFormsApp1
       ReloadForm(sender, e);
     }
 
+    private string DynTotalStintTime_ChangeText(string name, double duration)
+    {
+      string label = name + ":    " + duration.ToString();
+      return label;
+    }
+
+    int stint = 1;
+    int stintboxPosY = 0;
     private void buttonCalculate_Click(object sender, EventArgs e)
     {
       groupBoxTotalStintTime.Controls.Clear();
 
       // get duration in minutes
-      int duration = Convert.ToInt32(textBoxDurationHours.Text) * 60 + Convert.ToInt32(textBoxDurationMins.Text);
-      int lapCount    = 0;
+      double duration = Convert.ToInt32(textBoxDurationHours.Text) * 60 + Convert.ToInt32(textBoxDurationMins.Text);
 
       // which stint limitation
       if (comboBox1.SelectedIndex == 0) // Tankvolumen (no stint limitation)
@@ -930,7 +950,7 @@ namespace WindowsFormsApp1
       foreach (Driver driver in drivers)
       {
         // create Label for every Driver
-        Label totalStintTime = new Label
+        Label totalStintNames = new Label
         {
           Name = driver.Counter,
           Text = driver.Name,
@@ -939,15 +959,36 @@ namespace WindowsFormsApp1
           Location = new Point(5, 20 * (posY))
         };
 
+        Label totalStintTime = new Label
+        {
+          Name = driver.Counter,
+          Text = Convert.ToString(driver.totalMins),
+          Size = new Size(50, 15),
+          Anchor = AnchorStyles.Right | AnchorStyles.Top,
+          Location = new Point(75, 20 * (posY))
+        };
+
         posY++;
+        groupBoxTotalStintTime.Controls.Add(totalStintNames);
         groupBoxTotalStintTime.Controls.Add(totalStintTime);
       }
 
-      int stint = 1;
-      int stintboxPosY = 0;
-
       // for first stint
-      CreateStintbox(stint, stintboxPosY, textBoxStartHour.Text, textBoxStartMin.Text);
+      double driverDuration = duration / drivers.Count;
+      int nDriver = CreateStintbox(stint++, stintboxPosY++, textBoxStartHour.Text, textBoxStartMin.Text);
+      driverDuration -= drivers[nDriver].firstStintMins;
+      duration -= drivers[nDriver].firstStintMins;
+      MessageBox.Show(driverDuration.ToString());
+      MessageBox.Show(duration.ToString());
+
+      while (driverDuration > 0)
+      {
+        nDriver = CreateStintbox(stint++, stintboxPosY++, textBoxStartHour.Text, textBoxStartMin.Text);
+        driverDuration -= drivers[nDriver].regularStintMins;
+        duration -= drivers[nDriver].regularStintMins;
+        MessageBox.Show(driverDuration.ToString());
+        MessageBox.Show(duration.ToString());
+      }
     }
   }
 }
