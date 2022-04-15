@@ -22,7 +22,9 @@ namespace WindowsFormsApp1
     // Felder
     string version  = "0.0.3";
     bool local      = false;
-    
+
+    //List<string>  pits      = new List<string>();
+    //List<string>  names     = new List<string>();
     List<Driver>  drivers   = new List<Driver>();
     List<Pitstop> pitstops  = new List<Pitstop>();
 
@@ -58,7 +60,49 @@ namespace WindowsFormsApp1
     }
 
     // helpers
-    private void CreateStintbox(int stint, int posY)
+    private string GetLaps(int stint, Label label, int index)
+    {
+      if (stint == 1)
+        label.Text = drivers[index].firstStintLaps.ToString();
+      else
+        label.Text = drivers[index].regularStintLaps.ToString();
+      return label.Text;
+    }
+
+    private string GetFuel(int stint, Label label, int index)
+    {
+      if (stint == 1)
+        label.Text = drivers[index].firstStintFuel.ToString();
+      else
+        label.Text = drivers[index].regularStintFuel.ToString();
+      return label.Text;
+    }
+
+    private string GetDuration(int stint, Label label, int index)
+    {
+      if (stint == 1)
+      {
+        double seconds = Math.Round((drivers[index].firstStintMins - Math.Truncate(drivers[index].firstStintMins)) * 60);
+        label.Text = Convert.ToString(Math.Truncate(drivers[index].firstStintMins)) + ":" + seconds.ToString();
+      }
+      else
+      {
+        double seconds = Math.Round((drivers[index].regularStintMins - Math.Truncate(drivers[index].regularStintMins)) * 60);
+        label.Text = Convert.ToString(Math.Truncate(drivers[index].regularStintMins)) + ":" + seconds.ToString();
+      }
+      return label.Text;
+    }
+
+    private string GetInlap(int stint, TextBox box, int index)
+    {
+      if (stint == 1)
+        box.Text = Convert.ToString(drivers[index].firstStintLaps - 1);
+      else
+        box.Text = Convert.ToString(drivers[index].regularStintLaps);
+      return box.Text;
+    }
+
+    private void CreateStintbox(int stint, int posY, string timeH, string timeM)
     {
       GroupBox stintbox = new GroupBox
       {
@@ -72,7 +116,7 @@ namespace WindowsFormsApp1
       TextBox clockH = new TextBox
       {
         Name = "clockH" + stint.ToString(),
-        Text = textBoxStartHour.Text,
+        Text = timeH,
         Size = new Size(25, 20),
         Location = new Point(5,30)
       };
@@ -88,7 +132,7 @@ namespace WindowsFormsApp1
       TextBox clockM = new TextBox
       {
         Name = "clockM" + stint.ToString(),
-        Text = textBoxStartMin.Text,
+        Text = timeM,
         Size = new Size(25, 20),
         Location = new Point(40, 30)
       };
@@ -108,6 +152,8 @@ namespace WindowsFormsApp1
         Size = new Size(30, 20),
         Location = new Point(5, 55)
       };
+      inlap.Text = GetInlap(stint, inlap, 0);
+      //inlap.TextChanged += DynName_TextChanged;
 
       Label labelInlap = new Label
       {
@@ -176,26 +222,29 @@ namespace WindowsFormsApp1
       Label labelDuration = new Label
       {
         Name = "labelDuration" + stint.ToString(),
-        Text = "Stintlänge:   43:34 min",
+        Text = "",
         Size = new Size(120, 20),
         Location = new Point(200, 20)
       };
-
-      Label labelLaps = new Label
-      {
-        Name = "labelLaps" + stint.ToString(),
-        Text = "Runden:       21 ",
-        Size = new Size(120, 20),
-        Location = new Point(200, 70)
-      };
+      labelDuration.Text = "Stintlänge:   " + GetDuration(stint, labelDuration, 0) + " min";
 
       Label labelFuel = new Label
       {
         Name = "labelFuel" + stint.ToString(),
-        Text = "Spritmenge: 78 l",
+        Text = "",
         Size = new Size(120, 20),
         Location = new Point(200, 45)
       };
+      labelFuel.Text = "Spritmenge: " + GetFuel(stint, labelFuel, 0) + " l";
+
+      Label labelLaps = new Label
+      {
+        Name = "labelLaps" + stint.ToString(),
+        Text = "",
+        Size = new Size(120, 20),
+        Location = new Point(200, 70)
+      };
+      labelLaps.Text = "Runden:       " + GetLaps(stint, labelLaps, 0);
 
       Label labelDriver = new Label
       {
@@ -211,6 +260,12 @@ namespace WindowsFormsApp1
         Size = new Size(80, 20),
         Location = new Point(370, 16)
       };
+      foreach (Driver elements in drivers)
+        driver.Items.Add(elements.Name);
+      if (driver.Items.Count > 0)
+        driver.SelectedIndex = 0;
+      driver.SelectedValueChanged += DynDriver_SelectedValueChanged;
+
 
       Label labelSpotter = new Label
       {
@@ -223,9 +278,14 @@ namespace WindowsFormsApp1
       ComboBox spotter = new ComboBox
       {
         Name = "comboBoxSpotter" + stint.ToString(),
+        //DataSource = names,
         Size = new Size(80, 20),
-        Location = new Point(370, 41)
+        Location = new Point(370, 41),
       };
+      foreach (Driver elements in drivers)
+        spotter.Items.Add(elements.Name);
+      if (driver.Items.Count > 1)
+        spotter.SelectedIndex = 1;
 
       Label labelPitstop = new Label
       {
@@ -235,12 +295,41 @@ namespace WindowsFormsApp1
         Location = new Point(325, 70)
       };
 
+
       ComboBox pitstop = new ComboBox
       {
         Name = "comboBoxPitstop" + stint.ToString(),
+        //DataSource = pits,
         Size = new Size(80, 20),
         Location = new Point(370, 66)
       };
+      foreach (Pitstop elements in pitstops)
+        pitstop.Items.Add(elements.name);
+      if (pitstop.Items.Count > 0)
+        pitstop.SelectedIndex = 0;
+
+      void DynDriver_SelectedValueChanged(object dynSender, EventArgs dynE)
+      {
+        MessageBox.Show("bla");
+        if (stint == 1)
+        {
+          //inlap.Text = GetText(inlap)
+          //name.Text = GetText(name.Name, name, "name");
+          //TextBox inlapN = "inlap" + stint.ToString();
+          //inlapN.Text = "kjdlsjf";
+        }
+      }
+
+      for (int i = 0; i < 25; i++)
+      {
+        Label bla = new Label
+        {
+          Name = i.ToString(),
+          Text = "bla" + i.ToString(),
+          Location = new Point(5, 5 + 25 * (i))
+        };
+      panel1.Controls.Add(bla);
+      }
 
       panelStints.Controls.Add(stintbox);
       stintbox.Controls.Add(clockH);
@@ -856,7 +945,9 @@ namespace WindowsFormsApp1
 
       int stint = 1;
       int stintboxPosY = 0;
-      CreateStintbox(stint, stintboxPosY);
+
+      // for first stint
+      CreateStintbox(stint, stintboxPosY, textBoxStartHour.Text, textBoxStartMin.Text);
     }
   }
 }

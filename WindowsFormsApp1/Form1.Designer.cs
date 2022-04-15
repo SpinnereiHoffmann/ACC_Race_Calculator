@@ -49,7 +49,6 @@
       this.buttonAddPitstop = new System.Windows.Forms.Button();
       this.buttonRemovePitstop = new System.Windows.Forms.Button();
       this.tabPage2 = new System.Windows.Forms.TabPage();
-      this.groupBoxStints = new System.Windows.Forms.GroupBox();
       this.groupBoxTotalStintTime = new System.Windows.Forms.GroupBox();
       this.panelStints = new System.Windows.Forms.Panel();
       this.labelSeperator = new System.Windows.Forms.Label();
@@ -69,12 +68,15 @@
       this.labelGlobalPath = new System.Windows.Forms.Label();
       this.buttonOpenLocal = new System.Windows.Forms.Button();
       this.labelVersion = new System.Windows.Forms.Label();
+      this.groupBoxStints = new System.Windows.Forms.GroupBox();
+      this.panel1 = new System.Windows.Forms.Panel();
       this.tabControl1.SuspendLayout();
       this.tabPage1.SuspendLayout();
       this.groupBox3.SuspendLayout();
       this.groupBox2.SuspendLayout();
       this.groupBox1.SuspendLayout();
       this.tabPage2.SuspendLayout();
+      this.groupBoxStints.SuspendLayout();
       this.SuspendLayout();
       // 
       // tabControl1
@@ -99,7 +101,7 @@
       this.tabPage1.Location = new System.Drawing.Point(4, 22);
       this.tabPage1.Name = "tabPage1";
       this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage1.Size = new System.Drawing.Size(534, 391);
+      this.tabPage1.Size = new System.Drawing.Size(624, 391);
       this.tabPage1.TabIndex = 0;
       this.tabPage1.Text = "Daten";
       this.tabPage1.UseVisualStyleBackColor = true;
@@ -310,17 +312,6 @@
       this.tabPage2.Text = "Strategie";
       this.tabPage2.UseVisualStyleBackColor = true;
       // 
-      // groupBoxStints
-      // 
-      this.groupBoxStints.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.groupBoxStints.Location = new System.Drawing.Point(479, 169);
-      this.groupBoxStints.Name = "groupBoxStints";
-      this.groupBoxStints.Size = new System.Drawing.Size(142, 219);
-      this.groupBoxStints.TabIndex = 10;
-      this.groupBoxStints.TabStop = false;
-      this.groupBoxStints.Text = "Stints";
-      // 
       // groupBoxTotalStintTime
       // 
       this.groupBoxTotalStintTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -401,7 +392,7 @@
       // 
       this.tabPage3.Location = new System.Drawing.Point(4, 22);
       this.tabPage3.Name = "tabPage3";
-      this.tabPage3.Size = new System.Drawing.Size(534, 391);
+      this.tabPage3.Size = new System.Drawing.Size(624, 391);
       this.tabPage3.TabIndex = 2;
       this.tabPage3.Text = "Bestzeiten";
       this.tabPage3.UseVisualStyleBackColor = true;
@@ -525,6 +516,28 @@
       this.labelVersion.TabIndex = 10;
       this.labelVersion.Text = "Version: ";
       // 
+      // groupBoxStints
+      // 
+      this.groupBoxStints.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.groupBoxStints.Controls.Add(this.panel1);
+      this.groupBoxStints.Location = new System.Drawing.Point(479, 169);
+      this.groupBoxStints.Name = "groupBoxStints";
+      this.groupBoxStints.Size = new System.Drawing.Size(142, 219);
+      this.groupBoxStints.TabIndex = 10;
+      this.groupBoxStints.TabStop = false;
+      this.groupBoxStints.Text = "Stints";
+      // 
+      // panel1
+      // 
+      this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.panel1.AutoScroll = true;
+      this.panel1.Location = new System.Drawing.Point(2, 15);
+      this.panel1.Name = "panel1";
+      this.panel1.Size = new System.Drawing.Size(138, 194);
+      this.panel1.TabIndex = 0;
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -554,6 +567,7 @@
       this.groupBox1.ResumeLayout(false);
       this.tabPage2.ResumeLayout(false);
       this.tabPage2.PerformLayout();
+      this.groupBoxStints.ResumeLayout(false);
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -602,6 +616,7 @@
     private System.Windows.Forms.GroupBox groupBoxTotalStintTime;
     private System.Windows.Forms.Panel panelStints;
     private System.Windows.Forms.GroupBox groupBoxStints;
+    private System.Windows.Forms.Panel panel1;
   }
 }
 
