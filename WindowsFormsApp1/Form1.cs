@@ -22,16 +22,14 @@ namespace WindowsFormsApp1
     // Felder
     string  version = "0.0.3";
     bool    local   = false;
-    double  pitstop;
 
-    //List<string>  pits      = new List<string>();
-    //List<string>  names     = new List<string>();
     List<Driver>  drivers   = new List<Driver>();
     List<Pitstop> pitstops  = new List<Pitstop>();
     List<Stint>   stints    = new List<Stint>();
 
     class Driver
     {
+      public double nStints { get; set; }
       public string Counter { get; set; }
       public string Name    { get; set; }
       public string Mins    { get; set; }
@@ -121,14 +119,12 @@ namespace WindowsFormsApp1
       return box.Text;
     }
 
-    private int CreateStintbox(int stint, int posY, string timeH, string timeM)
+    private void CreateStintbox(int stint, int posY, string timeH, string timeM)
     {
-      int nDriver = 0;
-
       GroupBox stintbox = new GroupBox
       {
         Name = "stint" + Convert.ToString(stint),
-        Text = "Stint" + Convert.ToString(stint),
+        Text = "Stint" + Convert.ToString(stint+1),
         Size = new Size(455, 100),
         Anchor = AnchorStyles.Left | AnchorStyles.Top,
         Location = new Point(5, 100 * (posY))
@@ -141,6 +137,7 @@ namespace WindowsFormsApp1
         Size = new Size(25, 20),
         Location = new Point(5,30)
       };
+      clockH.Text = CheckZero(clockH);
 
       Label seperator = new Label
       {
@@ -157,6 +154,7 @@ namespace WindowsFormsApp1
         Size = new Size(25, 20),
         Location = new Point(40, 30)
       };
+      clockM.Text = CheckZero(clockM);
 
       Label time = new Label
       {
@@ -169,11 +167,11 @@ namespace WindowsFormsApp1
       TextBox inlap = new TextBox
       {
         Name = "inlap" + stint.ToString(),
-        Text = "",
+        Text = stints[stint].Inlap.ToString(),
         Size = new Size(30, 20),
         Location = new Point(5, 55)
       };
-      inlap.Text = GetInlap(stint, inlap, 0);
+      //inlap.Text = GetInlap(stint, inlap, 0);
       //inlap.TextChanged += DynName_TextChanged;
 
       Label labelInlap = new Label
@@ -243,29 +241,26 @@ namespace WindowsFormsApp1
       Label labelDuration = new Label
       {
         Name = "labelDuration" + stint.ToString(),
-        Text = "",
+        Text = "Stintlänge:   " + stints[stint].StintLength + " min",
         Size = new Size(120, 20),
         Location = new Point(200, 20)
       };
-      labelDuration.Text = "Stintlänge:   " + GetDuration(stint, labelDuration, 0) + " min";
 
       Label labelFuel = new Label
       {
         Name = "labelFuel" + stint.ToString(),
-        Text = "",
+        Text = "Spritmenge: " + stints[stint].StintFuel + " l",
         Size = new Size(120, 20),
         Location = new Point(200, 45)
       };
-      labelFuel.Text = "Spritmenge: " + GetFuel(stint, labelFuel, 0) + " l";
 
       Label labelLaps = new Label
       {
         Name = "labelLaps" + stint.ToString(),
-        Text = "",
+        Text = "Runden:       " + stints[stint].StintLaps,
         Size = new Size(120, 20),
         Location = new Point(200, 70)
       };
-      labelLaps.Text = "Runden:       " + GetLaps(stint, labelLaps, 0);
 
       Label labelDriver = new Label
       {
@@ -318,7 +313,6 @@ namespace WindowsFormsApp1
         Location = new Point(325, 70)
       };
 
-
       ComboBox pitstop = new ComboBox
       {
         Name = "comboBoxPitstop" + stint.ToString(),
@@ -331,15 +325,20 @@ namespace WindowsFormsApp1
         pitstop.SelectedIndex = 0;
       //pitstop.SelectedValueChanged += Pitstop_SelectedValueChanged;
 
+      string CheckZero(TextBox clock)
+      {
+        if (clock.Text == "0")
+          clock.Text = "00";
+        return clock.Text;
+      }
+
       void DynDriver_SelectedValueChanged(object dynSender, EventArgs dynE)
       {
-        MessageBox.Show("bla");
         if (stint == 1)
         {
           //inlap.Text = GetText(inlap)
           //name.Text = GetText(name.Name, name, "name");
           //TextBox inlapN = "inlap" + stint.ToString();
-          //inlapN.Text = "kjdlsjf";
         }
       }
 
@@ -378,7 +377,7 @@ namespace WindowsFormsApp1
       stintbox.Controls.Add(labelPitstop);
       stintbox.Controls.Add(pitstop);
 
-      return nDriver;
+      //return nDriver;
     }
 
     private void Pitstop_SelectedValueChanged(object sender, EventArgs e)
@@ -448,7 +447,6 @@ namespace WindowsFormsApp1
 
     private string GetText(string driver, TextBox box, string key)
     {
-      //MessageBox.Show(box.Name);
       XmlReader xmlRead = XmlReader.Create(GetFilename());
       
       if (xmlRead.ReadToDescendant(key, driver))
@@ -954,6 +952,9 @@ namespace WindowsFormsApp1
       {
         foreach (Driver driver in drivers)
         {
+          double stintTime = Convert.ToDouble(textBoxStintTime.Text);
+          driver.nStints = duration / stintTime / drivers.Count();
+
           // calculate first stint
           double fuelQuantity = Convert.ToDouble(textBoxFuelQuantity.Text) - Convert.ToDouble(driver.Cons);
 
@@ -991,7 +992,7 @@ namespace WindowsFormsApp1
       foreach (Driver driver in drivers)
       {
         driver.DriverDuration = duration / drivers.Count;
-        
+
         // create Label for every Driver
         Label totalStintNames = new Label
         {
@@ -1017,43 +1018,44 @@ namespace WindowsFormsApp1
       }
 
       // for first stint
-      int nDriver = CreateStintbox(stint++, stintboxPosY++, textBoxStartHour.Text, textBoxStartMin.Text);
+      int nDriver = 0;
       int nStint = 0;
 
       stints.Add(new Stint()
       {
-        Counter         = "1",
-        StartH          = textBoxStartHour.Text.ToString(),
-        StartM          = textBoxStartMin.Text.ToString(),
-        Inlap           = Convert.ToInt32(drivers[nDriver].firstStintLaps - 1),
-        Temp            = "20/20",
-        PressureFL      = "FL",
-        PressureFR      = "FR",
-        PressureRL      = "RL",
-        PressureRR      = "RR",
-        StintLength     = drivers[nDriver].firstStintMins.ToString(),
-        StintFuel       = drivers[nDriver].firstStintFuel.ToString(),
-        StintLaps       = drivers[nDriver].firstStintLaps.ToString(),
-        Driver          = drivers[nDriver].Name, // Get Driver
-        Spotter         = "", // Get Spotter
-        PitDescription  = pitstops[0].name,
-        PitTime         = Convert.ToDouble(pitstops[0].seconds) / 60,
+        Counter = "1",
+        StartH = textBoxStartHour.Text.ToString(),
+        StartM = textBoxStartMin.Text.ToString(),
+        Inlap = Convert.ToInt32(drivers[nDriver].firstStintLaps - 1),
+        Temp = "20/20",
+        PressureFL = "FL",
+        PressureFR = "FR",
+        PressureRL = "RL",
+        PressureRR = "RR",
+        StintLength = Math.Round(drivers[nDriver].firstStintMins, 2).ToString(),
+        StintFuel = drivers[nDriver].firstStintFuel.ToString(),
+        StintLaps = drivers[nDriver].firstStintLaps.ToString(),
+        Driver = drivers[nDriver].Name, // Get Driver
+        Spotter = "", // Get Spotter
+        PitDescription = pitstops[0].name,
+        PitTime = Convert.ToDouble(pitstops[0].seconds) / 60,
       });
 
-      double l = Convert.ToDouble(stints[nStint].StintLength) + stints[0].PitTime;
-      drivers[nDriver].DriverDuration -= l;
+      CreateStintbox(nStint, stintboxPosY++, textBoxStartHour.Text, textBoxStartMin.Text);
+
+      double stintWithPit = Convert.ToDouble(stints[nStint].StintLength) + stints[nStint].PitTime;
+      duration -= stintWithPit;
+      drivers[nDriver].nStints--;
+      nStint++;
 
       foreach (Driver driver in drivers)
       {
-        double nStints = driver.DriverDuration / l;
-        MessageBox.Show(nStints.ToString());
-        //while (drivers[nDriver].DriverDuration > 0)
-        while (nStints >= 1)
-        {
-          nStint++;
+        stintWithPit = Convert.ToDouble(driver.regularStintMins) + stints[0].PitTime;
 
+        while (driver.nStints >= 0.5 && duration >= stintWithPit)
+        {
           double startH = Convert.ToDouble(stints[nStint - 1].StartH);
-          double startM = Convert.ToDouble(stints[nStint - 1].StartM) + drivers[nDriver].regularStintMins;
+          double startM = Convert.ToDouble(stints[nStint - 1].StartM) + stintWithPit;
           if (startM >= 60)
           {
             startH++;
@@ -1065,15 +1067,15 @@ namespace WindowsFormsApp1
           stints.Add(new Stint()
           {
             Counter = (nStint + 1).ToString(),
-            StartH = startH.ToString(),
-            StartM = startM.ToString(),
+            StartH = Math.Truncate(startH).ToString(),
+            StartM = Math.Truncate(startM).ToString(),
             Inlap = Convert.ToInt32(stints[nStint - 1].Inlap) + Convert.ToInt32(drivers[nDriver].regularStintLaps),
             Temp = "20/20",
             PressureFL = "FL",
             PressureFR = "FR",
             PressureRL = "RL",
             PressureRR = "RR",
-            StintLength = drivers[nDriver].regularStintMins.ToString(),
+            StintLength = Math.Round(drivers[nDriver].regularStintMins, 2).ToString(),
             StintFuel = drivers[nDriver].regularStintFuel.ToString(),
             StintLaps = drivers[nDriver].regularStintLaps.ToString(),
             Driver = drivers[nDriver].Name, // Get Driver
@@ -1082,27 +1084,66 @@ namespace WindowsFormsApp1
             PitTime = Convert.ToDouble(pitstops[0].seconds) / 60,
           });
 
-          drivers[nDriver].DriverDuration -= l;
-          nStints -= 1;
+          CreateStintbox(nStint, stintboxPosY++, stints[nStint].StartH, stints[nStint].StartM);
+
+          duration -= stintWithPit;
+
+          if (driver.nStints >= 1)
+            driver.nStints -= 1;
+
+          nStint++;
         }
-        double left = 0;
-        
-        if (nStints < 1)
-          left += nStints;
-
-        if (nDriver < drivers.Count)
+        if (nDriver < drivers.Count() - 1)
           nDriver++;
-
-        MessageBox.Show(left.ToString());
       }
 
+      double lapLastSeconds = Convert.ToDouble(drivers[nDriver].Mins) * 60 + Convert.ToDouble(drivers[nDriver].Secs + "," + drivers[nDriver].Thos);
+      double lapLastMinutes = lapLastSeconds / 60;
 
-        
-        //  nDriver = CreateStintbox(stint++, stintboxPosY++, textBoxStartHour.Text, textBoxStartMin.Text);
-        //  driverDuration -= drivers[0].regularStintMins;
-        //  duration -= drivers[nDriver].regularStintMins;
-        //  MessageBox.Show(driverDuration.ToString());
-        //  MessageBox.Show(duration.ToString());
+      double finalLaps = duration / lapLastMinutes;
+      double finalStintTime = finalLaps * lapLastMinutes;
+
+      //double stintLength = finalStintTime + lapLastMinutes;
+      double stintFuel = (Math.Truncate(finalLaps) + 2) * Convert.ToDouble(drivers[nDriver].Cons);
+
+      double startLastH = Convert.ToDouble(stints[nStint - 1].StartH);
+      double startLastM = Convert.ToDouble(stints[nStint - 1].StartM) + stintWithPit;
+      if (startLastM >= 60)
+      {
+        startLastH++;
+        startLastM -= 60;
+      }
+      if (startLastH >= 24)
+        startLastH -= 24;
+
+      stints.Add(new Stint()
+      {
+        Counter = (nStint + 1).ToString(),
+        StartH = Math.Truncate(startLastH).ToString(),
+        StartM = Math.Truncate(startLastM).ToString(),
+        Inlap = Convert.ToInt32(stints[nStint - 1].Inlap) + Convert.ToInt32(finalLaps),
+        Temp = "20/20",
+        PressureFL = "FL",
+        PressureFR = "FR",
+        PressureRL = "RL",
+        PressureRR = "RR",
+        StintLength = Math.Round(finalStintTime, 2).ToString(),
+        StintFuel = stintFuel.ToString(),
+        StintLaps = Convert.ToString(Math.Truncate(finalLaps)),
+        Driver = drivers[nDriver].Name, // Get Driver
+        Spotter = "", // Get Spotter
+        PitDescription = "",
+        PitTime = 0,
+      });
+
+      CreateStintbox(nStint, stintboxPosY++, stints[nStint].StartH, stints[nStint].StartM);
+
+      duration -= stintWithPit;
+
+      if (drivers[nDriver].nStints >= 1)
+        drivers[nDriver].nStints -= 1;
+
+      //nStint++;
     }
   }
 }
