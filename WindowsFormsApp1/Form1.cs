@@ -77,6 +77,18 @@ namespace WindowsFormsApp1
     }
 
     // helpers
+    private string GetText(string driver, TextBox box, string key)
+    {
+      XmlReader xmlRead = XmlReader.Create(GetFilename());
+
+      if (xmlRead.ReadToDescendant(key, driver))
+        box.Text = xmlRead.ReadElementString();
+
+      xmlRead.Close();
+
+      return box.Text;
+    }
+
     private string GetLaps(int stint, Label label, int index)
     {
       if (stint == 1)
@@ -114,7 +126,7 @@ namespace WindowsFormsApp1
     {
       GroupBox stintbox = new GroupBox
       {
-        Name = "stint" + Convert.ToString(stint),
+        Name = "Stint" + Convert.ToString(stint),
         Text = "Stint" + Convert.ToString(stint+1),
         Size = new Size(455, 100),
         Anchor = AnchorStyles.Left | AnchorStyles.Top,
@@ -128,7 +140,11 @@ namespace WindowsFormsApp1
         Size = new Size(25, 20),
         Location = new Point(5,30)
       };
-      clockH.Text = CheckZero(clockH);
+      if (GetText(Convert.ToString(stint + 1), clockH, "startH") != "00")
+        clockH.Text = GetText(Convert.ToString(stint + 1), clockH, "startH");
+      else
+        clockH.Text = timeH;
+      clockH.TextChanged += DynClockH_TextChanged;
 
       Label seperator = new Label
       {
@@ -145,7 +161,9 @@ namespace WindowsFormsApp1
         Size = new Size(25, 20),
         Location = new Point(40, 30)
       };
+      clockM.Text = GetText(Convert.ToString(stint + 1), clockM, "startM");
       clockM.Text = CheckZero(clockM);
+      //clockH.TextChanged += DynClockM_TextChanged;
 
       Label time = new Label
       {
@@ -162,8 +180,8 @@ namespace WindowsFormsApp1
         Size = new Size(30, 20),
         Location = new Point(5, 55)
       };
-      //inlap.Text = GetInlap(stint, inlap, 0);
-      //inlap.TextChanged += DynName_TextChanged;
+      inlap.Text = GetText(Convert.ToString(stint + 1), inlap, "inlap");
+      //clockH.TextChanged += DynClockH_TextChanged;
 
       Label labelInlap = new Label
       {
@@ -328,7 +346,15 @@ namespace WindowsFormsApp1
       {
         if (clock.Text == "0")
           clock.Text = "00";
+        else if (clock.Text != "00" && Convert.ToInt32(clock.Text) < 10)
+          clock.Text = "0" + clock.Text;
         return clock.Text;
+      }
+
+      void DynClockH_TextChanged(object dynSender, EventArgs dynE)
+      {
+        int txtH = Convert.ToInt32(clockH.Name.Substring(6));
+        stints[txtH].StartH = clockH.Text;
       }
 
       void DynDriver_SelectedValueChanged(object dynSender, EventArgs dynE)
@@ -430,18 +456,6 @@ namespace WindowsFormsApp1
       }
       
       return filename;
-    }
-
-    private string GetText(string driver, TextBox box, string key)
-    {
-      XmlReader xmlRead = XmlReader.Create(GetFilename());
-      
-      if (xmlRead.ReadToDescendant(key, driver))
-        box.Text = xmlRead.ReadElementString();
-      
-      xmlRead.Close();
-      
-      return box.Text;
     }
 
     private void WriteToXML()
@@ -903,6 +917,7 @@ namespace WindowsFormsApp1
     int stintboxPosY;
     private void buttonCalculate_Click(object sender, EventArgs e)
     {
+      stints.Clear();
       stintboxPosY = 0;
       panelStints.Controls.Clear();
       groupBoxTotalStintTime.Controls.Clear();
@@ -1130,7 +1145,7 @@ namespace WindowsFormsApp1
           return totalTime.Text;
         }
 
-        MessageBox.Show(driver.totalMins.ToString());
+        //MessageBox.Show(driver.totalMins.ToString());
 
         posY++;
         groupBoxTotalStintTime.Controls.Add(totalStintNames);
@@ -1145,6 +1160,32 @@ namespace WindowsFormsApp1
         drivers[nDriver].nStints -= 1;
 
       //nStint++;
+    }
+
+    private void textBoxStartHour_TextChanged(object sender, EventArgs e)
+    {
+      if (stints.Count() != 0)
+        stints[0].StartH = textBoxStartHour.Text.ToString();
+      else
+      {
+        stints.Add(new Stint()
+        {
+          StartH = textBoxStartHour.Text.ToString()
+        });
+      }
+    }
+
+    private void textBoxStartMin_TextChanged(object sender, EventArgs e)
+    {
+      if (stints.Count() != 0)
+        stints[0].StartM = textBoxStartMin.Text.ToString();
+      else
+      {
+        stints.Add(new Stint()
+        {
+          StartM = textBoxStartMin.Text.ToString(),
+        });
+      }
     }
   }
 }

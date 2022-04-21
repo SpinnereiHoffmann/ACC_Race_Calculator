@@ -381,6 +381,7 @@
       this.textBoxStartMin.Size = new System.Drawing.Size(25, 20);
       this.textBoxStartMin.TabIndex = 3;
       this.textBoxStartMin.Text = "30";
+      this.textBoxStartMin.TextChanged += new System.EventHandler(this.textBoxStartMin_TextChanged);
       // 
       // textBoxStartHour
       // 
@@ -389,6 +390,7 @@
       this.textBoxStartHour.Size = new System.Drawing.Size(25, 20);
       this.textBoxStartHour.TabIndex = 2;
       this.textBoxStartHour.Text = "12";
+      this.textBoxStartHour.TextChanged += new System.EventHandler(this.textBoxStartHour_TextChanged);
       // 
       // buttonCalculate
       // 
