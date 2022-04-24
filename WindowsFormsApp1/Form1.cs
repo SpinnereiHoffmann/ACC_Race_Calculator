@@ -144,7 +144,8 @@ namespace WindowsFormsApp1
         clockH.Text = GetText(Convert.ToString(stint + 1), clockH, "startH");
       else
         clockH.Text = timeH;
-      clockH.TextChanged += DynClockH_TextChanged;
+      //clockH.TextChanged += DynClockH_TextChanged;
+      clockH.Leave += DynClockH_Leave;
 
       Label seperator = new Label
       {
@@ -357,6 +358,14 @@ namespace WindowsFormsApp1
         stints[txtH].StartH = clockH.Text;
       }
 
+      void DynClockH_Leave(object dynSender, EventArgs dynE)
+      {
+        int txtH = Convert.ToInt32(clockH.Name.Substring(6));
+        MessageBox.Show(clockH.Name.ToString());
+        stints[txtH].StartH = clockH.Text;
+        //buttonCalculate_Click(dynSender, dynE);
+      }
+
       void DynDriver_SelectedValueChanged(object dynSender, EventArgs dynE)
       {
         if (stint == 1)
@@ -514,6 +523,12 @@ namespace WindowsFormsApp1
         pitIndex++;
       }
 
+      // Racestart
+      xmlWrite.WriteStartElement("racestart");
+      xmlWrite.WriteElementString("startH", textBoxStartHour.Text);
+      xmlWrite.WriteElementString("startM", textBoxStartMin.Text);
+      xmlWrite.WriteEndElement();
+
       int stintIndex = 0;
       foreach (Stint stint in stints)
       {
@@ -563,15 +578,16 @@ namespace WindowsFormsApp1
         else
         {
           // get position of the window
-          this.Top = Convert.ToInt32(regKey.GetValue("Top"));
-          this.Left = Convert.ToInt32(regKey.GetValue("Left"));
+          this.Top    = Convert.ToInt32(regKey.GetValue("Top"));
+          this.Left   = Convert.ToInt32(regKey.GetValue("Left"));
           this.Height = Convert.ToInt32(regKey.GetValue("Height"));
-          this.Width = Convert.ToInt32(regKey.GetValue("Width"));
+          this.Width  = Convert.ToInt32(regKey.GetValue("Width"));
 
           // get latest values
-          comboBoxTracks.Text = Convert.ToString(regKey.GetValue("Track"));
-          textBoxLocalPath.Text = Convert.ToString(regKey.GetValue("LocalPath"));
-          textBoxGlobalPath.Text = Convert.ToString(regKey.GetValue("GlobalPath"));
+          comboBoxTracks.Text     = Convert.ToString(regKey.GetValue("Track"));
+          textBoxTimerSek.Text    = Convert.ToString(regKey.GetValue("Timer"));
+          textBoxLocalPath.Text   = Convert.ToString(regKey.GetValue("LocalPath"));
+          textBoxGlobalPath.Text  = Convert.ToString(regKey.GetValue("GlobalPath"));
 
           //prüfen, ob es die Datei bereits gibt
           bool xmlVorhanden = System.IO.File.Exists(GetFilename());
@@ -621,6 +637,10 @@ namespace WindowsFormsApp1
             foreach (var pitstop in doc.GetElementsByTagName("pitstops").OfType<XmlElement>())
               buttonAddPitstop_Click(sender, e);
 
+            // for stint data
+            textBoxStartHour.Text = "12";
+            textBoxStartMin.Text = "00";
+
             xmlRead.Close();
           }
         }
@@ -629,9 +649,6 @@ namespace WindowsFormsApp1
 
     private void comboBoxTracks_SelectedValueChanged(object sender, EventArgs e)
     {
-      // set Label
-      labelTrack.Text = comboBoxTracks.Text;
-
       // set registry keys
       using (RegistryKey regKey = Registry.CurrentUser.CreateSubKey("Software\\ACC-RC"))
       {
@@ -1185,6 +1202,54 @@ namespace WindowsFormsApp1
         {
           StartM = textBoxStartMin.Text.ToString(),
         });
+      }
+    }
+
+    int nSeconds;
+    private void buttonStartTimer_Click(object sender, EventArgs e)
+    {
+      try
+      {
+        nSeconds = Convert.ToInt32(textBoxTimerSek.Text);
+        timerSec.Start();
+      }
+      catch
+      {
+        textBoxTimerSek.Text = "180";
+        timerSec.Start();
+      }
+    }
+
+    private void buttonStopTimer_Click(object sender, EventArgs e)
+    {
+      timerSec.Stop();
+    }
+
+    private void timerSec_Tick(object sender, EventArgs e)
+    {
+      if (nSeconds >= 1)
+      {
+        nSeconds--;
+        labelTimer.Text = nSeconds.ToString();
+      }
+      else
+      {
+        try
+        {
+          nSeconds = Convert.ToInt32(textBoxTimerSek.Text);
+        }
+        catch
+        {
+          textBoxTimerSek.Text = "180";
+        }
+      }
+    }
+
+    private void textBoxTimerSek_TextChanged(object sender, EventArgs e)
+    {
+      using (RegistryKey regKey = Registry.CurrentUser.CreateSubKey("Software\\ACC-RC"))
+      {
+        regKey.SetValue("Timer", textBoxTimerSek.Text);
       }
     }
   }

@@ -28,6 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+      this.components = new System.ComponentModel.Container();
       this.tabControl1 = new System.Windows.Forms.TabControl();
       this.tabPage1 = new System.Windows.Forms.TabPage();
       this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -62,7 +63,7 @@
       this.tabPage3 = new System.Windows.Forms.TabPage();
       this.comboBoxTracks = new System.Windows.Forms.ComboBox();
       this.buttonWrite = new System.Windows.Forms.Button();
-      this.labelTrack = new System.Windows.Forms.Label();
+      this.labelTimer = new System.Windows.Forms.Label();
       this.buttonOpenGlobal = new System.Windows.Forms.Button();
       this.textBoxLocalPath = new System.Windows.Forms.TextBox();
       this.labelLocalPath = new System.Windows.Forms.Label();
@@ -70,6 +71,11 @@
       this.labelGlobalPath = new System.Windows.Forms.Label();
       this.buttonOpenLocal = new System.Windows.Forms.Button();
       this.labelVersion = new System.Windows.Forms.Label();
+      this.buttonStartTimer = new System.Windows.Forms.Button();
+      this.buttonStopTimer = new System.Windows.Forms.Button();
+      this.textBoxTimerSek = new System.Windows.Forms.TextBox();
+      this.labelTimerSec = new System.Windows.Forms.Label();
+      this.timerSec = new System.Windows.Forms.Timer(this.components);
       this.tabControl1.SuspendLayout();
       this.tabPage1.SuspendLayout();
       this.groupBox3.SuspendLayout();
@@ -454,28 +460,28 @@
       // buttonWrite
       // 
       this.buttonWrite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.buttonWrite.Location = new System.Drawing.Point(12, 401);
+      this.buttonWrite.Location = new System.Drawing.Point(11, 401);
       this.buttonWrite.Name = "buttonWrite";
-      this.buttonWrite.Size = new System.Drawing.Size(122, 23);
+      this.buttonWrite.Size = new System.Drawing.Size(123, 23);
       this.buttonWrite.TabIndex = 2;
       this.buttonWrite.Text = "Schreiben";
       this.buttonWrite.UseVisualStyleBackColor = true;
       this.buttonWrite.Click += new System.EventHandler(this.buttonWrite_Click);
       // 
-      // labelTrack
+      // labelTimer
       // 
-      this.labelTrack.AutoSize = true;
-      this.labelTrack.Location = new System.Drawing.Point(13, 10);
-      this.labelTrack.Name = "labelTrack";
-      this.labelTrack.Size = new System.Drawing.Size(0, 13);
-      this.labelTrack.TabIndex = 3;
+      this.labelTimer.AutoSize = true;
+      this.labelTimer.Location = new System.Drawing.Point(13, 10);
+      this.labelTimer.Name = "labelTimer";
+      this.labelTimer.Size = new System.Drawing.Size(0, 13);
+      this.labelTimer.TabIndex = 3;
       // 
       // buttonOpenGlobal
       // 
       this.buttonOpenGlobal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.buttonOpenGlobal.Location = new System.Drawing.Point(12, 372);
+      this.buttonOpenGlobal.Location = new System.Drawing.Point(11, 372);
       this.buttonOpenGlobal.Name = "buttonOpenGlobal";
-      this.buttonOpenGlobal.Size = new System.Drawing.Size(122, 23);
+      this.buttonOpenGlobal.Size = new System.Drawing.Size(123, 23);
       this.buttonOpenGlobal.TabIndex = 4;
       this.buttonOpenGlobal.Text = "Öffne Global";
       this.buttonOpenGlobal.UseVisualStyleBackColor = true;
@@ -540,11 +546,62 @@
       this.labelVersion.TabIndex = 10;
       this.labelVersion.Text = "Version: ";
       // 
+      // buttonStartTimer
+      // 
+      this.buttonStartTimer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+      this.buttonStartTimer.Location = new System.Drawing.Point(11, 166);
+      this.buttonStartTimer.Name = "buttonStartTimer";
+      this.buttonStartTimer.Size = new System.Drawing.Size(120, 23);
+      this.buttonStartTimer.TabIndex = 11;
+      this.buttonStartTimer.Text = "Start Autoload";
+      this.buttonStartTimer.UseVisualStyleBackColor = true;
+      this.buttonStartTimer.Click += new System.EventHandler(this.buttonStartTimer_Click);
+      // 
+      // buttonStopTimer
+      // 
+      this.buttonStopTimer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+      this.buttonStopTimer.Location = new System.Drawing.Point(11, 195);
+      this.buttonStopTimer.Name = "buttonStopTimer";
+      this.buttonStopTimer.Size = new System.Drawing.Size(120, 23);
+      this.buttonStopTimer.TabIndex = 12;
+      this.buttonStopTimer.Text = "Stop Autoload";
+      this.buttonStopTimer.UseVisualStyleBackColor = true;
+      this.buttonStopTimer.Click += new System.EventHandler(this.buttonStopTimer_Click);
+      // 
+      // textBoxTimerSek
+      // 
+      this.textBoxTimerSek.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+      this.textBoxTimerSek.Location = new System.Drawing.Point(11, 140);
+      this.textBoxTimerSek.Name = "textBoxTimerSek";
+      this.textBoxTimerSek.Size = new System.Drawing.Size(58, 20);
+      this.textBoxTimerSek.TabIndex = 13;
+      this.textBoxTimerSek.Text = "180";
+      this.textBoxTimerSek.TextChanged += new System.EventHandler(this.textBoxTimerSek_TextChanged);
+      // 
+      // labelTimerSec
+      // 
+      this.labelTimerSec.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+      this.labelTimerSec.AutoSize = true;
+      this.labelTimerSec.Location = new System.Drawing.Point(75, 143);
+      this.labelTimerSec.Name = "labelTimerSec";
+      this.labelTimerSec.Size = new System.Drawing.Size(27, 13);
+      this.labelTimerSec.TabIndex = 14;
+      this.labelTimerSec.Text = "sek.";
+      // 
+      // timerSec
+      // 
+      this.timerSec.Interval = 1000;
+      this.timerSec.Tick += new System.EventHandler(this.timerSec_Tick);
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(784, 441);
+      this.Controls.Add(this.labelTimerSec);
+      this.Controls.Add(this.textBoxTimerSek);
+      this.Controls.Add(this.buttonStopTimer);
+      this.Controls.Add(this.buttonStartTimer);
       this.Controls.Add(this.labelVersion);
       this.Controls.Add(this.buttonOpenLocal);
       this.Controls.Add(this.labelGlobalPath);
@@ -552,7 +609,7 @@
       this.Controls.Add(this.labelLocalPath);
       this.Controls.Add(this.textBoxLocalPath);
       this.Controls.Add(this.buttonOpenGlobal);
-      this.Controls.Add(this.labelTrack);
+      this.Controls.Add(this.labelTimer);
       this.Controls.Add(this.buttonWrite);
       this.Controls.Add(this.comboBoxTracks);
       this.Controls.Add(this.tabControl1);
@@ -582,7 +639,7 @@
     private System.Windows.Forms.TabPage tabPage2;
     private System.Windows.Forms.ComboBox comboBoxTracks;
     private System.Windows.Forms.Button buttonWrite;
-    private System.Windows.Forms.Label labelTrack;
+    private System.Windows.Forms.Label labelTimer;
     private System.Windows.Forms.Button buttonOpenGlobal;
     private System.Windows.Forms.TextBox textBoxLocalPath;
     private System.Windows.Forms.Label labelLocalPath;
@@ -619,6 +676,11 @@
     private System.Windows.Forms.Panel panelStints;
     private System.Windows.Forms.GroupBox groupBoxStints;
     private System.Windows.Forms.Panel panel1;
+    private System.Windows.Forms.Button buttonStartTimer;
+    private System.Windows.Forms.Button buttonStopTimer;
+    private System.Windows.Forms.TextBox textBoxTimerSek;
+    private System.Windows.Forms.Label labelTimerSec;
+    private System.Windows.Forms.Timer timerSec;
   }
 }
 
