@@ -20,7 +20,7 @@ namespace WindowsFormsApp1
     }
 
     // Felder
-    string  version = "0.0.3";
+    string  version = "0.0.4";
     bool    local   = false;
 
     List<Driver>  drivers   = new List<Driver>();
@@ -140,12 +140,11 @@ namespace WindowsFormsApp1
         Size = new Size(25, 20),
         Location = new Point(5,30)
       };
+      clockH.Leave += DynClockH_Leave;
       if (GetText(Convert.ToString(stint + 1), clockH, "startH") != "00")
         clockH.Text = GetText(Convert.ToString(stint + 1), clockH, "startH");
       else
         clockH.Text = timeH;
-      //clockH.TextChanged += DynClockH_TextChanged;
-      clockH.Leave += DynClockH_Leave;
 
       Label seperator = new Label
       {
@@ -162,9 +161,9 @@ namespace WindowsFormsApp1
         Size = new Size(25, 20),
         Location = new Point(40, 30)
       };
+      clockM.Leave += DynClockM_Leave;
       clockM.Text = GetText(Convert.ToString(stint + 1), clockM, "startM");
       clockM.Text = CheckZero(clockM);
-      //clockH.TextChanged += DynClockM_TextChanged;
 
       Label time = new Label
       {
@@ -352,21 +351,59 @@ namespace WindowsFormsApp1
         return clock.Text;
       }
 
-      void DynClockH_TextChanged(object dynSender, EventArgs dynE)
-      {
-        int txtH = Convert.ToInt32(clockH.Name.Substring(6));
-        stints[txtH].StartH = clockH.Text;
-      }
-
       void DynClockH_Leave(object dynSender, EventArgs dynE)
       {
-        int txtH = Convert.ToInt32(clockH.Name.Substring(6));
-        MessageBox.Show(clockH.Name.ToString());
-        stints[txtH].StartH = clockH.Text;
-        //buttonCalculate_Click(dynSender, dynE);
+        int nStint = Convert.ToInt32(clockH.Name.Substring(6));
+        int nHours = Convert.ToInt32(clockH.Text);
+        stints[nStint].StartH = clockH.Text;
+        while (nStint < stints.Count - 1)
+        {
+          nStint++;
+          double nMinutes   = Convert.ToDouble(stints[nStint-1].StartM) + Convert.ToDouble(stints[nStint - 1].StintLength);
+          if (nMinutes >= 120)
+          {
+            nHours += 2;
+            nMinutes -= 120;
+          }
+          else if (nMinutes >= 60)
+          {
+            nHours++;
+            nMinutes -= 60;
+          }
+          //MessageBox.Show(nMinutes.ToString() + "\n" + Math.Round(nMinutes).ToString());
+          stints[nStint].StartH = nHours.ToString();
+          stints[nStint].StartM = Math.Round(nMinutes).ToString();
+        }
+        WriteToXML();
       }
 
-      void DynDriver_SelectedValueChanged(object dynSender, EventArgs dynE)
+      void DynClockM_Leave(object dynSender, EventArgs dynE)
+      {
+        int nStint = Convert.ToInt32(clockM.Name.Substring(6));
+        int nHours = Convert.ToInt32(clockH.Text);
+        stints[nStint].StartM = clockM.Text;
+        while (nStint < stints.Count - 1)
+        {
+          nStint++;
+          double nMinutes = Convert.ToDouble(stints[nStint - 1].StartM) + Convert.ToDouble(stints[nStint - 1].StintLength);
+          if (nMinutes >= 120)
+          {
+            nHours += 2;
+            nMinutes -= 120;
+          }
+          else if (nMinutes >= 60)
+          {
+            nHours++;
+            nMinutes -= 60;
+          }
+          //MessageBox.Show(nMinutes.ToString() + "\n" + Math.Round(nMinutes).ToString());
+          stints[nStint].StartH = nHours.ToString();
+          stints[nStint].StartM = Math.Round(nMinutes).ToString();
+        }
+        WriteToXML();
+      }
+
+        void DynDriver_SelectedValueChanged(object dynSender, EventArgs dynE)
       {
         if (stint == 1)
         {
@@ -1211,6 +1248,7 @@ namespace WindowsFormsApp1
       try
       {
         nSeconds = Convert.ToInt32(textBoxTimerSek.Text);
+        labelTimer.Text = nSeconds.ToString();
         timerSec.Start();
       }
       catch
@@ -1223,6 +1261,7 @@ namespace WindowsFormsApp1
     private void buttonStopTimer_Click(object sender, EventArgs e)
     {
       timerSec.Stop();
+      labelTimer.Text = "";
     }
 
     private void timerSec_Tick(object sender, EventArgs e)
@@ -1237,6 +1276,7 @@ namespace WindowsFormsApp1
         try
         {
           nSeconds = Convert.ToInt32(textBoxTimerSek.Text);
+          buttonOpenGlobal_Click(sender, e);
         }
         catch
         {
