@@ -180,8 +180,8 @@ namespace WindowsFormsApp1
         Size = new Size(30, 20),
         Location = new Point(5, 55)
       };
+      inlap.Leave += DynInlap_Leave;
       inlap.Text = GetText(Convert.ToString(stint + 1), inlap, "inlap");
-      //clockH.TextChanged += DynClockH_TextChanged;
 
       Label labelInlap = new Label
       {
@@ -206,6 +206,8 @@ namespace WindowsFormsApp1
         Size = new Size(45, 20),
         Location = new Point(135, 10)
       };
+      temp.Leave += DynTemp_Leave;
+      temp.Text = GetText(Convert.ToString(stint + 1), temp, "temp");
 
       TextBox psiFL = new TextBox
       {
@@ -347,7 +349,11 @@ namespace WindowsFormsApp1
         if (clock.Text == "0")
           clock.Text = "00";
         else if (clock.Text != "00" && Convert.ToInt32(clock.Text) < 10)
+        {
           clock.Text = "0" + clock.Text;
+          if (clock.Text.Substring(0, 2) == "00")
+            clock.Text = clock.Text.Replace("00", "0");
+        }
         return clock.Text;
       }
 
@@ -375,6 +381,7 @@ namespace WindowsFormsApp1
           stints[nStint].StartM = Math.Round(nMinutes).ToString();
         }
         WriteToXML();
+        //buttonCalculate_Click(dynSender, dynE);
       }
 
       void DynClockM_Leave(object dynSender, EventArgs dynE)
@@ -399,6 +406,33 @@ namespace WindowsFormsApp1
           //MessageBox.Show(nMinutes.ToString() + "\n" + Math.Round(nMinutes).ToString());
           stints[nStint].StartH = nHours.ToString();
           stints[nStint].StartM = Math.Round(nMinutes).ToString();
+        }
+        WriteToXML();
+        //buttonCalculate_Click(dynSender, dynE);
+      }
+
+      void DynInlap_Leave(object dynSender, EventArgs dynE)
+      {
+        int nStint = Convert.ToInt32(inlap.Name.Substring(5));
+        int nInlap = Convert.ToInt32(inlap.Text);
+        stints[nStint].Inlap = nInlap;
+        while (nStint < stints.Count - 1)
+        {
+          nStint++;
+          nInlap += Convert.ToInt32(stints[nStint - 1].StintLaps);
+          stints[nStint].Inlap = nInlap;
+        }
+        WriteToXML();
+      }
+
+      void DynTemp_Leave(object dynSender, EventArgs dynE)
+      {
+        int nStint = Convert.ToInt32(temp.Name.Substring(4));
+        stints[nStint].Temp = temp.Text;
+        while (nStint < stints.Count - 1)
+        {
+          nStint++;
+          stints[nStint].Temp = temp.Text;
         }
         WriteToXML();
       }
