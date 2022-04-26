@@ -176,7 +176,7 @@ namespace WindowsFormsApp1
       TextBox inlap = new TextBox
       {
         Name = "inlap" + stint.ToString(),
-        Text = stints[stint].Inlap.ToString(),
+        Text = "",//stints[stint].Inlap.ToString(),
         Size = new Size(30, 20),
         Location = new Point(5, 55)
       };
@@ -252,7 +252,7 @@ namespace WindowsFormsApp1
       Label labelDuration = new Label
       {
         Name = "labelDuration" + stint.ToString(),
-        Text = "Stintlänge:   " + stints[stint].StintLength + " min",
+        Text = "Stintlänge:   ",// + stints[stint].StintLength + " min",
         Size = new Size(120, 20),
         Location = new Point(200, 20)
       };
@@ -260,7 +260,7 @@ namespace WindowsFormsApp1
       Label labelFuel = new Label
       {
         Name = "labelFuel" + stint.ToString(),
-        Text = "Spritmenge: " + stints[stint].StintFuel + " l",
+        Text = "Spritmenge: ",// + stints[stint].StintFuel + " l",
         Size = new Size(120, 20),
         Location = new Point(200, 45)
       };
@@ -268,7 +268,7 @@ namespace WindowsFormsApp1
       Label labelLaps = new Label
       {
         Name = "labelLaps" + stint.ToString(),
-        Text = "Runden:       " + stints[stint].StintLaps,
+        Text = "Runden:       ",// + stints[stint].StintLaps,
         Size = new Size(120, 20),
         Location = new Point(200, 70)
       };
@@ -376,12 +376,11 @@ namespace WindowsFormsApp1
             nHours++;
             nMinutes -= 60;
           }
-          //MessageBox.Show(nMinutes.ToString() + "\n" + Math.Round(nMinutes).ToString());
           stints[nStint].StartH = nHours.ToString();
           stints[nStint].StartM = Math.Round(nMinutes).ToString();
+          ModifyXML(nStint, "startH", stints[nStint - 1].StartH);
+          buttonWrite_Click(dynSender, dynE);
         }
-        WriteToXML();
-        //buttonCalculate_Click(dynSender, dynE);
       }
 
       void DynClockM_Leave(object dynSender, EventArgs dynE)
@@ -403,12 +402,11 @@ namespace WindowsFormsApp1
             nHours++;
             nMinutes -= 60;
           }
-          //MessageBox.Show(nMinutes.ToString() + "\n" + Math.Round(nMinutes).ToString());
           stints[nStint].StartH = nHours.ToString();
           stints[nStint].StartM = Math.Round(nMinutes).ToString();
+          ModifyXML(nStint, "startM", stints[nStint - 1].StartM);
+          buttonWrite_Click(dynSender, dynE);
         }
-        WriteToXML();
-        //buttonCalculate_Click(dynSender, dynE);
       }
 
       void DynInlap_Leave(object dynSender, EventArgs dynE)
@@ -421,8 +419,9 @@ namespace WindowsFormsApp1
           nStint++;
           nInlap += Convert.ToInt32(stints[nStint - 1].StintLaps);
           stints[nStint].Inlap = nInlap;
+          ModifyXML(nStint, "inlap", stints[nStint - 1].Inlap.ToString());
+          buttonWrite_Click(dynSender, dynE);
         }
-        WriteToXML();
       }
 
       void DynTemp_Leave(object dynSender, EventArgs dynE)
@@ -536,6 +535,43 @@ namespace WindowsFormsApp1
       }
       
       return filename;
+    }
+
+    private void ModifyXML(int nStint, string key, string value)
+    {
+      //prüfen, ob es die Datei bereits gibt
+      bool xmlVorhanden = System.IO.File.Exists(GetFilename());
+
+      // open .xml file
+      if (xmlVorhanden == false)
+      {
+        // wenn nicht, verlassen wir die Methode direkt wieder
+        //MessageBox.Show("Datei nicht vorhanden");
+        return;
+      }
+      else
+      {
+        // Load the document and set the root element.  
+        XmlDocument xmlDoc = new XmlDocument();
+        xmlDoc.Load(GetFilename());
+        XmlNode root = xmlDoc.DocumentElement;
+
+        // Add the namespace
+        XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
+        nsmgr.AddNamespace("stint", nStint.ToString());
+
+        if (root.SelectSingleNode("descendant::stint:" + key, nsmgr) == null)
+        {
+          //MessageBox.Show("zuerst schreiben!");
+          buttonWrite_Click(null, null);
+          //ModifyXML(nStint, key, value);
+          return;
+        }
+
+        XmlNode node = root.SelectSingleNode("descendant::stint:" + key, nsmgr);
+        node.InnerText = value;
+        //Console.WriteLine(node.InnerText);
+      }
     }
 
     private void WriteToXML()
@@ -711,6 +747,15 @@ namespace WindowsFormsApp1
             // for stint data
             textBoxStartHour.Text = "12";
             textBoxStartMin.Text = "00";
+
+            // foreach stint
+            int nPosY = 0;
+            foreach (var element in doc.GetElementsByTagName("stints").OfType<XmlElement>())
+            {
+              int nStint = Convert.ToInt32(element.GetAttribute("xmlns"));
+              MessageBox.Show(nStint.ToString());
+              CreateStintbox(nStint-1, nPosY++, textBoxStartHour.Text, textBoxStartMin.Text);
+            }
 
             xmlRead.Close();
           }

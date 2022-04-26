@@ -96,7 +96,7 @@
       this.tabControl1.Location = new System.Drawing.Point(140, 12);
       this.tabControl1.Name = "tabControl1";
       this.tabControl1.SelectedIndex = 0;
-      this.tabControl1.Size = new System.Drawing.Size(632, 417);
+      this.tabControl1.Size = new System.Drawing.Size(657, 417);
       this.tabControl1.TabIndex = 0;
       // 
       // tabPage1
@@ -313,7 +313,7 @@
       this.tabPage2.Location = new System.Drawing.Point(4, 22);
       this.tabPage2.Name = "tabPage2";
       this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage2.Size = new System.Drawing.Size(624, 391);
+      this.tabPage2.Size = new System.Drawing.Size(649, 391);
       this.tabPage2.TabIndex = 1;
       this.tabPage2.Text = "Strategie";
       this.tabPage2.UseVisualStyleBackColor = true;
@@ -323,7 +323,7 @@
       this.groupBoxStints.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.groupBoxStints.Controls.Add(this.panel1);
-      this.groupBoxStints.Location = new System.Drawing.Point(479, 169);
+      this.groupBoxStints.Location = new System.Drawing.Point(504, 169);
       this.groupBoxStints.Name = "groupBoxStints";
       this.groupBoxStints.Size = new System.Drawing.Size(142, 219);
       this.groupBoxStints.TabIndex = 10;
@@ -337,13 +337,13 @@
       this.panel1.AutoScroll = true;
       this.panel1.Location = new System.Drawing.Point(2, 15);
       this.panel1.Name = "panel1";
-      this.panel1.Size = new System.Drawing.Size(138, 194);
+      this.panel1.Size = new System.Drawing.Size(142, 194);
       this.panel1.TabIndex = 0;
       // 
       // groupBoxTotalStintTime
       // 
       this.groupBoxTotalStintTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.groupBoxTotalStintTime.Location = new System.Drawing.Point(479, 43);
+      this.groupBoxTotalStintTime.Location = new System.Drawing.Point(504, 43);
       this.groupBoxTotalStintTime.Name = "groupBoxTotalStintTime";
       this.groupBoxTotalStintTime.Size = new System.Drawing.Size(142, 120);
       this.groupBoxTotalStintTime.TabIndex = 9;
@@ -359,7 +359,7 @@
       this.panelStints.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
       this.panelStints.Location = new System.Drawing.Point(3, 50);
       this.panelStints.Name = "panelStints";
-      this.panelStints.Size = new System.Drawing.Size(470, 338);
+      this.panelStints.Size = new System.Drawing.Size(495, 338);
       this.panelStints.TabIndex = 8;
       // 
       // labelSeperator
@@ -401,7 +401,7 @@
       // buttonCalculate
       // 
       this.buttonCalculate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.buttonCalculate.Location = new System.Drawing.Point(543, 7);
+      this.buttonCalculate.Location = new System.Drawing.Point(568, 7);
       this.buttonCalculate.Name = "buttonCalculate";
       this.buttonCalculate.Size = new System.Drawing.Size(75, 23);
       this.buttonCalculate.TabIndex = 1;
@@ -540,7 +540,7 @@
       // 
       this.labelVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.labelVersion.AutoSize = true;
-      this.labelVersion.Location = new System.Drawing.Point(690, 10);
+      this.labelVersion.Location = new System.Drawing.Point(715, 10);
       this.labelVersion.Name = "labelVersion";
       this.labelVersion.Size = new System.Drawing.Size(48, 13);
       this.labelVersion.TabIndex = 10;
@@ -597,7 +597,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(784, 441);
+      this.ClientSize = new System.Drawing.Size(809, 441);
       this.Controls.Add(this.labelTimerSec);
       this.Controls.Add(this.textBoxTimerSek);
       this.Controls.Add(this.buttonStopTimer);
